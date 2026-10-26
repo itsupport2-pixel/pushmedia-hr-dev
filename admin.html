@@ -25,7 +25,7 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}
 .muted{color:var(--mut)}.faint{color:var(--fnt)}
 /* shell */
 .shell{display:flex;min-height:100%}
-.side{width:232px;flex:none;background:var(--nav);color:var(--nav-ink);padding:16px 10px;display:flex;flex-direction:column;gap:2px;position:sticky;top:0;height:100vh}
+.side{z-index:40;width:232px;flex:none;background:var(--nav);color:var(--nav-ink);padding:16px 10px;display:flex;flex-direction:column;gap:2px;position:sticky;top:0;height:100vh}
 .brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;padding:4px 8px 16px}
 .brand i{width:30px;height:30px;border-radius:8px;background:#fff;color:var(--nav);display:grid;place-items:center;font-style:normal;font-size:12px;font-weight:800}
 .side a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:7px;color:inherit;text-decoration:none;cursor:pointer}
@@ -363,7 +363,7 @@ button.kpi:hover{border-color:var(--fnt)}.kpi .l{color:var(--mut);font-size:13px
 .rp-f select,.rp-f input[type=search]{height:38px;border:1px solid var(--line);border-radius:8px;padding:0 10px;font:inherit;font-size:13.5px;background:var(--sf);min-width:170px}
 .rp-lg{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.rp-lg span{font-size:12px;font-weight:500;border-radius:99px;padding:3px 10px}
 .rp-ok{background:#F0FDF4;color:#15803D}.rp-ab{background:#FEF2F2;color:#DC2626;font-weight:700!important}.rp-of{background:#ECFEFF;color:#0E7490}.rp-aj{background:#FFFBEB;color:#B45309}
-.rp-ho{background:#EFF6FF;color:#1E40AF}.rp-lv{background:#F5F3FF;color:#7C3AED}.rp-we{background:#F9FAFB;color:#9CA3AF;border:1px solid #F1F1F1}
+.rp-ho{background:#EFF6FF;color:#1E40AF}.rp-lv{background:#F5F3FF;color:#7C3AED}.rp-we{background:repeating-linear-gradient(135deg,#EFEFEF 0 6px,#FAFAFA 6px 12px);color:#6B7280;border:1px solid #EAEAEA}.rp-nd{background:#fff;color:#9CA3AF;border:1px solid #EAEAEA}
 .rp-tw{overflow:auto;max-height:calc(100vh - 330px);border-top:1px solid var(--line)}
 .rp-t{border-collapse:separate;border-spacing:0;font-size:12.5px;min-width:100%}
 .rp-t th,.rp-t td{border-bottom:1px solid var(--line);padding:0;background:var(--sf);white-space:nowrap}
@@ -372,8 +372,8 @@ button.kpi:hover{border-color:var(--fnt)}.kpi .l{color:var(--mut);font-size:13px
 .rp-t .c0{left:0;width:40px;min-width:40px;text-align:center;color:var(--fnt)}.rp-t .c1{left:40px;min-width:190px;text-align:left!important;padding:6px 10px}.rp-t .c2{left:230px;min-width:120px;text-align:left!important;padding:6px 8px;color:var(--mut);border-right:1px solid var(--line)}
 .rp-t .sm{min-width:50px;text-align:center;font-weight:700;font-size:13px}.rp-t .sm.last{border-right:1px solid var(--line)}
 .rp-t .dy{min-width:76px;border-left:1px solid var(--line);text-align:center;padding:5px 4px;line-height:1.25}.rp-t .dy small{display:block;font-size:10px;color:var(--fnt);font-weight:400}
-.rp-t td.dy{background:#F0FDF4}.rp-t td.dy.we{background:#FDF2F8}.rp-t td.dy.ho{background:#EFF6FF;color:#1E40AF;font-weight:600}.rp-t td.dy.ab{background:#FEF2F2;color:#DC2626;font-weight:700}.rp-t td.dy.lv{background:#F5F3FF;color:#7C3AED;font-weight:600}
-.rp-t td.dy.nd{background:repeating-linear-gradient(135deg,#FAFAFA 0 6px,#F3F3F3 6px 12px)}
+.rp-t td.dy{background:#F0FDF4}.rp-t td.dy.we{background:repeating-linear-gradient(135deg,#F3F3F3 0 10px,#FAFAFA 10px 20px)}.rp-t td.dy.ho{background:#EFF6FF;color:#1E40AF;font-weight:600}.rp-t td.dy.ab{background:#FEF2F2;color:#DC2626;font-weight:700}.rp-t td.dy.lv{background:#F5F3FF;color:#7C3AED;font-weight:600}
+.rp-t td.dy.nd{background:#fff;color:#D4D4D4}
 .rp-t td.dy.of{background:#ECFEFF;color:#0E7490}.rp-t td.dy.aj{background:#FFFBEB;color:#B45309}.rp-t .late{font-weight:600}.rp-t td.dy.ny{background:#fff;color:#CFCFCF}
 .rp-t thead th.we{background:#E5E7EB;color:#6B7280}.rp-t thead th.ho{background:#EFF6FF;color:#1E40AF}
 .rp-t td.s-p{background:#F0FDF4;color:#15803D}.rp-t td.s-a{background:#FEF2F2;color:#DC2626}.rp-t td.s-o{background:#ECFEFF;color:#0E7490}.rp-t td.s-j{background:#FFFBEB;color:#B45309}.rp-t td.s-l{background:#F5F3FF;color:#7C3AED}
@@ -964,7 +964,7 @@ function repSort(k){var s=A.rps,num=k!=='name'&&k!=='pos',first=num?-1:1;
   A.rps=!s||s.k!==k?{k:k,dir:first}:s.dir===first?{k:k,dir:-first}:null;drawRep()}
 function repTh(k,cls,html){var s=A.rps,on=s&&s.k===k,st=on?(s.dir<0?'desc':'asc'):'none';
   return '<th class="'+cls+' sk'+(on?' on':'')+'" data-sk="'+k+'" aria-sort="'+(on?(s.dir<0?'descending':'ascending'):'none')+'" title="กดเพื่อเรียง">'+html+'<i class="si '+st+'"></i></th>'}
-function repCell(x,ds,d){if(x.s==='nodata'){var w=dObj(ds).getDay();return d.holidays[ds]?{c:'ho',h:'วันหยุด',t:'วันหยุด'}:(w===0||w===6)?{c:'we',h:'',t:''}:{c:'nd',h:'',t:'ไม่มีข้อมูล'}}var we=x.s==='off',ho=x.s==='holiday'||(!x.i&&d.holidays[ds]);
+function repCell(x,ds,d){if(x.s==='nodata'){var w=dObj(ds).getDay();return d.holidays[ds]?{c:'ho',h:'วันหยุด',t:'วันหยุด'}:(w===0||w===6)?{c:'we',h:'',t:''}:{c:'nd',h:'–',t:'ไม่มีข้อมูล'}}var we=x.s==='off',ho=x.s==='holiday'||(!x.i&&d.holidays[ds]);
   if(x.i||x.o){var t=x.i&&x.o?x.i+'–'+x.o:x.i?x.i:'ออก '+x.o,c=x.off?'of':'',sub=x.off?'นอกพื้นที่':'สำนักงาน';if(x.adj){c+=' aj';sub='แก้เวลา'}if(x.lv)sub=x.lv;
     return {c:c,h:'<span class="'+(x.l?'late':'')+'">'+t+'</span><small>'+esc(sub)+'</small>',t:t+(x.off?' นอกพื้นที่':'')+(x.adj?' แก้เวลา':'')+(x.l?' สาย '+x.l+' นาที':'')}}
   if(/leave/.test(x.s))return {c:'lv',h:esc(x.lv||'ลา')+(x.s==='leave_wait'?'<small>รออนุมัติ</small>':''),t:'ลา '+(x.lv||'')};
@@ -973,7 +973,7 @@ function repCell(x,ds,d){if(x.s==='nodata'){var w=dObj(ds).getDay();return d.hol
 function drawRep(){var d=A.rpm;if(!d||!$('#rp-body'))return;var rows=repRows(),TD=['อา','จ','อ','พ','พฤ','ศ','ส'];
   var tot={present:0,absent:0,off:0,adj:0,leave:0},we=0,nd=0;rows.forEach(function(p){['present','absent','off','adj','leave'].forEach(function(k){tot[k]+=p.sum[k]});d.dates.forEach(function(ds){var st=p.days[ds].s,c=repCell(p.days[ds],ds,d).c;if(c==='we')we++;if(c==='nd')nd++})});
   var hol=Object.keys(d.holidays).length;
-  $('#rp-lg').innerHTML='<span class="rp-ok">มาทำงาน · '+tot.present+'</span><span class="rp-ab">ขาดงาน · '+tot.absent+'</span><span class="rp-of">นอกพื้นที่ (เช็คอินนอกพื้นที่) · '+tot.off+'</span><span class="rp-aj">ขอแก้เวลา · '+tot.adj+'</span><span class="rp-ho">วันหยุดบริษัท · '+hol+' วัน</span><span class="rp-lv">ลา · '+tot.leave+'</span><span class="rp-we">เสาร์–อาทิตย์ / วันไม่ทำงาน · '+we+'</span>'+(nd?'<span class="rp-we" style="background:repeating-linear-gradient(135deg,#FAFAFA 0 6px,#EFEFEF 6px 12px)">ไม่มีข้อมูล (ก่อนเริ่มใช้ระบบ/ก่อนวันเริ่มงาน) · '+nd+'</span>':'');
+  $('#rp-lg').innerHTML='<span class="rp-ok">มาทำงาน · '+tot.present+'</span><span class="rp-ab">ขาดงาน · '+tot.absent+'</span><span class="rp-of">นอกพื้นที่ (เช็คอินนอกพื้นที่) · '+tot.off+'</span><span class="rp-aj">ขอแก้เวลา · '+tot.adj+'</span><span class="rp-ho">วันหยุดบริษัท · '+hol+' วัน</span><span class="rp-lv">ลา · '+tot.leave+'</span><span class="rp-we">เสาร์–อาทิตย์ / วันไม่ทำงาน · '+we+'</span>'+(nd?'<span class="rp-nd">– ไม่มีข้อมูล (ก่อนเริ่มใช้ระบบ/ก่อนวันเริ่มงาน) · '+nd+'</span>':'');
   if(!rows.length){$('#rp-body').innerHTML='<div class="rp-empty">ไม่พบพนักงานตามเงื่อนไขนี้</div>';return}
   var h='<div class="faint" style="padding:10px 16px;font-size:12.5px">'+rows.length+' คน · '+d.dates.length+' วัน ('+esc(rngTxt(d.from,d.to))+') · เลื่อนซ้าย–ขวาเพื่อดูวันอื่น (ชื่อและสรุปค้างไว้)</div><div class="rp-tw"><table class="rp-t"><thead><tr><th class="fx c0">#</th>'+repTh('name','fx c1','พนักงาน')+repTh('pos','fx c2','ตำแหน่ง')+repTh('present','sm s-p','มา<small>วัน</small>')+repTh('absent','sm s-a','ขาด<small>วัน</small>')+repTh('off','sm s-o','นอกฯ<small>วัน</small>')+repTh('adj','sm s-j','แก้เวลา<small>ครั้ง</small>')+repTh('leave','sm s-l last','ลา<small>วัน</small>')+''+
    d.dates.map(function(ds){var dt=dObj(ds),wd=dt.getDay(),cl=d.holidays[ds]?'ho':(wd===0||wd===6?'we':'');return '<th class="dy '+cl+'"'+(d.holidays[ds]?' title="'+esc(d.holidays[ds])+'"':'')+'>'+dt.getDate()+' '+DPS[dt.getMonth()]+'<small>'+TD[wd]+'</small></th>'}).join('')+'</tr></thead><tbody>';
