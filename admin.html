@@ -415,7 +415,7 @@ function foCheck(){if(CFG.failover||!CFG.adminBackup||!CFG.primary||A.foChk)retu
   foPing().then(function(ok){A.foChk=0;if(ok)return;try{sessionStorage.setItem('pmhr_failover','1')}catch(e){}store('hr_tok',null);A.tok=null;location.reload()})}
 function foExit(){try{sessionStorage.removeItem('pmhr_failover')}catch(e){}store('hr_tok',null);A.tok=null;location.reload()}
 function foStart(){if(!CFG.failover)return;document.body.classList.add('fo');var b=document.createElement('div');b.id='fo-bar';b.setAttribute('role','status');b.textContent='Safe Mode · Running on Secure Snapshot · Read-only (editing & approvals resume when the system is back)';document.body.appendChild(b);
-  post('backupInfo',[],0).then(function(r){return r.json()}).then(function(j){if(!j.ok)return;var m=j.r.mirror_at?String(j.r.mirror_at).slice(11,16):'';var n=j.r.backup_pending;b.textContent='Safe Mode · Running on Secure Snapshot'+(m?' (as of '+m+')':'')+' · Read-only'+(n?' · '+n+' check-in'+(n>1?'s':'')+' pending sync':'')}).catch(function(){});
+  post('backupInfo',[],0).then(function(r){return r.json()}).then(function(j){if(!j.ok)return;var m=j.r.mirror_at?String(j.r.mirror_at).slice(11,16):'';var n=j.r.backup_pending;b.textContent='Safe Mode · Running on Secure Snapshot'+(m?' (as of '+m+')':'')+' · Read-only'+(n?' · '+n+' items pending sync':'')}).catch(function(){});
   setInterval(function(){foPing().then(function(ok){if(!ok)return;b.textContent='System restored · Switching back…';b.style.background='#15803D';setTimeout(foExit,1500)})},60000)}
 document.addEventListener('DOMContentLoaded',foStart);
 function post(fn,args,n){return fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({fn:fn,args:args})})
