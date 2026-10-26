@@ -1447,7 +1447,7 @@ body,button,input,select,textarea{font-family:'IBM Plex Sans Thai',system-ui,san
 .btn-p{background:#141414!important;border-color:#141414!important}.btn-p:hover{background:#000!important}
 </style>
 <style id="pmhr-confirmed">
-#cfp .pc-hd{display:flex;align-items:flex-end;gap:12px;margin-bottom:14px}#cfp .pc-hd>div:first-child{flex:1}
+#cfp .pc-hd{display:flex;align-items:flex-end;gap:8px;margin-bottom:14px}#cfp .pc-hd>div:first-child{flex:1}
 #cfp .pc-hd h2{font-size:24px;font-weight:700;margin:0;color:#141414}#cfp .pc-lead{font-size:13px;color:#5F5F5F;margin-top:2px}
 #cfp .pc-seg{display:inline-flex;gap:2px;background:#F2F2F2;border-radius:10px;padding:3px;flex-wrap:wrap}
 #cfp .pc-seg button,.cfp-drawer .pc-seg button{border:0;background:transparent;font:inherit;font-size:13px;font-weight:500;color:#141414;height:32px;padding:0 12px;border-radius:8px;cursor:pointer}
@@ -1480,6 +1480,7 @@ body,button,input,select,textarea{font-family:'IBM Plex Sans Thai',system-ui,san
 #cfp .pc-ft{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 16px;border-top:1px solid #EEE;font-size:12.5px;color:#8C8C8C}#cfp .pc-ft>span{flex:1}
 #cfp .pc-more{border:0;background:none;font:inherit;font-weight:600;color:#141414;cursor:pointer;text-decoration:underline}
 #cfp .pc-cost{border:0;background:none;font:inherit;font-size:12.5px;font-weight:600;color:#141414;cursor:pointer}#cfp .pc-cost:hover{text-decoration:underline}
+#cfp .pc-mng{height:38px;border:1px solid #DADADA;background:#fff;border-radius:10px;font:inherit;font-size:13px;font-weight:600;color:#141414;padding:0 14px;cursor:pointer;margin-right:4px}#cfp .pc-mng:hover{border-color:#141414}
 #cfp .pc-back{border:1px solid #DADADA;background:#fff;border-radius:10px;font:inherit;font-size:13px;font-weight:600;padding:6px 12px;cursor:pointer;margin-bottom:8px}
 .cfp-drawer .pc-dst{display:flex;flex-direction:column;gap:6px}.cfp-drawer .pc-note{font-size:12px;color:#8C8C8C}
 @media (max-width:900px){#cfp .pc-tabs{grid-template-columns:repeat(3,1fr)}#cfp .pc-hd{flex-wrap:wrap}}
@@ -16206,9 +16207,10 @@ body.m-active{ overflow:hidden; }
   var inUnit = function (o, d, t) { return (o._u || (o._u = units(o))).some(function (x) { return x.d === d && (!t || x.t === t); }); };
 
   window._cfpRender = function () {
-    if (_cfp.view === 'cost' || _cfp.view === 'manage') {   // มุมมองเดิม (กราฟต้นทุน) + ปุ่มกลับ
-      if (_cfp.view === 'manage') _cfp.view = 'list';
-      else { oldRender(); var top = document.querySelector('#cfp .cfp-top'); if (top && !document.getElementById('pc-back')) top.insertAdjacentHTML('afterbegin', '<button type="button" class="pc-back" id="pc-back">← รายการโปรเจกต์</button>'); var bk = document.getElementById('pc-back'); if (bk) bk.onclick = function () { _cfp.view = 'list'; _cfpRender(); }; var vs = document.getElementById('cfp-view'); if (vs) vs.style.display = 'none'; return; }
+    if (_cfp.view === 'cost' || _cfp.view === 'manage') {   // มุมมองเดิม: กราฟต้นทุน / จัดการโปรเจกต์ (การ์ด · ติ๊กหลายรายการ · ตั้งสถานะ) + ปุ่มกลับ
+      oldRender(); var top = document.querySelector('#cfp .cfp-top'); if (top && !document.getElementById('pc-back')) top.insertAdjacentHTML('afterbegin', '<button type="button" class="pc-back" id="pc-back">← รายการโปรเจกต์</button>');
+      var bk = document.getElementById('pc-back'); if (bk) bk.onclick = function () { _cfp.view = 'list'; _cfpRender(); };
+      var vs = document.getElementById('cfp-view'); if (vs) vs.style.display = 'none'; return;
     }
     var el = document.getElementById('cfp'); if (!el || !_cfp.data) return;
     var today = _localDateStr(new Date());
@@ -16253,7 +16255,7 @@ body.m-active{ overflow:hidden; }
     };
     el.innerHTML =
       '<div class="pc-hd"><div><h2>โปรเจกต์ Confirmed</h2><div class="pc-lead">รายการโปรเจกต์จากชีต Confirmed · สถานะ · งานและคนที่ลงแล้ว · ค่าใช้จ่ายภาคสนาม</div></div>' +
-        '<div class="pc-seg" role="group" aria-label="ปี">' + ys.map(function (y) { return '<button type="button" data-y="' + y + '" aria-pressed="' + (_cfp.y === y) + '">' + (Number(y) + 543) + '</button>'; }).join('') + '<button type="button" data-y="" aria-pressed="' + (!_cfp.y) + '">ทั้งหมด</button></div></div>' +
+        '<button type="button" class="pc-mng" id="pc-mng" title="การ์ดโปรเจกต์ · ติ๊กหลายรายการแล้วตั้งสถานะพร้อมกัน">จัดการโปรเจกต์</button><div class="pc-seg" role="group" aria-label="ปี">' + ys.map(function (y) { return '<button type="button" data-y="' + y + '" aria-pressed="' + (_cfp.y === y) + '">' + (Number(y) + 543) + '</button>'; }).join('') + '<button type="button" data-y="" aria-pressed="' + (!_cfp.y) + '">ทั้งหมด</button></div></div>' +
       '<div class="pc-tabs">' + tab('all', 'ทั้งหมด') + tab('active', 'กำลังทำ') + tab('upcoming', 'รอเริ่ม') + tab('done', 'เสร็จแล้ว') + tab('none', 'ยังไม่ระบุสถานะ') + '</div>' +
       '<div class="pc-tools"><input id="pc-q" class="pc-q" type="search" placeholder="ค้นหา เลข PM / ชื่อโปรเจกต์ / ลูกค้า / PM" value="' + esc(_cfp.mq) + '">' +
         '<span class="pc-l">แผนก</span><div class="pc-seg">' + dbtn('', 'ทุกแผนก', base.length) + depts.map(function (d) { return dbtn(d, d, dc(d)); }).join('') + '</div><span class="pc-spc"></span>' +
@@ -16271,6 +16273,7 @@ body.m-active{ overflow:hidden; }
     var jb = document.getElementById('pc-jobs'); if (jb) jb.onchange = function () { _cfp.jobs = jb.checked; _cfpRender(); };
     var mr = document.getElementById('pc-more'); if (mr) mr.onclick = function () { _cfp.mn += 100; _cfpRender(); };
     document.getElementById('pc-cost').onclick = function () { _cfp.view = 'cost'; _cfpRender(); };
+    document.getElementById('pc-mng').onclick = function () { _cfp.view = 'manage'; _cfpRender(); };
     el.querySelectorAll('tr[data-c]').forEach(function (r) { r.onclick = function () { _cfpDrawer(r.dataset.c); }; r.onkeydown = function (e) { if (e.key === 'Enter') _cfpDrawer(r.dataset.c); }; });
   };
 
