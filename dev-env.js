@@ -12,6 +12,8 @@
     for (var i = this.length - 1; i >= 0; i--) { var k = S.key.call(this, i); if (k && k.indexOf(P) === 0) this.removeItem(k.slice(P.length)); }
   };
   var tag = function () { if (document.title.indexOf('[DEV]') !== 0) document.title = '[DEV] ' + document.title; };
+  var inner = false; try { inner = window.self !== window.top; } catch (e) { inner = true; }
+  if (inner) return;   // หน้าที่เปิดในกรอบ (ตารางงาน / Confirmed ในหลังบ้าน) ไม่ต้องมีป้าย/แถบส้มซ้ำ · หน้าหลักแสดงให้แล้ว
   document.addEventListener('DOMContentLoaded', function () {
     var st = document.createElement('style');
     st.textContent = 'html{box-shadow:inset 0 4px 0 #F28C28}#dev-flag{position:fixed;left:10px;bottom:10px;z-index:2147483647;background:#F28C28;color:#fff;font:600 12px/1 system-ui,sans-serif;padding:6px 10px;border-radius:999px;box-shadow:0 2px 8px rgba(0,0,0,.25);pointer-events:none}';
