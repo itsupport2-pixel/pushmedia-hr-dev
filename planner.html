@@ -14406,7 +14406,10 @@ function _hideLineLoading() {
   // ไม่ให้หน้า Dashboard เดิมของ WTM โผล่แว๊บแรก: ซ่อนเนื้อหาจนกว่าจะเปิดหน้าที่ต้องการ (ตารางงาน / Confirmed) · กันค้าง 8 วิ
   var _pgT = _pg0 === 'confirmed' ? 'confirmed' : 'planner', _show = function () { document.documentElement.classList.remove('hr-wait'); };
   document.documentElement.classList.add('hr-wait'); setTimeout(_show, 8000);
-  go = function (p) { if (!p || p === 'dashboard') { p = _pgT; } var r = _go(p); if (p === _pgT) setTimeout(_show, 0); return r; };
+  // Confirmed: WTM วาดข้อความโหลดแบบเดิมก่อน แล้ว planner-confirmed.js วาดแบบใหม่ทับ → รอจนเห็นแบบใหม่ (.pc-tools) ค่อยแสดง
+  var _ready = function () { var c = document.getElementById('content'); return _pgT !== 'confirmed' || !!(c && c.querySelector('.pc-tools')); };
+  var _wait = function () { if (_ready()) _show(); else setTimeout(_wait, 30); };
+  go = function (p) { if (!p || p === 'dashboard') { p = _pgT; } var r = _go(p); if (p === _pgT) setTimeout(_wait, 0); return r; };
   /* แถบเครื่องมือเดียว (Figma 279:5726): ใส่ [แผนก/ทีม ▾] หน้าแถบเครื่องมือของ WTM · ท้ายแถบ = รถบริษัท + ปุ่มของหน้า (+ เพิ่มงาน จาก #tb-actions) */
   function hrInject() {
     var c = document.getElementById('content'); if (!c || !DB.cu || typeof vDepts !== 'function') return;
