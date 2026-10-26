@@ -1451,7 +1451,7 @@ body,button,input,select,textarea{font-family:'IBM Plex Sans Thai',system-ui,san
 #cfp .pc-hd h2{font-size:24px;font-weight:700;margin:0;color:#141414}#cfp .pc-lead{font-size:13px;color:#5F5F5F;margin-top:2px}
 #cfp .pc-seg{display:inline-flex;gap:2px;background:#F2F2F2;border-radius:10px;padding:3px;flex-wrap:wrap}
 #cfp .pc-seg button,.cfp-drawer .pc-seg button{border:0;background:transparent;font:inherit;font-size:13px;font-weight:500;color:#141414;height:32px;padding:0 12px;border-radius:8px;cursor:pointer}
-#cfp .pc-seg button[aria-pressed=true],#cfp .pc-seg .pc-g.on,.cfp-drawer .pc-seg button[aria-pressed=true]{background:#141414;color:#fff;font-weight:600}
+#cfp .pc-seg button[aria-pressed=true],#cfp .pc-seg .pc-d.on,.cfp-drawer .pc-seg button[aria-pressed=true]{background:#141414;color:#fff;font-weight:600}
 .cfp-drawer .pc-seg{display:inline-flex;gap:2px;background:#F2F2F2;border-radius:10px;padding:3px;flex-wrap:wrap}.cfp-drawer .pc-seg button:disabled{cursor:default;opacity:.6}
 #cfp .pc-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px}
 #cfp .pc-tab{display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:#fff;border:1px solid #E8E8E8;border-radius:12px;padding:12px 16px;font:inherit;cursor:pointer;text-align:left}
@@ -1460,6 +1460,9 @@ body,button,input,select,textarea{font-family:'IBM Plex Sans Thai',system-ui,san
 #cfp .pc-dot{width:8px;height:8px;border-radius:50%;display:inline-block;background:#8C8C8C}#cfp .pc-dot.ok{background:#1A8A4A}#cfp .pc-dot.wait{background:#B26A00}#cfp .pc-dot.done{background:#3A3A3A}
 #cfp .pc-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
 #cfp .pc-q{height:38px;width:340px;max-width:100%;border:1px solid #DADADA;border-radius:10px;padding:0 12px;font:inherit;font-size:13px;background:#fff}
+#cfp .pc-l{font-size:12.5px;font-weight:600;color:#8C8C8C}#cfp .pc-d i,#cfp .pc-tm i{font-style:normal;font-size:11.5px;color:#8C8C8C;margin-left:4px}#cfp .pc-d.on i,#cfp .pc-tm.on i{color:#BDBDBD}
+#cfp .pc-trow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:-4px 0 12px;padding:10px 12px;background:#FAFAFA;border:1px solid #EEE;border-radius:12px}
+#cfp .pc-tm{height:34px;border:1px solid #DADADA;border-radius:99px;background:#fff;padding:0 14px;font:inherit;font-size:13px;font-weight:500;color:#141414;cursor:pointer}#cfp .pc-tm:hover{border-color:#141414}#cfp .pc-tm.on{background:#141414;border-color:#141414;color:#fff;font-weight:600}
 #cfp .pc-spc{flex:1}#cfp .pc-tog{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:500;cursor:pointer}#cfp .pc-tog input{width:16px;height:16px;accent-color:#141414}
 #cfp .pc-hid{border:1px dashed #BDBDBD;background:#fff;border-radius:999px;font:inherit;font-size:12px;color:#5F5F5F;padding:4px 10px;cursor:pointer}#cfp .pc-hid.on{background:#141414;color:#fff;border-color:#141414}
 #cfp .pc-card{background:#fff;border:1px solid #E8E8E8;border-radius:12px;overflow:hidden}#cfp .pc-tw{overflow-x:auto}
@@ -16190,7 +16193,17 @@ body.m-active{ overflow:hidden; }
     if (sp.f === sp.l) return fdt(sp.f);
     return fdt(sp.f) + ' – ' + (sp.l >= today ? 'ปัจจุบัน' : fdt(sp.l));
   };
-  if (!_cfp.pc) { _cfp.pc = 1; _cfp.view = 'list'; _cfp.mf = 'all'; _cfp.mg = ''; _cfp.mq = ''; _cfp.mn = 50; _cfp.jobs = false; }
+  if (!_cfp.pc) { _cfp.pc = 1; _cfp.view = 'list'; _cfp.mf = 'all'; _cfp.md = ''; _cfp.mt = ''; _cfp.mq = ''; _cfp.mn = 50; _cfp.jobs = false; }
+  /* แผนก/ทีมของโปรเจกต์ (26 ต.ค. 2569 · แบบเดียวกับตารางงาน): จากงานที่ผูกเลข PM (แผนก/ทีมที่ลงงานจริง) + คอลัมน์ PM ในชีต (เช่น "LED A" → ทีม LED-A) */
+  var normT = function (x) { return String(x || '').toUpperCase().replace(/^PM\s+/, '').replace(/[\s_-]+/g, ''); };
+  function units(o) {
+    var u = [], seen = {}, push = function (d, t) { var k = d + '|' + (t || ''); if (d && !seen[k]) { seen[k] = 1; u.push({ d: d, t: t || '' }); } };
+    o.ts.forEach(function (x) { push(x.t.deptName, x.t.teamName); });
+    var k = normT(o.pm), tm = k && (DB.teams || []).find(function (t) { return normT(t.name) === k; });
+    if (tm) push(tm.deptName, tm.name);
+    return u;
+  }
+  var inUnit = function (o, d, t) { return (o._u || (o._u = units(o))).some(function (x) { return x.d === d && (!t || x.t === t); }); };
 
   window._cfpRender = function () {
     if (_cfp.view === 'cost' || _cfp.view === 'manage') {   // มุมมองเดิม (กราฟต้นทุน) + ปุ่มกลับ
@@ -16203,24 +16216,30 @@ body.m-active{ overflow:hidden; }
     var years = {}; _cfp.data.forEach(function (o) { if (o.y) years[o.y] = (years[o.y] || 0) + 1; });
     Object.keys(years).forEach(function (y) { if (years[y] < 20) delete years[y]; });
     var ys = Object.keys(years).sort().reverse(); if (_cfp.y && !years[_cfp.y]) _cfp.y = ys[0] || '';
-    var all = _cfpYear(), cnt = { all: 0, active: 0, upcoming: 0, done: 0, none: 0, hidden: 0 }, groups = {};
-    all.forEach(function (o) { var st = _pjSt(o.code); if (st === 'hidden') { cnt.hidden++; return; } cnt.all++; cnt[st || 'none']++; if (o.group && o.group !== '-') groups[o.group] = (groups[o.group] || 0) + 1; });
+    var all = _cfpYear(), cnt = { all: 0, active: 0, upcoming: 0, done: 0, none: 0, hidden: 0 };
+    all.forEach(function (o) { o._u = null; var st = _pjSt(o.code); if (st === 'hidden') { cnt.hidden++; return; } cnt.all++; cnt[st || 'none']++; });
     var words = _cfp.mq.trim().toLowerCase().split(/\s+/).filter(Boolean);
     var list = all.filter(function (o) {
       var st = _pjSt(o.code);
       if (_cfp.mf === 'hidden') { if (st !== 'hidden') return false; } else if (st === 'hidden') return false;
       if (_cfp.mf !== 'all' && _cfp.mf !== 'hidden' && (_cfp.mf === 'none' ? st : st !== _cfp.mf)) return false;
-      if (_cfp.mg && o.group !== _cfp.mg) return false;
       if (_cfp.jobs && !o.ts.length) return false;
       var h = (o.code + ' ' + o.name + ' ' + o.client + ' ' + o.pm + ' ' + o.group).toLowerCase();
       return words.every(function (w) { return h.indexOf(w) >= 0; });
-    }).map(function (o) { o._sp = _cfpTaskSpan(o); return o; }).sort(function (x, y) {
+    });
+    // ตัวเลขบนปุ่มแผนก/ทีม = จำนวนโปรเจกต์ตามตัวกรองอื่น (สถานะ/ค้นหา/มีงาน) ก่อนเลือกแผนก
+    var base = list, depts = vDepts().filter(function (d) { return DB.schedTeams && (DB.schedTeams[d.name] || []).length; }).map(function (d) { return d.name; });
+    if (_cfp.md && depts.indexOf(_cfp.md) < 0) { _cfp.md = ''; _cfp.mt = ''; }
+    var dc = function (d, t) { return base.filter(function (o) { return inUnit(o, d, t); }).length; };
+    list = base.filter(function (o) { return !_cfp.md || inUnit(o, _cfp.md, _cfp.mt); }).map(function (o) { o._sp = _cfpTaskSpan(o); return o; }).sort(function (x, y) {
       return (ORDER[_pjSt(x.code)] - ORDER[_pjSt(y.code)]) || String(y._sp.l || '').localeCompare(String(x._sp.l || '')) || String(y.code).localeCompare(String(x.code));
     });
     var tot = all.filter(function (o) { return _pjSt(o.code) !== 'hidden'; }).reduce(function (s, o) { return s + (o.total || 0); }, 0);
     var shown = list.slice(0, _cfp.mn);
     var tab = function (k, l) { var on = _cfp.mf === k; return '<button type="button" class="pc-tab' + (on ? ' on' : '') + '" data-mf="' + k + '"><span>' + (k !== 'all' ? '<i class="pc-dot ' + (k === 'none' ? 'none' : ST[k][1]) + '"></i>' : '') + l + '</span><b>' + cnt[k] + '</b></button>'; };
-    var gsel = function (g, l) { return '<button type="button" class="pc-g' + ((_cfp.mg || '') === g ? ' on' : '') + '" data-g="' + esc(g) + '">' + esc(l) + '</button>'; };
+    var dbtn = function (d, l, n) { return '<button type="button" class="pc-d' + ((_cfp.md || '') === d ? ' on' : '') + '" data-d="' + esc(d) + '">' + esc(l) + ' <i>' + n + '</i></button>'; };
+    var tbtn = function (t, l, n) { return '<button type="button" class="pc-tm' + ((_cfp.mt || '') === t ? ' on' : '') + '" data-t="' + esc(t) + '">' + esc(l) + ' <i>' + n + '</i></button>'; };
+    var teamRow = _cfp.md ? '<div class="pc-trow"><span class="pc-l">ทีม</span>' + tbtn('', 'ทั้งแผนก ' + _cfp.md, dc(_cfp.md)) + (DB.schedTeams[_cfp.md] || []).map(function (t) { return tbtn(t, t, dc(_cfp.md, t)); }).join('') + '</div>' : '';
     var row = function (o) {
       var st = _pjSt(o.code), s = ST[st] || ST[''], has = o.ts.length;
       return '<tr data-c="' + esc(o.code) + '" tabindex="0"><td class="pc-code">' + esc(o.code) + '</td>' +
@@ -16237,16 +16256,17 @@ body.m-active{ overflow:hidden; }
         '<div class="pc-seg" role="group" aria-label="ปี">' + ys.map(function (y) { return '<button type="button" data-y="' + y + '" aria-pressed="' + (_cfp.y === y) + '">' + (Number(y) + 543) + '</button>'; }).join('') + '<button type="button" data-y="" aria-pressed="' + (!_cfp.y) + '">ทั้งหมด</button></div></div>' +
       '<div class="pc-tabs">' + tab('all', 'ทั้งหมด') + tab('active', 'กำลังทำ') + tab('upcoming', 'รอเริ่ม') + tab('done', 'เสร็จแล้ว') + tab('none', 'ยังไม่ระบุสถานะ') + '</div>' +
       '<div class="pc-tools"><input id="pc-q" class="pc-q" type="search" placeholder="ค้นหา เลข PM / ชื่อโปรเจกต์ / ลูกค้า / PM" value="' + esc(_cfp.mq) + '">' +
-        '<div class="pc-seg">' + gsel('', 'ทุกกลุ่ม') + Object.keys(groups).sort().map(function (g) { return gsel(g, g); }).join('') + '</div><span class="pc-spc"></span>' +
+        '<span class="pc-l">แผนก</span><div class="pc-seg">' + dbtn('', 'ทุกแผนก', base.length) + depts.map(function (d) { return dbtn(d, d, dc(d)); }).join('') + '</div><span class="pc-spc"></span>' +
         (cnt.hidden ? '<button type="button" class="pc-hid' + (_cfp.mf === 'hidden' ? ' on' : '') + '" data-mf="hidden">ซ่อนไว้ ' + cnt.hidden + '</button>' : '') +
-        '<label class="pc-tog"><input type="checkbox" id="pc-jobs"' + (_cfp.jobs ? ' checked' : '') + '> เฉพาะที่มีงานแล้ว</label></div>' +
+        '<label class="pc-tog"><input type="checkbox" id="pc-jobs"' + (_cfp.jobs ? ' checked' : '') + '> เฉพาะที่มีงานแล้ว</label></div>' + teamRow +
       '<section class="pc-card"><div class="pc-tw"><table class="pc-t"><thead><tr><th>เลข PM</th><th>โปรเจกต์ / ลูกค้า</th><th>กลุ่ม</th><th>PM</th><th>สถานะ</th><th class="num">งาน</th><th class="num">คน-วัน</th><th>ช่วงที่ลงงาน</th><th class="num">ค่าใช้จ่ายภาคสนาม</th></tr></thead><tbody>' +
         (shown.length ? shown.map(row).join('') : '<tr><td colspan="9" class="pc-empty">ไม่พบโปรเจกต์ตามเงื่อนไขนี้</td></tr>') + '</tbody></table></div>' +
         '<div class="pc-ft"><span>แสดง ' + shown.length + ' จาก ' + list.length + (list.length > shown.length ? ' · <button type="button" class="pc-more" id="pc-more">แสดงเพิ่ม</button>' : '') + ' · คลิกแถว = รายละเอียด (งาน · คน · ค่าใช้จ่ายแยกประเภท · เปลี่ยนสถานะ)</span>' +
         '<button type="button" class="pc-cost" id="pc-cost">รวมค่าใช้จ่ายภาคสนาม' + (_cfp.y ? 'ปี ' + (Number(_cfp.y) + 543) : '') + ' ' + _cfpBt(tot) + ' →</button></div></section>';
     el.querySelectorAll('.pc-seg button[data-y]').forEach(function (b) { b.onclick = function () { _cfp.y = b.dataset.y; _cfp.mn = 50; _cfpRender(); }; });
     el.querySelectorAll('[data-mf]').forEach(function (b) { b.onclick = function () { _cfp.mf = _cfp.mf === b.dataset.mf && b.dataset.mf === 'hidden' ? 'all' : b.dataset.mf; _cfp.mn = 50; _cfpRender(); }; });
-    el.querySelectorAll('.pc-g').forEach(function (b) { b.onclick = function () { _cfp.mg = b.dataset.g; _cfp.mn = 50; _cfpRender(); }; });
+    el.querySelectorAll('.pc-d').forEach(function (b) { b.onclick = function () { _cfp.md = b.dataset.d; _cfp.mt = ''; _cfp.mn = 50; _cfpRender(); }; });
+    el.querySelectorAll('.pc-tm').forEach(function (b) { b.onclick = function () { _cfp.mt = b.dataset.t; _cfp.mn = 50; _cfpRender(); }; });
     var q = document.getElementById('pc-q'), qt; if (q) q.oninput = function () { clearTimeout(qt); qt = setTimeout(function () { _cfp.mq = q.value; _cfp.mn = 50; _cfpRender(); var n = document.getElementById('pc-q'); if (n) { n.focus(); n.setSelectionRange(n.value.length, n.value.length); } }, 250); };
     var jb = document.getElementById('pc-jobs'); if (jb) jb.onchange = function () { _cfp.jobs = jb.checked; _cfpRender(); };
     var mr = document.getElementById('pc-more'); if (mr) mr.onclick = function () { _cfp.mn += 100; _cfpRender(); };
