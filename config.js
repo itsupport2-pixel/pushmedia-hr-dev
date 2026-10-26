@@ -4,5 +4,6 @@
 (function () {
   var LIFF_DEV = '2012151622-Z47Zaz4B';
   var GOOGLE_CLIENT_ID = '902459045498-tnh7v08k557koh0flhds23hs5mg69r4h.apps.googleusercontent.com';
-  window.HR_CONFIG = { api: 'https://pushmedia-hr-api-dev.itsupport2-3a4.workers.dev', liffId: LIFF_DEV, channel: 'dev', backend: 'cf', googleClientId: GOOGLE_CLIENT_ID, env: 'dev' };
+  window.HR_CONFIG = { api: 'https://pushmedia-hr-api-dev.itsupport2-3a4.workers.dev', liffId: LIFF_DEV, channel: 'dev', backend: 'cf', googleClientId: GOOGLE_CLIENT_ID, env: 'dev',
+    backup: 'https://script.google.com/macros/s/AKfycbyi-htjhk6Y17o51CDP6u3RpK4lmtilVEtQjHWEs7XC1MQml69jXL5bQPhWHyqtrYNc/exec' };   // ระบบสำรองการลงเวลา (รายการจาก dev ติดป้าย env=dev · ไม่นำเข้าระบบจริง)
 })();
