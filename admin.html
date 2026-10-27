@@ -408,6 +408,26 @@ body.fo{padding-top:36px}body.fo .tb{top:36px}body.fo .side{top:36px;height:calc
 .mp-g button.td{border-color:var(--line);font-weight:600}.mp-g button[aria-pressed=true]{background:var(--nav);color:#fff}
 .mp-f{display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--line);margin-top:10px;padding-top:10px}
 /* เงินเดือน (27 ต.ค. 2569) */
+.pg-tabs{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap}.pg-tabs button{display:grid;grid-template-columns:auto 1fr;column-gap:10px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--sf);border-radius:12px;padding:10px 16px;font:inherit;cursor:pointer;min-width:260px}
+.pg-tabs button b{grid-row:span 2;width:26px;height:26px;border-radius:50%;background:#EDEDED;display:grid;place-items:center;font-size:12.5px}.pg-tabs button small{color:var(--fnt);font-size:12px}
+.pg-tabs button[aria-pressed=true]{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}.pg-tabs button[aria-pressed=true] b{background:var(--acc);color:#fff}
+.pg-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.pg-w{overflow:auto;max-height:calc(100vh - 260px)}.pg-t{border-collapse:separate;border-spacing:0;font-size:12.5px}
+.pg-t th{position:sticky;top:0;background:#F7F7F7;z-index:2;font-weight:600;color:var(--mut);font-size:11.5px;padding:7px 8px;border-bottom:1px solid var(--line);border-right:1px solid #EFEFEF;white-space:nowrap;text-align:center}
+.pg-t thead tr:nth-child(2) th{top:31px}.pg-t th small{display:block;font-weight:400;color:var(--fnt);font-size:10.5px}
+.pg-t th.gh.inc{background:#EAF6EE;color:var(--ok)}.pg-t th.gh.ded{background:#FCEDEB;color:var(--bad)}.pg-t th.gh.auto,.pg-t th.au{background:#EFEFEF}
+.pg-t td{border-bottom:1px solid #EFEFEF;border-right:1px solid #F3F3F3;padding:0;white-space:nowrap;background:var(--sf)}
+.pg-t .pg-n{position:sticky;left:0;z-index:1;min-width:200px;text-align:left;padding:6px 10px;border-right:1px solid var(--line)}.pg-t th.pg-n{z-index:3}.pg-t td.pg-n b{display:block;font-weight:600}.pg-t td.pg-n small{color:var(--fnt);font-size:11px}
+.pg-t td.gi input{width:96px;border:0;background:transparent;padding:8px;text-align:right;font:inherit;font-size:13px;font-variant-numeric:tabular-nums}.pg-t td.gi input:focus{outline:2px solid var(--acc);outline-offset:-2px;background:#fff}
+.pg-t td.gi input::placeholder{color:#B8B8B8}.pg-t td.gi.dirty{background:#FFF8E1}.pg-t td.gi.bad{background:var(--bad-s)}.pg-t .pg-net{position:sticky;right:0;z-index:1;border-left:1px solid var(--line);background:#F4F4F4;color:var(--fg)}.pg-t th.pg-net{z-index:3}
+.pg-t td.au{background:#FAFAFA;color:var(--mut);padding:6px 10px;text-align:right}
+.pg-save{position:sticky;bottom:0;z-index:4;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--sf);border-top:1px solid var(--line);flex-wrap:wrap}.pg-save.on{background:#FFF8E1}.pg-save input{flex:1;min-width:240px;height:38px;border:1px solid #DADADA;border-radius:9px;padding:0 12px;font:inherit}.pg-save input.bad{border-color:var(--bad)}
+.pk-c{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}.pk-chip{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:99px;padding:3px 6px 3px 3px;background:var(--sf)}
+.pk-chip .av,.pk-r .av{width:30px;height:30px;font-size:12px}.pk-chip b,.pk-r b{display:block;font-size:13px;font-weight:600}.pk-chip small,.pk-r small{display:block;font-size:11px;color:var(--fnt)}
+.pk-chip button{border:0;background:none;color:var(--mut);cursor:pointer;padding:2px 6px}.pk-s{position:relative}.pk-s input{width:100%}
+.pk-r{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:20;background:var(--sf);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 24px rgba(0,0,0,.12);max-height:320px;overflow:auto}
+.pk-r button{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;padding:8px 12px;text-align:left;font:inherit;cursor:pointer}.pk-r button:hover{background:var(--sf2)}
+
 .py-t{border-collapse:collapse;width:100%;font-size:13px}.py-t th{font-size:11.5px;font-weight:600;color:var(--mut);text-align:left;background:#F7F7F7;padding:9px 12px;white-space:nowrap;border-bottom:1px solid var(--line)}
 .py-t td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:middle}.py-t .r{text-align:right}.py-t tr.ck{cursor:pointer}.py-t tr.ck:hover td{background:#FAFAFA}.py-t.sm td,.py-t.sm th{padding:6px 8px;font-size:12.5px}
 .py-hd{display:flex;align-items:flex-end;gap:12px;margin-bottom:12px;flex-wrap:wrap}.py-hd h2{font-size:24px}.py-acts{display:flex;gap:8px;flex-wrap:wrap}
@@ -676,7 +696,7 @@ function pyRuns(){var bs=PY.bs,rs=bs.runs,open=rs.filter(function(r){return r.st
    '<section class="card"><div class="ch"><h3>งวดเงินเดือน</h3><span class="sp"></span>'+(bs.canEdit?(open?'<span class="faint" style="font-size:12.5px">ปิดงวด '+esc(ymTh(open.ym))+' ก่อนเปิดงวดใหม่</span>':''+mpBtn('py-ym',nx)+'<button class="btn pri" id="py-new">+ เปิดงวด</button>'):'')+'</div>'+
    '<div class="tw"><table class="py-t"><thead><tr><th>งวด</th><th>รอบตัดยอด</th><th>วันจ่าย</th><th>สถานะ</th><th class="r">คน</th><th class="r">รวมรายรับ</th><th class="r">รวมรายจ่าย</th><th class="r">รับสุทธิ (ยอดโอน)</th><th class="r">ต้องตรวจ</th></tr></thead><tbody>'+
    (rs.length?rs.map(function(r){var t=r.totals||{};return '<tr class="ck" data-run="'+r.id+'"><td><b>'+esc(ymTh(r.ym))+'</b></td><td>'+dTh(r.from)+' – '+dTh(r.to)+'</td><td>'+dTh(r.pay_date)+'</td><td>'+pyBadge(r.status)+'</td><td class="r num">'+(t.people||0)+'</td><td class="r num">'+m2(t.inc)+'</td><td class="r num">'+m2(t.ded)+'</td><td class="r num"><b>'+m2(t.net)+'</b></td><td class="r">'+(t.warn?'<span class="badge b-warn">'+t.warn+'</span>':'—')+'</td></tr>'}).join(''):'<tr><td colspan="9" class="muted" style="padding:28px;text-align:center">ยังไม่มีงวด · เลือกเดือนแล้วกด "เปิดงวด"</td></tr>')+'</tbody></table></div></section>');
-  $$('[data-run]').forEach(function(r){r.onclick=function(){PY.runId=r.dataset.run;PY.run=null;pyRun()}});
+  $$('[data-run]').forEach(function(r){r.onclick=function(){PY.runId=r.dataset.run;PY.run=null;PYG={};PY.rv=null;pyRun()}});
   $$('[data-pyt2]').forEach(function(b){b.onclick=function(){PY.tab=b.dataset.pyt2;render()}});
   if($('#py-new'))$('#py-new').onclick=function(){var ym=$('#py-ym').value,b=this;if(!ym)return toast('เลือกเดือน',1);
     ask({title:'เปิดงวด '+ymTh(ym)+'?',desc:'ระบบจะดึงเงินเดือน รายการประจำ หนี้สิน และวันขาดงานจากระบบลงเวลา แล้วคำนวณให้ทันที',buttons:[{k:'no',label:'ยกเลิก'},{k:'yes',label:'เปิดงวด',cls:'pri'}]}).then(function(k){if(k!=='yes')return;busy(b,1);
@@ -685,7 +705,7 @@ function pyRuns(){var bs=PY.bs,rs=bs.runs,open=rs.filter(function(r){return r.st
 /* ── รายละเอียดงวด ── */
 function pyRun(force){if(!force&&PY.run&&PY.run.run.id===PY.runId)return pyRunDraw();
   pyBody('<div class="loading"><span class="spin"></span>กำลังโหลดงวด…</div>');
-  aCall('payRun',PY.runId).then(function(r){PY.run=r;pyRunDraw()}).catch(pyErr)}
+  aCall('payRun',PY.runId).then(function(r){PY.run=r;if(!PY.rv)PY.rv=r.canEdit?'grid':'sum';pyRunDraw()}).catch(pyErr)}
 function pyRunDraw(){var R=PY.run,r=R.run,t=r.totals||{},st=r.status,STEP=['draft','review','approved','closed','paid'],si=STEP.indexOf(st);
   var deps={};R.rows.forEach(function(x){if(x.dept)deps[x.dept]=1});
   var q=PY.q.trim().toLowerCase(),rows=R.rows.filter(function(x){return (!q||(x.code+' '+x.name+' '+x.nickname).toLowerCase().indexOf(q)>=0)&&(PY.dep==='all'||x.dept===PY.dep)&&(!PY.warn||x.warn.length)});
@@ -702,15 +722,17 @@ function pyRunDraw(){var R=PY.run,r=R.run,t=r.totals||{},st=r.status,STEP=['draf
    (st==='approved'?'<div class="note-w">งวด "'+esc(ymTh(r.ym))+'" อนุมัติแล้ว · กรุณาปิดงวดบัญชีเพื่อสร้างไฟล์โอนธนาคาร</div>':'')+
    (R.missing&&st==='draft'?'<div class="note-b">พนักงาน '+R.missing+' คนยังไม่มีฐานเงินเดือน (ไม่อยู่ในงวดนี้)'+(R.isHR?' <button class="btn sm" data-pyt2="people">ไปที่ข้อมูลรายคน</button>':'')+'</div>':'')+
    '<div class="py-ks">'+kpi('รวมรายรับ',m2(t.inc),(t.people||0)+' คน')+kpi('รวมรายจ่าย',m2(t.ded),'ประกันสังคม '+m2(t.sso)+(t.wht?' · หัก ณ ที่จ่าย '+m2(t.wht):''))+kpi('รับสุทธิ (ยอดโอน)',m2(t.net),'รวมรายรับ − รวมรายจ่าย')+kpi('หนี้สินที่หัก',m2(t.debt),t.welfare?'กองทุนสงเคราะห์ '+m2(t.welfare):'')+'</div>'+
+   '<div class="pg-tabs" role="tablist"><button data-rv="grid" aria-pressed="'+(PY.rv==='grid')+'"><b>1</b>กรอกรายรับ–รายจ่าย<small>'+(R.canEdit?'HR กรอกทุกคนในตารางเดียว':'ดูยอดที่กรอก')+'</small></button><button data-rv="sum" aria-pressed="'+(PY.rv!=='grid')+'"><b>2</b>สรุปผลคำนวณ<small>ตรวจรายคน · ต้องตรวจ '+(t.warn||0)+' คน</small></button></div>'+
    '<section class="card"><div class="ch" style="flex-wrap:wrap;gap:8px"><input type="search" id="py-q" placeholder="ค้นหา ชื่อ รหัส" value="'+esc(PY.q)+'" style="width:220px"><select id="py-dep" class="fsel"><option value="all">ทุกแผนก</option>'+Object.keys(deps).sort().map(function(d){return '<option'+(PY.dep===d?' selected':'')+'>'+esc(d)+'</option>'}).join('')+'</select>'+
-    '<label class="chk"><input type="checkbox" id="py-w"'+(PY.warn?' checked':'')+'> ต้องตรวจ ('+(t.warn||0)+')</label><span class="sp"></span><button class="btn" id="py-xl">ส่งออก Excel</button>'+(st==='closed'||st==='paid'?'<button class="btn" id="py-bank">ไฟล์โอนกสิกร (.xlsx)</button>':'<button class="btn" disabled title="ปิดงวดบัญชีก่อนจึงดาวน์โหลดได้">ไฟล์โอนกสิกร · ปิดงวดก่อน</button>')+'</div>'+
-   '<div class="tw"><table class="py-t"><thead><tr><th>พนักงาน</th><th>แผนก</th><th>ประเภท</th><th class="r">อัตราค่าจ้าง</th><th class="r">วันทำงาน</th><th class="r">ขาดงาน</th><th class="r">รวมรายรับ</th><th class="r">รวมรายจ่าย</th><th class="r">รับสุทธิ</th><th>ต้องตรวจ</th></tr></thead><tbody>'+
+    (PY.rv==='grid'?'':'<label class="chk"><input type="checkbox" id="py-w"'+(PY.warn?' checked':'')+'> ต้องตรวจ ('+(t.warn||0)+')</label>')+'<span class="sp"></span><button class="btn" id="py-xl">ส่งออก Excel</button>'+(st==='closed'||st==='paid'?'<button class="btn" id="py-bank">ไฟล์โอนกสิกร (.xlsx)</button>':'<button class="btn" disabled title="ปิดงวดบัญชีก่อนจึงดาวน์โหลดได้">ไฟล์โอนกสิกร · ปิดงวดก่อน</button>')+'</div>'+
+   (PY.rv==='grid'?'<div id="pg-body"></div></section>':'<div class="tw"><table class="py-t"><thead><tr><th>พนักงาน</th><th>แผนก</th><th>ประเภท</th><th class="r">อัตราค่าจ้าง</th><th class="r">วันทำงาน</th><th class="r">ขาดงาน</th><th class="r">รวมรายรับ</th><th class="r">รวมรายจ่าย</th><th class="r">รับสุทธิ</th><th>ต้องตรวจ</th></tr></thead><tbody>'+
    (rows.length?rows.map(function(x){return '<tr class="ck" data-pe="'+x.employee_id+'"><td><b>'+esc(x.name)+'</b><div class="faint" style="font-size:11.5px">'+esc(x.code)+(x.nickname?' · '+esc(x.nickname):'')+'</div></td><td>'+esc(x.dept||'—')+'</td><td>'+esc(PY.bs.types[x.type]||x.type)+'</td><td class="r num">'+m2(x.base)+'</td><td class="r num">'+x.days+'</td><td class="r num">'+(x.absent?x.absent+' วัน':'—')+'</td><td class="r num">'+m2(x.inc)+'</td><td class="r num">'+m2(x.ded)+'</td><td class="r num"><b'+(x.net<0?' style="color:var(--bad)"':'')+'>'+m2(x.net)+'</b></td><td>'+x.warn.map(function(w){return '<span class="badge '+(/ติดลบ/.test(w)?'b-bad':'b-warn')+'">'+esc(w)+'</span>'}).join(' ')+'</td></tr>'}).join(''):'<tr><td colspan="10" class="muted" style="padding:24px;text-align:center">ไม่มีรายการ</td></tr>')+
-   '</tbody></table></div><div class="faint" style="font-size:12px;padding:10px 14px">แสดง '+rows.length+' จาก '+R.rows.length+' คน · กดแถวเพื่อดูรายละเอียด'+(R.canEdit?' / แก้รายรับ–รายจ่าย':'')+'</div></section>');
+   '</tbody></table></div><div class="faint" style="font-size:12px;padding:10px 14px">แสดง '+rows.length+' จาก '+R.rows.length+' คน · กดแถวเพื่อดูรายละเอียด'+(R.canEdit?' / แก้รายรับ–รายจ่าย':'')+'</div></section>'));
+  $$('[data-rv]').forEach(function(b){b.onclick=function(){PY.rv=b.dataset.rv;pyRunDraw()}});if(PY.rv==='grid')pyGrid();
   $('#py-back').onclick=function(){PY.runId=null;PY.run=null;pyRuns()};
   $$('[data-pyt2]').forEach(function(b){b.onclick=function(){PY.tab=b.dataset.pyt2;PY.runId=null;render()}});
   $('#py-q').oninput=function(){PY.q=this.value;var p=this.selectionStart;pyRunDraw();var i=$('#py-q');i.focus();i.setSelectionRange(p,p)};
-  $('#py-dep').onchange=function(){PY.dep=this.value;pyRunDraw()};$('#py-w').onchange=function(){PY.warn=this.checked;pyRunDraw()};
+  $('#py-dep').onchange=function(){PY.dep=this.value;pyRunDraw()};if($('#py-w'))$('#py-w').onchange=function(){PY.warn=this.checked;pyRunDraw()};
   $$('[data-pe]').forEach(function(tr){tr.onclick=function(){pyPerson(tr.dataset.pe)}});
   $('#py-xl').onclick=function(){pyExcel(R)};if($('#py-bank'))$('#py-bank').onclick=function(){pyBank(R)};
   if($('#py-calc'))$('#py-calc').onclick=function(){var b=this;busy(b,1);aCall('payCalc',r.id).then(function(){toast('คำนวณใหม่แล้ว');pyRefreshRun()}).catch(function(e){busy(b,0);toast(e.message,1)})};
@@ -834,16 +856,73 @@ function pyCfg(){var c=PY.bs.cfg,ed=PY.bs.canEdit,adm=A.d.me.role==='admin',dis=
     ['pay_wht_rate','หัก ณ ที่จ่าย สัญญาบริการ (%)',''],['pay_welfare_rate','กองทุนเงินสงเคราะห์ลูกจ้าง (%)',''],['pay_welfare_from','กองทุนสงเคราะห์ เริ่มหักงวด','เดือน ค.ศ. เช่น 2027-01 = ม.ค. 2570'],['pay_welfare_max_base','กองทุนสงเคราะห์ ฐานสูงสุด (บาท)','ว่าง = ไม่มีเพดาน (รอยืนยัน)']];
   var codes=function(ids){var m={};(PY.prof||[]).forEach(function(p){m[p.employee_id]=p.code});return String(ids||'').split(',').filter(String).map(function(i){return m[i]||i}).join(', ')};
   var draw=function(){pyBody('<section class="card" style="max-width:920px"><div class="ch"><h3>ตั้งค่าเงินเดือน</h3></div><div class="cb"><div class="dfg" style="grid-template-columns:repeat(2,minmax(0,1fr))">'+F.map(function(f){return '<label class="f" id="w-'+f[0]+'"><span>'+f[1]+'</span>'+(f[0]==='pay_welfare_from'?mpBtn('pc-wf',c[f[0]],{attr:'data-pc="pay_welfare_from"',disabled:!ed}):'<input data-pc="'+f[0]+'" value="'+esc(c[f[0]])+'"'+dis+'>')+(f[2]?'<small class="faint">'+esc(f[2])+'</small>':'')+'</label>'}).join('')+'</div>'+
-    '<h4 style="margin:18px 0 6px">สิทธิ์ (เฉพาะผู้ดูแลระบบแก้ได้)</h4><div class="dfg"><label class="f s2" id="w-pay_access"><span>ฝ่ายบัญชีที่ดูเงินเดือนได้ (รหัสพนักงาน คั่นด้วย ,)</span><input id="pc-acc" value="'+esc(codes(c.pay_access))+'"'+(adm?'':' disabled')+'><small class="faint">ดูได้อย่างเดียว · HR และผู้ดูแลระบบเห็นอยู่แล้ว</small></label>'+
-    '<label class="f s2" id="w-pay_approvers"><span>ผู้อนุมัติงวดเงินเดือน (รหัสพนักงาน คั่นด้วย ,)</span><input id="pc-apv" value="'+esc(codes(c.pay_approvers))+'"'+(adm?'':' disabled')+'><small class="faint">ผู้ดูแลระบบอนุมัติได้เสมอ</small></label></div>'+
+    '<h4 style="margin:18px 0 6px">สิทธิ์ (เฉพาะผู้ดูแลระบบแก้ได้)</h4><div class="dfg" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="f" id="w-pay_access"><span>ฝ่ายบัญชีที่ดูเงินเดือนได้</span>'+pyPick('pc-acc',c.pay_access,adm)+'<small class="faint">ดูได้อย่างเดียว · HR และผู้ดูแลระบบเห็นอยู่แล้ว</small></div>'+
+    '<div class="f" id="w-pay_approvers"><span>ผู้อนุมัติงวดเงินเดือน</span>'+pyPick('pc-apv',c.pay_approvers,adm)+'<small class="faint">ผู้ดูแลระบบอนุมัติได้เสมอ</small></div></div>'+
     (ed?'<div style="display:flex;justify-content:flex-end;margin-top:14px"><button class="btn pri" id="pc-save">บันทึก</button></div>':'')+'</div></section>');
-    if(!ed)return;$('#pc-save').onclick=function(){var b=this,d={},m={};(PY.prof||[]).forEach(function(p){m[p.code]=p.employee_id});var bad=[];
+    pyPickBind('pc-acc');pyPickBind('pc-apv');loadPhotos();
+    if(!ed)return;$('#pc-save').onclick=function(){var b=this,d={},bad=[];
       $$('[data-pc]').forEach(function(i){if(i.value!==c[i.dataset.pc])d[i.dataset.pc]=i.value});
-      if(adm)[['pay_access','#pc-acc'],['pay_approvers','#pc-apv']].forEach(function(k){var ids=$(k[1]).value.split(/[,\s]+/).filter(String).map(function(x){if(!m[x])bad.push(x);return m[x]}).filter(Boolean).join(',');if(ids!==c[k[0]])d[k[0]]=ids});
+      if(adm)[['pay_access','#pc-acc'],['pay_approvers','#pc-apv']].forEach(function(k){var ids=$(k[1]).value;if(ids!==c[k[0]])d[k[0]]=ids});
       if(bad.length)return toast('ไม่พบรหัสพนักงาน: '+bad.join(', '),1);if(!Object.keys(d).length)return toast('ไม่มีอะไรเปลี่ยน');busy(b,1);
       aCall('paySaveCfg',d).then(function(r){busy(b,0);if(!r.ok){Object.keys(r.errors).forEach(function(k){var l=$('#w-'+k);if(l){l.classList.add('bad');l.insertAdjacentHTML('beforeend','<span class="er">'+esc(r.errors[k])+'</span>')}});return}PY.bs.cfg=r.cfg;c=r.cfg;toast('บันทึกแล้ว · มีผลกับงวดที่คำนวณหลังจากนี้');draw()}).catch(function(e){busy(b,0);toast(e.message,1)})}};
   if(PY.prof)draw();else{pyBody('<div class="loading"><span class="spin"></span>กำลังโหลด…</div>');aCall('payProfiles').then(function(r){PY.prof=r;draw()}).catch(pyErr)}}
 
+/* ── ตารางกรอกรายรับ–รายจ่ายทั้งงวด (แบบ HumanSoft "รายรับรายจ่าย") ──
+ * แถว = พนักงาน · คอลัมน์ = รายการที่ HR กรอก (กรอกในงวด / ประจำรายคน) + วันขาดงาน · คอลัมน์ขวา = ระบบคำนวณเอง (ประกันสังคม หนี้สิน ฯลฯ ไม่ต้องกรอก)
+ * วางจาก Excel ได้ (คัดลอกหลายช่อง → วางที่ช่องแรก) · Enter = ลงช่องล่าง · บันทึกทีเดียวทุกคน + เหตุผลเดียว → คำนวณใหม่ */
+var PYG={};
+function pyGridCols(){var it=PY.bs.items.filter(function(i){return i.active&&i.source!=='auto'});return {inc:it.filter(function(i){return i.kind==='inc'}),ded:it.filter(function(i){return i.kind==='ded'})}}
+function pyGrid(){var R=PY.run,ed=R.canEdit,C=pyGridCols(),q=PY.q.trim().toLowerCase(),ch=PYG.ch||(PYG.ch={});
+  var rows=R.rows.filter(function(x){return (!q||(x.code+' '+x.name+' '+x.nickname).toLowerCase().indexOf(q)>=0)&&(PY.dep==='all'||x.dept===PY.dep)});
+  var val=function(x,k){var c=ch[x.employee_id];if(c&&k in c)return c[k];var i=x.inputs[k];return i?String(i.amount):''};
+  var fixed=function(x,k){var l=x.lines.filter(function(l){return l.code===k&&l.src==='fixed'})[0];return l?l.amount:0};
+  var has=function(k){return R.rows.some(function(x){return val(x,k)!==''||fixed(x,k)})};
+  var cols=function(a){return PYG.only?a.filter(function(i){return has(i.code)}):a};
+  var inc=cols(C.inc),ded=cols(C.ded);
+  var amt=function(x,f){return x.lines.reduce(function(s,l){return s+(f(l)?l.amount:0)},0)};
+  var AUTO=[['ประกันสังคม',function(l){return l.code==='sso'}],['หัก ณ ที่จ่าย / กองทุน',function(l){return l.code==='wht'||l.code==='welfare'}],['หนี้สิน / ยืมบริษัท',function(l){return !!l.ref}],['ขาดงาน (บาท)',function(l){return l.code==='absent'}]];
+  var cell=function(x,k,ph){var v=val(x,k),dirty=ch[x.employee_id]&&k in ch[x.employee_id];return '<td class="gi'+(dirty?' dirty':'')+'"><input data-g="'+x.employee_id+'|'+k+'" value="'+esc(v)+'" placeholder="'+esc(ph||'')+'" inputmode="decimal"'+(ed?'':' disabled')+'></td>'};
+  var n=Object.keys(ch).reduce(function(s,k){return s+Object.keys(ch[k]).length},0);
+  var h='<div class="pg-bar">'+(ed?'<span class="muted" style="font-size:12.5px">กรอกเฉพาะช่องที่มียอด · ช่องว่าง = ใช้รายการประจำ (ตัวเลขจาง) · วางจาก Excel ได้ (คัดลอกหลายช่องแล้ววางที่ช่องแรก) · Enter = ช่องล่าง</span>':'<span class="note-w" style="margin:0">งวดนี้'+esc((PYST[R.run.status]||[''])[0])+' · ดูอย่างเดียว (แก้ได้เฉพาะสถานะร่าง)</span>')+
+    '<span class="sp"></span><label class="chk"><input type="checkbox" id="pg-only"'+(PYG.only?' checked':'')+'> แสดงเฉพาะคอลัมน์ที่มียอด</label></div>'+
+   '<div class="pg-w"><table class="pg-t"><thead><tr><th rowspan="2" class="pg-n">พนักงาน</th><th rowspan="2">วันขาดงาน</th>'+(inc.length?'<th colspan="'+inc.length+'" class="gh inc">รายรับ · HR กรอก</th>':'')+(ded.length?'<th colspan="'+ded.length+'" class="gh ded">รายจ่าย · HR กรอก</th>':'')+'<th colspan="'+(AUTO.length+3)+'" class="gh auto">ระบบคำนวณให้ (ไม่ต้องกรอก)</th></tr><tr>'+
+   inc.concat(ded).map(function(i){return '<th>'+esc(i.name)+(i.source==='fixed'?'<small>ประจำ</small>':'')+'</th>'}).join('')+AUTO.map(function(a){return '<th class="au">'+a[0]+'</th>'}).join('')+'<th class="au">รวมรายรับ</th><th class="au">รวมรายจ่าย</th><th class="au pg-net">รับสุทธิ</th></tr></thead><tbody>'+
+   rows.map(function(x){return '<tr><td class="pg-n"><b>'+esc(x.name)+'</b><small>'+esc(x.code)+' · '+esc(x.dept||'—')+'</small></td>'+cell(x,'_absent_days',String(x.absent||0))+
+     inc.concat(ded).map(function(i){var f=fixed(x,i.code);return cell(x,i.code,f?m2(f):'')}).join('')+
+     AUTO.map(function(a){var v=amt(x,a[1]);return '<td class="au num">'+(v?m2(v):'—')+'</td>'}).join('')+'<td class="au num">'+m2(x.inc)+'</td><td class="au num">'+m2(x.ded)+'</td><td class="au num pg-net"><b>'+m2(x.net)+'</b></td></tr>'}).join('')+
+   '</tbody></table></div>'+
+   (ed?'<div class="pg-save'+(n?' on':'')+'"><b>'+(n?'แก้ไข '+n+' ช่อง · ยังไม่บันทึก':'ยังไม่มีการแก้ไข')+'</b><input id="pg-rs" placeholder="เหตุผล เช่น ค่าคอม/เบี้ยขยัน ต.ค. ตามรายงาน" value="'+esc(PYG.rs||'')+'"><button class="btn" id="pg-x"'+(n?'':' disabled')+'>ยกเลิกที่แก้</button><button class="btn pri" id="pg-ok"'+(n?'':' disabled')+'>บันทึก + คำนวณใหม่</button></div>':'');
+  $('#pg-body').innerHTML=h;
+  $('#pg-only').onchange=function(){PYG.only=this.checked;pyGrid()};
+  if(!ed)return;
+  var ins=$$('#pg-body [data-g]'),W=inc.length+ded.length+1;
+  var bar=function(){var n=Object.keys(ch).reduce(function(s,k){return s+Object.keys(ch[k]).length},0),b=$('.pg-save');b.classList.toggle('on',!!n);b.querySelector('b').textContent=n?'แก้ไข '+n+' ช่อง · ยังไม่บันทึก':'ยังไม่มีการแก้ไข';$('#pg-x').disabled=$('#pg-ok').disabled=!n};
+  var put=function(el,v){var p=el.dataset.g.split('|'),x=R.rows.filter(function(r){return r.employee_id===p[0]})[0],o=x.inputs[p[1]]?String(x.inputs[p[1]].amount):'';v=String(v).replace(/[,\s฿]/g,'');el.value=v;
+    if(v===o){if(ch[p[0]]){delete ch[p[0]][p[1]];if(!Object.keys(ch[p[0]]).length)delete ch[p[0]]}el.parentNode.classList.remove('dirty')}else{(ch[p[0]]=ch[p[0]]||{})[p[1]]=v;el.parentNode.classList.add('dirty')}};
+  ins.forEach(function(el,i){el.oninput=function(){put(el,el.value);bar()};
+    el.onkeydown=function(e){if(e.key==='Enter'||e.key==='ArrowDown'){e.preventDefault();var t=ins[i+W];if(t){t.focus();t.select()}}else if(e.key==='ArrowUp'){e.preventDefault();var u=ins[i-W];if(u){u.focus();u.select()}}};
+    el.onpaste=function(e){var t=(e.clipboardData||window.clipboardData).getData('text');if(!/[\t\n]/.test(t.trim()))return;e.preventDefault();
+      t.replace(/\r/g,'').replace(/\n$/,'').split('\n').forEach(function(line,r){line.split('\t').forEach(function(v,c){var col=i%W+c,tg=ins[i+r*W+c];if(col<W&&tg)put(tg,v.trim())})});bar();toast('วางข้อมูลแล้ว · ตรวจแล้วกดบันทึก')}});
+  $('#pg-rs').oninput=function(){PYG.rs=this.value;this.classList.remove('bad')};
+  $('#pg-x').onclick=function(){PYG.ch={};pyGrid()};
+  $('#pg-ok').onclick=function(){var b=this,rs=$('#pg-rs').value.trim();if(!rs){$('#pg-rs').classList.add('bad');$('#pg-rs').focus();return toast('ใส่เหตุผลก่อนบันทึก',1)}busy(b,1);
+    aCall('paySaveInputsBulk',R.run.id,ch,rs).then(function(r){busy(b,0);if(!r.ok){var k=Object.keys(r.errors||{});k.forEach(function(z){var el=$('[data-g="'+z+'"]');if(el)el.parentNode.classList.add('bad')});toast((r.errors[k[0]]||'ตรวจข้อมูล')+(k.length>1?' (+'+(k.length-1)+')':''),1);return}
+      PYG.ch={};PYG.rs='';toast('บันทึก '+r.changed+' ช่อง · คำนวณใหม่แล้ว');PY.bsAt=0;aCall('payRun',R.run.id).then(function(x){PY.run=x;pyRunDraw()})}).catch(function(e){busy(b,0);toast(e.message,1)})}}
+
+/* ── เลือกพนักงาน (ค้นหาชื่อ/รหัส · เห็นรูปและชื่อ) · ค่าเก็บเป็น id คั่นด้วย , ใน hidden input ── */
+function pyPick(id,ids,on){var P={};(PY.prof||[]).forEach(function(p){P[p.employee_id]=p});var sel=String(ids||'').split(',').filter(function(x){return P[x]});
+  return '<div class="pk" id="pk-'+id+'"><input type="hidden" id="'+id+'" value="'+esc(sel.join(','))+'"><div class="pk-c">'+sel.map(function(x){var p=P[x];return '<span class="pk-chip"><span class="av" data-av="'+x+'">'+esc((p.nickname||p.name).slice(0,1))+'</span><span><b>'+esc(p.name)+'</b><small>'+esc(p.code)+(p.dept?' · '+esc(p.dept):'')+'</small></span>'+(on?'<button type="button" data-pkx="'+x+'" aria-label="เอาออก">✕</button>':'')+'</span>'}).join('')+(sel.length?'':'<span class="faint" style="font-size:12.5px">ยังไม่มี</span>')+'</div>'+
+   (on?'<div class="pk-s"><input type="search" data-pkq placeholder="ค้นหาชื่อ ชื่อเล่น หรือรหัสพนักงาน…" autocomplete="off"><div class="pk-r" hidden></div></div>':'')+'</div>'}
+function pyPickBind(id){var w=$('#pk-'+id);if(!w)return;var h=$('#'+id),q=w.querySelector('[data-pkq]'),box=w.querySelector('.pk-r'),P=PY.prof||[];
+  var redraw=function(){var on=!!q;w.outerHTML=pyPick(id,h.value,on);pyPickBind(id);loadPhotos()};
+  w.querySelectorAll('[data-pkx]').forEach(function(b){b.onclick=function(){h.value=h.value.split(',').filter(function(x){return x&&x!==b.dataset.pkx}).join(',');redraw()}});
+  if(!q)return;
+  var show=function(){var t=q.value.trim().toLowerCase(),cur=h.value.split(',');if(!t){box.hidden=true;return}
+    var m=P.filter(function(p){return cur.indexOf(p.employee_id)<0&&(p.code+' '+p.name+' '+p.nickname+' '+p.dept).toLowerCase().indexOf(t)>=0}).slice(0,8);
+    box.innerHTML=m.length?m.map(function(p){return '<button type="button" data-pka="'+p.employee_id+'"><span class="av" data-av="'+p.employee_id+'">'+esc((p.nickname||p.name).slice(0,1))+'</span><span><b>'+esc(p.name)+(p.nickname?' ('+esc(p.nickname)+')':'')+'</b><small>'+esc(p.code)+' · '+esc(p.dept||'—')+(p.team?' · '+esc(p.team):'')+'</small></span></button>'}).join(''):'<div class="faint" style="padding:10px 12px">ไม่พบ</div>';box.hidden=false;loadPhotos();
+    box.querySelectorAll('[data-pka]').forEach(function(b){b.onmousedown=function(e){e.preventDefault();h.value=h.value.split(',').filter(String).concat(b.dataset.pka).join(',');redraw();var nq=$('#pk-'+id+' [data-pkq]');if(nq)nq.focus()}})};
+  q.oninput=show;q.onfocus=show;q.onblur=function(){setTimeout(function(){box.hidden=true},150)};
+  q.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();var f=box.querySelector('[data-pka]');if(f)f.onmousedown(e)}}}
 /* ── ส่งออก Excel (รูปแบบรายงานผลการคำนวณเงินเดือนสุทธิเดิม · จัดกลุ่มแผนก + แถวรวม · ซ่อนคอลัมน์ที่เป็น 0 ทั้งงวด) ── */
 function pyXlsx(){return window.XLSX?Promise.resolve(window.XLSX):new Promise(function(ok,no){var s=document.createElement('script');s.src='xlsx.full.min.js';s.onload=function(){ok(window.XLSX)};s.onerror=function(){no(new Error('โหลดตัวสร้าง Excel ไม่สำเร็จ'))};document.head.appendChild(s)})}
 function pyExcel(R){pyXlsx().then(function(X){var r=R.run,it=PY.bs.items.filter(function(i){return i.active}),amt=function(x,c){return x.lines.reduce(function(s,l){return s+(l.code===c?l.amount:0)},0)};
@@ -1024,7 +1103,7 @@ function drawSet(){if(!$('#st-body'))return;var t=A.stab||'company',d=A.cfg,h=''
   if(t==='integ')h='<section class="card"><div class="ch"><h3>การเชื่อมต่อ</h3></div><div class="list">'+
      [['LINE MINI App (แอปพนักงาน)','เชื่อมแล้ว','b-ok','Channel '+d.line.channels.join(' / ')+' · LIFF '+d.line.liff],['LINE Messaging API (แจ้งเตือน)',d.notify.lineToken?'เชื่อมแล้ว':'ยังไม่เชื่อม',d.notify.lineToken?'b-ok':'b-warn','ใช้ส่งผลอนุมัติและคำขอใหม่ทาง LINE'],
       ['API Attendance (ระบบลงเวลาเดิม)','ยังไม่เชื่อม','b-mute','ระบบเดิมยังใช้งานแยก · ไม่แตะข้อมูลเดิมจนกว่าจะยืนยัน (INTEGRATION-DESIGN)'],['Workforce Task Manager (ตารางงาน)','ยังไม่เชื่อม','b-mute','เชื่อมเมื่อทำหน้าตารางงาน'],['HumanSoft (เงินเดือน)','ยังไม่เชื่อม','b-mute','เก็บรหัสพนักงานของแต่ละระบบไว้ที่หน้าพนักงานแล้ว']]
-     .map(function(r){return '<div class="li"><div style="flex:1;min-width:0"><b>'+r[0]+'</b><div class="muted" style="font-size:12.5px;overflow-wrap:anywhere">'+esc(r[3])+'</div></div><span class="badge '+r[2]+'">'+r[1]+'</span></div>'}).join('')+'</div></section>'+'<section class="card" style="margin-top:14px"><div class="ch"><h3>ช่อง LINE สำรอง</h3></div><div class="srows" style="margin:0 -20px -16px">'+fld('line_login_channel_id','Channel ID ของ LINE Login (สำรอง)','ใช้เมื่อแอป LINE MINI App ใช้ไม่ได้ · สร้างใต้ Provider เดียวกัน พนักงานไม่ต้องเชื่อม LINE ใหม่ · เว้นว่าง = ไม่ใช้')+'</div></section>'+'<section class="card" style="margin-top:14px"><div class="ch"><h3>ความเร็วของระบบ (60 คำสั่งล่าสุด)</h3><span class="sp"></span><button class="btn sm" id="pf-re">โหลด</button></div><div class="cb" id="pf-body"><span class="muted">กด “โหลด” เพื่อดูเวลาที่ใช้ต่อคำสั่ง</span></div></section>';
+     .map(function(r){return '<div class="li"><div style="flex:1;min-width:0"><b>'+r[0]+'</b><div class="muted" style="font-size:12.5px;overflow-wrap:anywhere">'+esc(r[3])+'</div></div><span class="badge '+r[2]+'">'+r[1]+'</span></div>'}).join('')+'</div></section>'+'<section class="card" style="margin-top:14px"><div class="ch"><h3>ช่อง LINE สำรอง</h3></div><div class="srows">'+fld('line_login_channel_id','Channel ID ของ LINE Login (สำรอง)','ใช้เมื่อแอป LINE MINI App ใช้ไม่ได้ · สร้างใต้ Provider เดียวกัน พนักงานไม่ต้องเชื่อม LINE ใหม่ · เว้นว่าง = ไม่ใช้')+'</div></section>'+'<section class="card" style="margin-top:14px"><div class="ch"><h3>ความเร็วของระบบ (60 คำสั่งล่าสุด)</h3><span class="sp"></span><button class="btn sm" id="pf-re">โหลด</button></div><div class="cb" id="pf-body"><span class="muted">กด “โหลด” เพื่อดูเวลาที่ใช้ต่อคำสั่ง</span></div></section>';
   var cur=SETT.filter(function(x){return x[0]===t})[0];$('#st-body').innerHTML='<div class="shd"><h2>'+cur[1]+'</h2><p>'+SETT_SUB[t]+'</p></div>'+h;
   $$('[data-sv]').forEach(function(x){x.oninput=x.onchange=stMark});stMark();
   if(t==='roles')loadAccess();
