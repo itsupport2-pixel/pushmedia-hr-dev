@@ -5,7 +5,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="icon" href="favicon.svg?v=3" type="image/svg+xml"><link rel="icon" href="favicon-32.png?v=3" sizes="32x32" type="image/png"><link rel="apple-touch-icon" href="apple-touch-icon.png?v=3"><meta name="theme-color" content="#111111">
-<title>Push Media HR · Admin</title>
+<title>Push Media Center</title>
+<meta name="description" content="ระบบหลังบ้านสำหรับ HR และหัวหน้างาน · Push Media Co., Ltd">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Push Media Center">
+<meta property="og:title" content="Push Media Center">
+<meta property="og:description" content="ระบบหลังบ้านสำหรับ HR และหัวหน้างาน · Push Media Co., Ltd">
+<meta property="og:image" content="https://itsupport2-pixel.github.io/pushmedia-hr/og-image.png?v=1">
+<meta property="og:image:width" content="800">
+<meta property="og:image:height" content="800">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
@@ -393,6 +401,12 @@ button.kpi:hover{border-color:var(--fnt)}.kpi .l{color:var(--mut);font-size:13px
 @media print{.side,.tb,.rp-tabs,.rp-tools,.rp-f,.scb,.rp-noprint{display:none!important}.main{padding:0!important}.rp-tw{max-height:none;overflow:visible}.rp-t{font-size:9px}.rp-t .dy{min-width:0}@page{size:A4 landscape;margin:6mm}}
 #fo-bar{position:fixed;top:0;left:0;right:0;z-index:2147483646;background:#C2410C;color:#fff;font:600 13px/1.3 'IBM Plex Sans Thai',system-ui,sans-serif;padding:8px 16px;text-align:center}
 body.fo{padding-top:36px}body.fo .tb{top:36px}body.fo .side{top:36px;height:calc(100vh - 36px)}
+/* เลือกเดือน (หน้าตาเดียวกับปฏิทินเลือกช่วงวัน .dp) */
+.mpt{min-width:190px;justify-content:flex-start}.f .mpt{width:100%}
+.dp.mp{display:block;padding:12px;width:264px}.mp-g{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.mp-g button{border:1px solid transparent;background:none;border-radius:8px;padding:9px 0;font:inherit;font-size:13.5px;cursor:pointer;color:var(--fg)}.mp-g button:hover{background:var(--sf2)}
+.mp-g button.td{border-color:var(--line);font-weight:600}.mp-g button[aria-pressed=true]{background:var(--nav);color:#fff}
+.mp-f{display:flex;gap:8px;justify-content:flex-end;border-top:1px solid var(--line);margin-top:10px;padding-top:10px}
 /* เงินเดือน (27 ต.ค. 2569) */
 .py-t{border-collapse:collapse;width:100%;font-size:13px}.py-t th{font-size:11.5px;font-weight:600;color:var(--mut);text-align:left;background:#F7F7F7;padding:9px 12px;white-space:nowrap;border-bottom:1px solid var(--line)}
 .py-t td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:middle}.py-t .r{text-align:right}.py-t tr.ck{cursor:pointer}.py-t tr.ck:hover td{background:#FAFAFA}.py-t.sm td,.py-t.sm th{padding:6px 8px;font-size:12.5px}
@@ -612,6 +626,25 @@ function vSoon(){var s=SOON[A.view];return '<div class="ph"><div><h1>'+s[0]+'</h
 function bNone(){}
 function pct(a,b){return b?Math.round(a/b*100):0}
 
+/* ปุ่มเลือกเดือน (แทน <input type="month"> ของเบราว์เซอร์ ให้หน้าตาเหมือนปฏิทินของระบบ) · ค่าอยู่ใน <input type="hidden" id> = 'YYYY-MM' (ค.ศ.) หรือ ''
+ * mpBtn(id, ym, {clear:true, attr:'data-pc="x"'}) · กดเลือกแล้ว hidden input ยิง event input + change */
+function mpTxt(ym,ph){return ym?DPM[+ym.slice(5,7)-1]+' '+(+ym.slice(0,4)+543):(ph||'เลือกเดือน')}
+function mpBtn(id,ym,o){o=o||{};return '<input type="hidden" id="'+id+'" value="'+esc(ym||'')+'"'+(o.attr?' '+o.attr:'')+'><button type="button" class="btn dpt mpt" data-mp="'+id+'"'+(o.clear?' data-mpc="1"':'')+(o.ph?' data-mpph="'+esc(o.ph)+'"':'')+(o.disabled?' disabled':'')+' aria-haspopup="dialog" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>'+esc(mpTxt(ym,o.ph))+'</span><svg class="chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>'}
+function mpBind(root){(root||document).querySelectorAll('[data-mp]').forEach(function(b){if(b._mp)return;b._mp=1;b.onclick=function(){mpOpen(b)}})}
+function mpOpen(btn){var old=document.querySelector('.dp');if(old){old._close();if(old._btn===btn)return}
+  var inp=document.getElementById(btn.dataset.mp),cur=inp.value,now=dIso(new Date()).slice(0,7),Y=+(cur||now).slice(0,4);
+  var el=document.createElement('div');el.className='dp mp';el.setAttribute('role','dialog');el.setAttribute('aria-label','เลือกเดือน');el._btn=btn;document.body.appendChild(el);btn.setAttribute('aria-expanded','true');
+  var close=function(){el.remove();btn.setAttribute('aria-expanded','false');document.removeEventListener('mousedown',om,true);document.removeEventListener('keydown',kd,true)},
+    om=function(e){if(!el.contains(e.target)&&!btn.contains(e.target))close()},kd=function(e){if(e.key==='Escape'){e.stopPropagation();close();btn.focus()}};el._close=close;
+  var set=function(v){inp.value=v;btn.querySelector('span').textContent=mpTxt(v,btn.dataset.mpph);['input','change'].forEach(function(t){inp.dispatchEvent(new Event(t,{bubbles:true}))});close();btn.focus()};
+  var draw=function(){el.innerHTML='<div class="dp-h"><button type="button" class="dp-nv" data-y="-1" aria-label="ปีก่อน">‹</button><b style="flex:1;text-align:center">'+(Y+543)+'</b><button type="button" class="dp-nv" data-y="1" aria-label="ปีถัดไป">›</button></div><div class="mp-g">'+
+      DPS.map(function(m,i){var v=Y+'-'+('0'+(i+1)).slice(-2);return '<button type="button" data-m="'+v+'" class="'+(v===now?'td':'')+'" aria-pressed="'+(v===cur)+'">'+m+'</button>'}).join('')+'</div>'+
+      '<div class="mp-f">'+(btn.dataset.mpc?'<button type="button" class="btn sm" data-clr>ไม่กำหนด</button>':'')+'<button type="button" class="btn sm" data-now>เดือนนี้</button></div>';
+    el.querySelectorAll('[data-y]').forEach(function(b){b.onclick=function(){Y+=+b.dataset.y;draw()}});
+    el.querySelectorAll('[data-m]').forEach(function(b){b.onclick=function(){set(b.dataset.m)}});
+    el.querySelector('[data-now]').onclick=function(){set(now)};var c=el.querySelector('[data-clr]');if(c)c.onclick=function(){set('')}};
+  draw();var r=btn.getBoundingClientRect(),w=el.offsetWidth,l=r.left+w<=innerWidth-8?r.left+window.scrollX:r.right+window.scrollX-w;el.style.left=Math.max(8+window.scrollX,l)+'px';el.style.top=(r.bottom+window.scrollY+6)+'px';
+  setTimeout(function(){document.addEventListener('mousedown',om,true);document.addEventListener('keydown',kd,true)},0);var f=el.querySelector('[aria-pressed=true]')||el.querySelector('.td');if(f)f.focus()}
 /* ───────── เงินเดือน (27 ต.ค. 2569 · ระยะ 1 · Payroll.js · Figma หน้า 03 section 550:8493) ─────────
  * แท็บ: งวดเงินเดือน · ข้อมูลรายคน · หนี้สิน · รายการรายรับ–รายจ่าย · ตั้งค่า
  * ข้อมูลเงินเดือนไม่เก็บในเครื่อง (ไม่ใช้ store) · ส่งออก Excel ทำในเบราว์เซอร์ (xlsx.full.min.js โหลดเมื่อกดเท่านั้น) */
@@ -634,13 +667,13 @@ function bPay(){$$('[data-pyt]').forEach(function(b){b.onclick=function(){PY.tab
   aCall('payBootstrap').then(function(r){PY.bs=r;PY.bsAt=Date.now();go2()}).catch(function(e){pyErr(e)})}
 function pyErr(e){var b=$('#py-body');if(b)b.innerHTML='<div class="alert">'+esc(e.message||e)+'</div>'}
 function pyReload(){PY.bsAt=0;render()}
-function pyBody(h){var b=$('#py-body');if(b)b.innerHTML=h;return !!b}
+function pyBody(h){var b=$('#py-body');if(b){b.innerHTML=h;setTimeout(function(){mpBind(b)},0)}return !!b}
 
 /* ── รายการงวด ── */
 function pyRuns(){var bs=PY.bs,rs=bs.runs,open=rs.filter(function(r){return r.status!=='closed'&&r.status!=='paid'})[0];
   var nx=(function(){var d=new Date(),c=+bs.cfg.pay_cutoff_day;if(d.getDate()>c)d.setMonth(d.getMonth()+1);return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)})();
   pyBody((bs.profiles<bs.active?'<div class="note-b">มีฐานเงินเดือนแล้ว '+bs.profiles+' จาก '+bs.active+' คน · คนที่ยังไม่มีฐานจะไม่อยู่ในงวด'+(bs.canEdit?' <button class="btn sm" data-pyt2="people">ไปที่ข้อมูลรายคน</button>':'')+'</div>':'')+
-   '<section class="card"><div class="ch"><h3>งวดเงินเดือน</h3><span class="sp"></span>'+(bs.canEdit?(open?'<span class="faint" style="font-size:12.5px">ปิดงวด '+esc(ymTh(open.ym))+' ก่อนเปิดงวดใหม่</span>':'<input type="month" id="py-ym" value="'+nx+'" style="width:160px"><button class="btn pri" id="py-new">+ เปิดงวด</button>'):'')+'</div>'+
+   '<section class="card"><div class="ch"><h3>งวดเงินเดือน</h3><span class="sp"></span>'+(bs.canEdit?(open?'<span class="faint" style="font-size:12.5px">ปิดงวด '+esc(ymTh(open.ym))+' ก่อนเปิดงวดใหม่</span>':''+mpBtn('py-ym',nx)+'<button class="btn pri" id="py-new">+ เปิดงวด</button>'):'')+'</div>'+
    '<div class="tw"><table class="py-t"><thead><tr><th>งวด</th><th>รอบตัดยอด</th><th>วันจ่าย</th><th>สถานะ</th><th class="r">คน</th><th class="r">รวมรายรับ</th><th class="r">รวมรายจ่าย</th><th class="r">รับสุทธิ (ยอดโอน)</th><th class="r">ต้องตรวจ</th></tr></thead><tbody>'+
    (rs.length?rs.map(function(r){var t=r.totals||{};return '<tr class="ck" data-run="'+r.id+'"><td><b>'+esc(ymTh(r.ym))+'</b></td><td>'+dTh(r.from)+' – '+dTh(r.to)+'</td><td>'+dTh(r.pay_date)+'</td><td>'+pyBadge(r.status)+'</td><td class="r num">'+(t.people||0)+'</td><td class="r num">'+m2(t.inc)+'</td><td class="r num">'+m2(t.ded)+'</td><td class="r num"><b>'+m2(t.net)+'</b></td><td class="r">'+(t.warn?'<span class="badge b-warn">'+t.warn+'</span>':'—')+'</td></tr>'}).join(''):'<tr><td colspan="9" class="muted" style="padding:28px;text-align:center">ยังไม่มีงวด · เลือกเดือนแล้วกด "เปิดงวด"</td></tr>')+'</tbody></table></div></section>');
   $$('[data-run]').forEach(function(r){r.onclick=function(){PY.runId=r.dataset.run;PY.run=null;pyRun()}});
@@ -736,7 +769,7 @@ function pyProfile(id){var p=PY.prof.filter(function(x){return x.employee_id===i
     '<p class="faint" style="font-size:12.5px;margin:6px 0 0">พนักงาน: ประกันสังคม 5% (83–875) · ยกเว้นประกันสังคม: ไม่หัก · สัญญาบริการ: ไม่หักประกันสังคม หัก ณ ที่จ่าย 3%</p></div>'+
    '<div class="dfs"><h4><span class="n">2</span>รายการประจำ (ใส่ครั้งเดียว ระบบใส่ให้ทุกงวด)</h4>'+(p.recurring.length?p.recurring.map(function(r){return '<div class="py-dl"><div><b>'+esc(nm[r.item_code]||r.item_code)+'</b><small>'+esc(ymTh(r.from_ym,1))+' – '+(r.to_ym?esc(ymTh(r.to_ym,1)):'ไม่กำหนด')+(r.note?' · '+esc(r.note):'')+'</small></div><span class="num">'+m2(r.amount)+'</span><button class="btn sm" data-rdel="'+r.id+'">ลบ</button></div>'}).join(''):'<div class="faint">ยังไม่มี</div>')+
     '<div class="dfg" style="margin-top:10px"><label class="f" id="w-item_code"><span>รายการ</span><select id="rc-i"><option value="">— เลือก —</option>'+items.map(function(i){return '<option value="'+i.code+'">'+(i.kind==='inc'?'รายรับ · ':'รายจ่าย · ')+esc(i.name)+'</option>'}).join('')+'</select></label>'+
-    '<label class="f" id="w-amount"><span>บาท/งวด</span><input id="rc-a" inputmode="decimal"></label><label class="f" id="w-from_ym"><span>เริ่มงวด</span><input type="month" id="rc-f" value="'+ymNow+'"></label><label class="f" id="w-to_ym"><span>ถึงงวด (ว่าง = ไม่กำหนด)</span><input type="month" id="rc-t"></label>'+
+    '<label class="f" id="w-amount"><span>บาท/งวด</span><input id="rc-a" inputmode="decimal"></label><label class="f" id="w-from_ym"><span>เริ่มงวด</span>'+mpBtn('rc-f',ymNow)+'</label><label class="f" id="w-to_ym"><span>ถึงงวด (ว่าง = ไม่กำหนด)</span>'+mpBtn('rc-t','',{clear:1,ph:'ไม่กำหนด'})+'</label>'+
     '<label class="f s2"><span>หมายเหตุ</span><input id="rc-n" maxlength="200" placeholder="เช่น ตามหนังสือแจ้ง กยศ."></label></div><button class="btn sm" id="rc-add" style="margin-top:8px">+ เพิ่มรายการประจำ</button></div>',
    '<button class="btn" id="px">ปิด</button><button class="btn pri" id="pok">บันทึกเงินเดือน</button>');
   $('.drw').classList.add('wide');$('#px').onclick=closeD;
@@ -763,7 +796,7 @@ function pyLoan(id){var l=id?PY.loans.filter(function(x){return x.id===id})[0]:{
     '<label class="f"><span>รายละเอียด</span><input id="ln-t" maxlength="80" value="'+esc(l.title||'')+'" placeholder="เช่น ยืมเงินบริษัท ต.ค. 69"'+dis+'></label>'+
     '<label class="f" id="w-principal"><span>ยอด (บาท) <b class="req">*</b></span><input id="ln-p" inputmode="decimal" value="'+(l.principal||'')+'"'+dis+'></label>'+
     '<label class="f" id="w-installment"><span>ผ่อนงวดละ (บาท) <b class="req">*</b></span><input id="ln-i" inputmode="decimal" value="'+(l.installment||'')+'"'+dis+'></label>'+
-    '<label class="f" id="w-start_ym"><span>เริ่มหักงวด <b class="req">*</b></span><input type="month" id="ln-s" value="'+esc(l.start_ym||'')+'"'+dis+'></label>'+
+    '<label class="f" id="w-start_ym"><span>เริ่มหักงวด <b class="req">*</b></span>'+mpBtn('ln-s',l.start_ym||'',{disabled:!ed})+'</label>'+
     '<label class="f" id="w-status"><span>สถานะ</span><select id="ln-st"'+dis+'>'+Object.keys(LNST).map(function(k){return '<option value="'+k+'"'+(l.status===k?' selected':'')+'>'+LNST[k][0]+'</option>'}).join('')+'</select></label>'+
     '<label class="f s2"><span>หมายเหตุ</span><input id="ln-n" maxlength="300" value="'+esc(l.note||'')+'"'+dis+'></label>'+
     (id&&ed?'<label class="f s2" id="w-reason"><span>เหตุผลการแก้ไข <b class="req">*</b></span><input id="ln-r" placeholder="เช่น พนักงานขอเลื่อนงวด"></label>':'')+'</div></div>'+
@@ -800,7 +833,7 @@ function pyCfg(){var c=PY.bs.cfg,ed=PY.bs.canEdit,adm=A.d.me.role==='admin',dis=
     ['pay_sso_rate','ประกันสังคม (%)','พนักงานจ่าย'],['pay_sso_min_base','ฐานต่ำสุด (บาท)','1,650 → หักต่ำสุด 83'],['pay_sso_max_base','ฐานสูงสุด (บาท)','17,500 → หักสูงสุด 875 (ปี 2569–2571)'],
     ['pay_wht_rate','หัก ณ ที่จ่าย สัญญาบริการ (%)',''],['pay_welfare_rate','กองทุนเงินสงเคราะห์ลูกจ้าง (%)',''],['pay_welfare_from','กองทุนสงเคราะห์ เริ่มหักงวด','เดือน ค.ศ. เช่น 2027-01 = ม.ค. 2570'],['pay_welfare_max_base','กองทุนสงเคราะห์ ฐานสูงสุด (บาท)','ว่าง = ไม่มีเพดาน (รอยืนยัน)']];
   var codes=function(ids){var m={};(PY.prof||[]).forEach(function(p){m[p.employee_id]=p.code});return String(ids||'').split(',').filter(String).map(function(i){return m[i]||i}).join(', ')};
-  var draw=function(){pyBody('<section class="card" style="max-width:920px"><div class="ch"><h3>ตั้งค่าเงินเดือน</h3></div><div class="cb"><div class="dfg" style="grid-template-columns:repeat(2,minmax(0,1fr))">'+F.map(function(f){return '<label class="f" id="w-'+f[0]+'"><span>'+f[1]+'</span><input data-pc="'+f[0]+'"'+(f[0]==='pay_welfare_from'?' type="month"':'')+' value="'+esc(c[f[0]])+'"'+dis+'>'+(f[2]?'<small class="faint">'+esc(f[2])+'</small>':'')+'</label>'}).join('')+'</div>'+
+  var draw=function(){pyBody('<section class="card" style="max-width:920px"><div class="ch"><h3>ตั้งค่าเงินเดือน</h3></div><div class="cb"><div class="dfg" style="grid-template-columns:repeat(2,minmax(0,1fr))">'+F.map(function(f){return '<label class="f" id="w-'+f[0]+'"><span>'+f[1]+'</span>'+(f[0]==='pay_welfare_from'?mpBtn('pc-wf',c[f[0]],{attr:'data-pc="pay_welfare_from"',disabled:!ed}):'<input data-pc="'+f[0]+'" value="'+esc(c[f[0]])+'"'+dis+'>')+(f[2]?'<small class="faint">'+esc(f[2])+'</small>':'')+'</label>'}).join('')+'</div>'+
     '<h4 style="margin:18px 0 6px">สิทธิ์ (เฉพาะผู้ดูแลระบบแก้ได้)</h4><div class="dfg"><label class="f s2" id="w-pay_access"><span>ฝ่ายบัญชีที่ดูเงินเดือนได้ (รหัสพนักงาน คั่นด้วย ,)</span><input id="pc-acc" value="'+esc(codes(c.pay_access))+'"'+(adm?'':' disabled')+'><small class="faint">ดูได้อย่างเดียว · HR และผู้ดูแลระบบเห็นอยู่แล้ว</small></label>'+
     '<label class="f s2" id="w-pay_approvers"><span>ผู้อนุมัติงวดเงินเดือน (รหัสพนักงาน คั่นด้วย ,)</span><input id="pc-apv" value="'+esc(codes(c.pay_approvers))+'"'+(adm?'':' disabled')+'><small class="faint">ผู้ดูแลระบบอนุมัติได้เสมอ</small></label></div>'+
     (ed?'<div style="display:flex;justify-content:flex-end;margin-top:14px"><button class="btn pri" id="pc-save">บันทึก</button></div>':'')+'</div></section>');
@@ -1750,7 +1783,7 @@ function bForm(){
 }
 
 /* ───────── ลิงก์เชิญ LINE ───────── */
-function drawer(title,body,foot){$('#ov').innerHTML='<div class="dbg" id="dbg"></div><aside class="drw" role="dialog" aria-label="'+esc(title)+'"><div class="ch"><h3>'+esc(title)+'</h3><span class="sp"></span><button class="btn sm" id="dx" aria-label="ปิด">✕</button></div><div class="cb">'+body+'</div>'+(foot?'<div class="ch" style="border-top:1px solid var(--line);border-bottom:0;justify-content:flex-end">'+foot+'</div>':'')+'</aside>';$('#dbg').onclick=$('#dx').onclick=closeD}
+function drawer(title,body,foot){$('#ov').innerHTML='<div class="dbg" id="dbg"></div><aside class="drw" role="dialog" aria-label="'+esc(title)+'"><div class="ch"><h3>'+esc(title)+'</h3><span class="sp"></span><button class="btn sm" id="dx" aria-label="ปิด">✕</button></div><div class="cb">'+body+'</div>'+(foot?'<div class="ch" style="border-top:1px solid var(--line);border-bottom:0;justify-content:flex-end">'+foot+'</div>':'')+'</aside>';$('#dbg').onclick=$('#dx').onclick=closeD;mpBind($('#ov'))}
 function closeD(){$('#ov').innerHTML=''}
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeD()});
 function invite(ids){
