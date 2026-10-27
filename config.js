@@ -4,8 +4,8 @@
 (function () {
   var LIFF_DEV = '2012151622-Z47Zaz4B';
   // ทดลองทางสำรอง: ช่อง LINE Login (LIFF ธรรมดา) · ใส่ LIFF ID แล้วเปิด …/pushmedia-hr-dev/liff.html?ch=login (Endpoint ของ LIFF ต้องมี ?ch=login)
-  var LIFF_LOGIN_DEV = '';
-  var q = new URLSearchParams(location.search), st = decodeURIComponent(q.get('liff.state') || ''), useLogin = q.get('ch') === 'login' || /[?&]ch=login\b/.test(st);
+  var LIFF_LOGIN_DEV = '2012235420-6f857ZDw';   // ช่อง LINE Login 2012235420 · LIFF "Push Media Center (ทดสอบ)"
+  var q = new URLSearchParams(location.search), st = decodeURIComponent(q.get('liff.state') || ''), useLogin = q.get('ch') === 'login' || q.get('liffClientId') === '2012235420' || /[?&]ch=login\b/.test(st);
   try { if (useLogin) sessionStorage.setItem('pmhr_ch', 'login'); else useLogin = sessionStorage.getItem('pmhr_ch') === 'login'; } catch (e) {}
   if (useLogin) LIFF_DEV = LIFF_LOGIN_DEV;   // ยังไม่ใส่ LIFF ID ของช่องสำรอง → หน้าแอปขึ้น "ยังไม่ได้ตั้งค่า LIFF ID" (ไม่แอบใช้ช่อง MINI App)
   var GOOGLE_CLIENT_ID = '902459045498-tnh7v08k557koh0flhds23hs5mg69r4h.apps.googleusercontent.com';
