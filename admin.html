@@ -501,9 +501,9 @@ function thd(s){if(!s)return '—';var p=s.split('-');return +p[2]+'/'+p[1]+'/'+
 function emp(id){return A.d.employees.filter(function(e){return e.id===id})[0]}
 
 /* ───────── login ───────── */
-function lgBrand(p){return (p.logo?'<img class="lg-logo" src="'+esc(p.logo)+'" alt="">':'<span class="mk" style="width:30px;height:30px;color:var(--fg)">'+MARK+'</span>')+esc(p.app||'Push Media HR')}
+function lgBrand(p){return (p.logo?'<img class="lg-logo" src="'+esc(p.logo)+'" alt="">':'<span class="mk" style="width:30px;height:30px;color:var(--fg)">'+MARK+'</span>')+esc(p.app||'Push Media Center')}
 function renderLogin(){
-  call('publicInfo').then(function(p){store('hr_pub',p);document.title=(p.app||'Push Media HR')+' · Admin';var b=$('#lg-app');if(b)b.textContent=p.app||'Push Media HR'}).catch(function(){});
+  call('publicInfo').then(function(p){store('hr_pub',p);document.title=(p.app||'Push Media Center');var b=$('#lg-app');if(b)b.textContent=p.app||'Push Media Center'}).catch(function(){});
   var pub=store('hr_pub')||{};
   var IC={line:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.5s5.9-3.5 8-6c1.5-1.6 2-3.2 2-4.8C22 6.6 17.5 3 12 3Zm-4.6 10.6H5.5a.5.5 0 0 1-.5-.5V9.2a.5.5 0 0 1 1 0v3.4h1.4a.5.5 0 0 1 0 1Zm2-.5a.5.5 0 0 1-1 0V9.2a.5.5 0 0 1 1 0Zm4.7 0a.5.5 0 0 1-.9.3l-2-2.7v2.4a.5.5 0 0 1-1 0V9.2a.5.5 0 0 1 .9-.3l2 2.7V9.2a.5.5 0 0 1 1 0Zm3.1-2.4a.5.5 0 0 1 0 1h-1.4v.9h1.4a.5.5 0 0 1 0 1h-1.9a.5.5 0 0 1-.5-.5V9.2c0-.3.2-.5.5-.5h1.9a.5.5 0 0 1 0 1h-1.4v.9Z"/></svg>',
    goo:'<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>',
@@ -512,7 +512,7 @@ function renderLogin(){
   var GOO=!!CFG.googleClientId||DEV;   // ปุ่ม Google แสดงเมื่อตั้ง OAuth Client ID ใน config.js แล้ว (เครื่องผู้พัฒนาใช้บัญชีจำลอง)
   $('#app').innerHTML='<div class="login"><svg class="lg-wave" viewBox="0 0 1440 400" preserveAspectRatio="none" aria-hidden="true"><path fill="#2B2B2B" d="M0 40 C 432 150, 1008 140, 1440 -70 L 1440 400 L 0 400 Z"/><path fill="#111111" d="M0 90 C 461 210, 1037 200, 1440 -10 L 1440 400 L 0 400 Z"/></svg>'+
    '<header class="lg-top"><img src="push-media-logo-black.svg" alt="Push Media · Innovative solutions"></header>'+
-   '<main class="lg-card"><div class="lg-h"><h1><span>เข้าสู่ระบบ</span><b id="lg-app">'+esc(pub.app||'Push Media HR')+'</b></h1><p><b>ใช้ครั้งแรก?</b> เปิดแอปพนักงานใน LINE แล้วเชื่อมบัญชี หรือขอลิงก์เชิญจาก HR</p></div>'+
+   '<main class="lg-card"><div class="lg-h"><h1><span>เข้าสู่ระบบ</span><b id="lg-app">'+esc(pub.app||'Push Media Center')+'</b></h1><p><b>ใช้ครั้งแรก?</b> เปิดแอปพนักงานใน LINE แล้วเชื่อมบัญชี หรือขอลิงก์เชิญจาก HR</p></div>'+
     '<div class="lg-cols"><section class="lg-col"><h2>บัญชีพนักงาน</h2><div class="lg-alert" id="lg-noemail" role="alert" hidden></div><div class="lg-note">HR หัวหน้างาน ผู้จัดการ · เปิดเมนูตามสิทธิ์</div>'+
      '<button class="lg-btn lg-line" id="lg-line"><span class="ic">'+IC.line+'</span><span class="lb">เข้าสู่ระบบด้วย LINE</span></button>'+
      (GOO?'<button class="lg-btn lg-goo" id="lg-goo"><span class="ic">'+IC.goo+'</span><span class="lb">เข้าสู่ระบบด้วย Google</span></button><div class="lg-hint">Google: ใช้อีเมลเดียวกับที่ลงทะเบียนในข้อมูลพนักงาน</div>':'<div class="lg-hint">ใช้บัญชี LINE เดียวกับที่ลงเวลาในแอปพนักงาน</div>')+'</section>'+
@@ -564,7 +564,7 @@ function render(){
   if(selfOnly()&&(A.view==='profile'||A.view==='form'))A.view='dash';
   if(allowed.indexOf(cur)<0){A.view=allowed[0];cur=A.view}
   var V={dash:selfOnly()?[vMine,bMine]:[vDash,bDash],list:[vList,bList],profile:[vProfile,bProfile],form:[vForm,bForm],req:[vReq,bReq],org:[vOrg,bOrg],att:[vAtt,bAtt],lv:[vLv,bLv],appr:[vAppr,bAppr],set:[vSet,bSet],audit:[vAudit,bAudit],sched:[vPlanner,bNone],conf:[vConf,bNone],ot:[vSoon,bNone],rep:[vRep,bRep],pay:[vPay,bPay]}[A.view]||[vDash,bDash];
-  var pend=(A.d.pendingCount||0)+lr,wide=navWide(),app=A.d.app||'Push Media HR';
+  var pend=(A.d.pendingCount||0)+lr,wide=navWide(),app=A.d.app||'Push Media Center';
   var item=function(n){var c=n[0]==='appr'?pend:0;return '<a data-nav="'+n[0]+'" class="'+(cur===n[0]?'on':'')+(SOON[n[0]]?' soon-i':'')+'"'+(cur===n[0]?' aria-current="page"':'')+' title="'+n[1]+'">'+ic(n[2])+'<span>'+(wide?n[1]:(SHORT[n[0]]||n[1]))+'</span>'+(SOON[n[0]]?'<span class="soon">เร็ว ๆ นี้</span>':c?'<span class="cnt">'+c+'</span>':'')+'</a>'};
   var SUB={sched:['sched','conf']};
   var par=function(k){var kids=SUB[k].filter(function(x){return allowed.indexOf(x)>=0});if(kids.length<2)return item(NAV.filter(function(n){return n[0]===k})[0]);
