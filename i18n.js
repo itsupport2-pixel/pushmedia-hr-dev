@@ -221,6 +221,7 @@
     'มาทำงาน': 'Present', 'ไม่มีออก': 'No clock-out', 'ไม่มีเข้า': 'No clock-in', 'เช็คอินนอกพื้นที่': 'checked in outside area', 'ขอแก้เวลา': 'Time edits',
     'วันไม่ทำงาน': 'Non-working day', 'ก่อนเริ่มใช้ระบบ': 'before system start', 'ก่อนวันเริ่มงาน': 'before start date',
     'มา': 'Present', 'ขาด': 'Absent', 'นอกฯ': 'Outside',
+    'ไม่รวม': 'excluding', 'คนที่ไม่ต้องลงเวลา': 'people exempt from clock-in', 'ตั้งที่ ข้อมูลพนักงาน › ประเภทการลงเวลา': 'Set in Employee info › Check-in type',
   };
   // ชื่อคน/ชื่อเล่นที่บังเอิญอยู่ในรายการข้อความ (ปุ่มโหมดทดสอบ) → ไม่แปล
   ['ต้น', 'บอย', 'โอ๊ต', 'มิ้นท์', 'มิ้นต์'].forEach(function (k) { delete D[k]; });
