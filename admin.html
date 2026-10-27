@@ -631,16 +631,20 @@ function loadMine(){var draw=function(li){var q=$('#db-quota');if(!q)return;var 
   if(A.mine&&Date.now()-A.mine.at<300000)return draw(A.mine.d);aCall('leaveInfo').then(function(li){A.mine={at:Date.now(),d:li};draw(li)}).catch(function(){var q=$('#db-quota');if(q)q.textContent='โหลดโควตาไม่สำเร็จ'})}
 
 /* ───────── ศูนย์อนุมัติ ───────── */
-function vAppr(){if(A.apa===undefined){var tm=dpPresets(dIso(new Date())).filter(function(x){return x[0]==='tm'})[0];A.apa=tm[2];A.apb=tm[3]}A.apDept=A.apDept||'all';// ค่าเริ่มต้น = เดือนปัจจุบัน
+function vAppr(){if(A.apa===undefined){var tm=dpPresets(dIso(new Date())).filter(function(x){return x[0]==='tm'})[0];A.apa=tm[2];A.apb=tm[3]}A.apDept=A.apDept||'all';A.apTeam=A.apTeam||'all';// ค่าเริ่มต้น = เดือนปัจจุบัน
   var deps=A.d.org.departments.filter(function(d){return d.active!=='FALSE'}).sort(function(a,b){return a.name.localeCompare(b.name)});
-  return '<div class="ph"><div><h1>ศูนย์อนุมัติ</h1><div class="sub">คุณเป็นผู้อนุมัติในฐานะ '+ROLE[A.d.me.role]+' · คำขอทุกประเภทรวมไว้ที่นี่</div></div><span class="sp"></span><select id="ap-dep" aria-label="แผนก" style="height:40px;border:1px solid var(--line);border-radius:10px;padding:0 10px;background:var(--sf);font:inherit"><option value="all">ทุกแผนก</option>'+deps.map(function(d){return '<option value="'+esc(d.name)+'"'+(A.apDept===d.name?' selected':'')+'>'+esc(d.name)+'</option>'}).join('')+'</select>'+dpBtn('ap-rg',A.apa,A.apb)+'</div><div id="ap-body"><div class="loading"><span class="spin"></span>กำลังโหลด…</div></div>'}
+  return '<div class="ph"><div><h1>ศูนย์อนุมัติ</h1><div class="sub">คุณเป็นผู้อนุมัติในฐานะ '+ROLE[A.d.me.role]+' · คำขอทุกประเภทรวมไว้ที่นี่</div></div><span class="sp"></span><select id="ap-dep" aria-label="แผนก" style="height:40px;border:1px solid var(--line);border-radius:10px;padding:0 10px;background:var(--sf);font:inherit"><option value="all">ทุกแผนก</option>'+deps.map(function(d){return '<option value="'+esc(d.name)+'"'+(A.apDept===d.name?' selected':'')+'>'+esc(d.name)+'</option>'}).join('')+'</select>'+apTeamSel()+dpBtn('ap-rg',A.apa,A.apb)+'</div><div id="ap-body"><div class="loading"><span class="spin"></span>กำลังโหลด…</div></div>'}
+/* ตัวเลือกทีม: ตามแผนกที่เลือก (ทุกแผนก = ทุกทีม) */
+function apTeamSel(){var dep=A.d.org.departments.filter(function(d){return d.name===A.apDept})[0],ts=A.d.org.teams.filter(function(t){return t.active!=='FALSE'&&(!dep||t.department_id===dep.id)}).sort(function(a,b){return a.name.localeCompare(b.name)});
+  return '<select id="ap-team" aria-label="ทีม" style="height:40px;border:1px solid var(--line);border-radius:10px;padding:0 10px;background:var(--sf);font:inherit"><option value="all">ทุกทีม</option>'+ts.map(function(t){return '<option value="'+esc(t.name)+'"'+(A.apTeam===t.name?' selected':'')+'>'+esc(t.name)+'</option>'}).join('')+'</select>'}
 function bAppr(){A.apTab=A.apTab||'pending';A.apType=A.apType||'all';
-  $('#ap-dep').onchange=function(){A.apDept=this.value;drawAppr()};
+  var bt=function(){$('#ap-team').onchange=function(){A.apTeam=this.value;drawAppr()}};bt();
+  $('#ap-dep').onchange=function(){A.apDept=this.value;A.apTeam='all';$('#ap-team').outerHTML=apTeamSel();bt();drawAppr()};
   $('#ap-rg').onclick=function(){var b=this;dpRange(b,{a:A.apa,b:A.apb,max:dIso(new Date())},function(a,z){A.apa=a;A.apb=z;b.querySelector('span').textContent=rngTxt(a,z);A.apFor=null;$('#ap-body').innerHTML='<div class="loading"><span class="spin"></span>กำลังโหลด…</div>';loadAppr()})};if(A.ap&&A.apFor===A.apTab)drawAppr();loadAppr()}
 function loadAppr(){var t=A.apTab;aCall('approvalCenter',t==='no'?'done':t,A.apa?A.apa+'..'+A.apb:'').then(function(d){if(t!==A.apTab)return;A.ap=d;A.apFor=t;drawAppr()}).catch(function(e){if($('#ap-body'))$('#ap-body').innerHTML='<div class="alert">'+esc(e.message)+'</div>'})}
 function drawAppr(){if(!$('#ap-body'))return;var d=A.ap,k=d.kpi,T=A.apType;
   // แท็บ "ไม่อนุมัติ" = รายการที่ดำเนินการแล้วซึ่งไม่อนุมัติหรือส่งกลับแก้ไข
-  var items=d.items.filter(function(x){return (T==='all'||x.kind===T)&&(A.apTab!=='no'||x.status==='no'||x.status==='back')&&(A.apDept==='all'||x.dept===A.apDept)});
+  var items=d.items.filter(function(x){return (T==='all'||x.kind===T)&&(A.apTab!=='no'||x.status==='no'||x.status==='back')&&(A.apDept==='all'||x.dept===A.apDept)&&(A.apTeam==='all'||x.team===A.apTeam)});
   var kpi=function(l,v,sub,cls){return '<div class="kpi"><span class="l">'+l+'</span><span class="v num '+(cls||'')+'">'+v+'</span><span class="d">'+(sub||'&nbsp;')+'</span></div>'};
   var SB={wait:'b-warn',mgr:'b-warn',hr:'b-warn',chg:'b-info',ok:'b-ok',no:'b-bad',back:'b-warn',cancel:'b-mute'};
   var chip=function(v,l,dis){return '<button class="chip" data-aty="'+v+'" aria-pressed="'+(T===v)+'"'+(dis?' disabled title="เร็ว ๆ นี้"':'')+'>'+l+'</button>'};
