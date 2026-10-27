@@ -636,8 +636,9 @@ function vAppr(){if(A.apa===undefined){var tm=dpPresets(dIso(new Date())).filter
   return '<div class="ph"><div><h1>ศูนย์อนุมัติ</h1><div class="sub">คุณเป็นผู้อนุมัติในฐานะ '+ROLE[A.d.me.role]+' · คำขอทุกประเภทรวมไว้ที่นี่</div></div><span class="sp"></span>'+ofSel('ap')+dpBtn('ap-rg',A.apa,A.apb)+'</div><div id="ap-body"><div class="loading"><span class="spin"></span>กำลังโหลด…</div></div>'}
 /* ตัวกรองแผนก/ทีม ใช้ร่วมหลายหน้า (ศูนย์อนุมัติ · การลา · ลงเวลาวันนี้) · k = ชื่อหน้า · ทีมแสดงเฉพาะในแผนกที่เลือก */
 function ofSt(k){A.of=A.of||{};return A.of[k]||(A.of[k]={d:'all',t:'all'})}
-function ofSel(k){var s=ofSt(k),o=A.d.org;var deps=o.departments.filter(function(d){return d.active!=='FALSE'}).sort(function(a,b){return a.name.localeCompare(b.name)}),dep=deps.filter(function(d){return d.name===s.d})[0];
-  var ts=o.teams.filter(function(t){return t.active!=='FALSE'&&(!dep||t.department_id===dep.id)}).sort(function(a,b){return a.name.localeCompare(b.name)});
+function ofSel(k){var s=ofSt(k),o=A.d.org,vd={},vt={};A.d.employees.forEach(function(e){vd[e.department_id]=1;vt[e.team_id]=1});// ไม่ใช่ HR: แสดงเฉพาะแผนก/ทีมที่มีคนในขอบเขตที่เห็น
+  var deps=o.departments.filter(function(d){return d.active!=='FALSE'&&(isHR()||vd[d.id])}).sort(function(a,b){return a.name.localeCompare(b.name)}),dep=deps.filter(function(d){return d.name===s.d})[0];
+  var ts=o.teams.filter(function(t){return t.active!=='FALSE'&&(isHR()||vt[t.id])&&(!dep||t.department_id===dep.id)}).sort(function(a,b){return a.name.localeCompare(b.name)});
   var op=function(v,l,cur){return '<option value="'+esc(v)+'"'+(cur===v?' selected':'')+'>'+esc(l)+'</option>'};
   return '<span class="ofs" id="ofs-'+k+'"><select class="fsel" data-ofd="'+k+'" aria-label="แผนก">'+op('all','ทุกแผนก',s.d)+deps.map(function(d){return op(d.name,d.name,s.d)}).join('')+'</select><select class="fsel" data-oft="'+k+'" aria-label="ทีม">'+op('all','ทุกทีม',s.t)+ts.map(function(t){return op(t.name,t.name,s.t)}).join('')+'</select></span>'}
 function ofBind(k,redraw){var w=$('#ofs-'+k);if(!w)return;var s=ofSt(k);
