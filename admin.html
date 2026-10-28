@@ -49,6 +49,9 @@ button,input,select{font:inherit;color:inherit}button{cursor:pointer}
 .btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--sf);padding:7px 14px;border-radius:7px;white-space:nowrap}
 .btn:hover{border-color:var(--fnt)}.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
 .btn.bad{color:var(--bad);border-color:var(--bad)}.btn.sm{padding:4px 10px;font-size:13px}.btn:disabled{opacity:.55;cursor:wait}
+.btn[aria-disabled="true"]{opacity:.5;cursor:not-allowed}
+/* ป้ายอธิบายเมื่อชี้ (28 ต.ค. 2569): แทน title ของเบราว์เซอร์ทั้งระบบ · เล็ก · ไม่ล้นจอ */
+.tipx{position:fixed;z-index:200;max-width:300px;text-wrap:balance;padding:6px 10px;border-radius:8px;background:#1C1C1C;color:#fff;font-size:12px;line-height:1.45;font-weight:500;box-shadow:0 6px 18px rgba(0,0,0,.18);pointer-events:none;opacity:0;transform:translateY(2px);transition:opacity .12s,transform .12s}.tipx.on{opacity:1;transform:none}
 .badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:1px 9px;border-radius:99px;font-weight:500;white-space:nowrap}
 .badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 .b-ok{background:var(--ok-s);color:var(--ok)}.b-warn{background:var(--warn-s);color:var(--warn)}.b-bad{background:var(--bad-s);color:var(--bad)}.b-info{background:var(--info-s);color:var(--info)}.b-mute{background:var(--sf2);color:var(--mut)}
@@ -633,6 +636,18 @@ function wt(e){return e.work_start==='00:00'?'<span class="badge b-mute">ยื�
 function thd(s){if(!s)return '—';var p=s.split('-');return +p[2]+'/'+p[1]+'/'+(+p[0]+543)}
 function emp(id){return A.d.employees.filter(function(e){return e.id===id})[0]}
 
+/* ป้ายอธิบายเมื่อชี้เมาส์ / โฟกัสด้วยคีย์บอร์ด: ย้าย title → data-tip (ไม่ให้กล่องของเบราว์เซอร์ขึ้นซ้อน) · วางใต้ปุ่ม ถ้าไม่พอวางด้านบน · ไม่ล้นขอบจอ · แปลอังกฤษตามภาษาที่เลือก */
+(function(){var tip=null,cur=null,tm=0;
+  function el(){if(!tip){tip=document.createElement('div');tip.className='tipx';tip.setAttribute('role','tooltip');document.body.appendChild(tip)}return tip}
+  function hide(){clearTimeout(tm);cur=null;if(tip)tip.classList.remove('on')}
+  function show(t){var txt=t.getAttribute('data-tip');if(!txt)return;if(window.hrLang&&hrLang()==='en'&&window.hrT)txt=hrT(txt);var b=el();b.textContent=txt;b.style.left='0px';b.style.top='-999px';
+    var r=t.getBoundingClientRect(),w=b.offsetWidth,h=b.offsetHeight,x=Math.max(8,Math.min(innerWidth-w-8,r.left+r.width/2-w/2)),y=r.bottom+8;if(y+h>innerHeight-8)y=r.top-h-8;b.style.left=x+'px';b.style.top=Math.max(8,y)+'px';b.classList.add('on')}
+  function over(e){var t=e.target&&e.target.closest&&e.target.closest('[title],[data-tip]');if(!t||t===cur)return;if(t.hasAttribute('title')){var v=t.getAttribute('title');t.removeAttribute('title');if(v)t.setAttribute('data-tip',v);if(!t.getAttribute('aria-label')&&!t.textContent.trim())t.setAttribute('aria-label',v)}
+    if(!t.getAttribute('data-tip'))return;cur=t;clearTimeout(tm);tm=setTimeout(function(){if(cur===t)show(t)},e.type==='focusin'?0:280)}
+  document.addEventListener('pointerover',over,true);document.addEventListener('focusin',over,true);
+  document.addEventListener('pointerout',function(e){if(cur&&(!e.relatedTarget||!cur.contains(e.relatedTarget)))hide()},true);
+  document.addEventListener('focusout',hide,true);addEventListener('scroll',hide,true);document.addEventListener('pointerdown',hide,true);document.addEventListener('keydown',function(e){if(e.key==='Escape')hide()},true);
+})();
 /* ───────── login ───────── */
 /* หน้าเข้าสู่ระบบ: ภาพเคลื่อนไหวตอนเปิด (28 ต.ค. 2569 · ผู้ใช้ขอ) — ตัว U ขึ้นกลางจอ → เลื่อนเข้าที่ → ตัวอักษร PUSH MEDIA ตามมาทีละตัว → Innovative solutions → โลโก้ลอยไปวางมุมบน แล้วการ์ดเลื่อนขึ้น
  * ~2.6 วิ · กด/แตะ/กดปุ่มใดก็ได้ = ข้าม · ไม่เล่นเมื่อเครื่องตั้งลดการเคลื่อนไหว / เบราว์เซอร์อัตโนมัติ (ทดสอบ) / ?nointro · คลิกช่องกรอกได้ตลอด (ชั้นภาพไม่รับการกด) */
@@ -983,7 +998,7 @@ function pyRunDraw(){var R=PY.run,r=R.run,t=r.totals||{},st=r.status,STEP=['draf
    '<div class="py-ks">'+kpi('รวมรายรับ',m2(t.inc),(t.people||0)+' คน')+kpi('รวมรายจ่าย',m2(t.ded),'ประกันสังคม '+m2(t.sso)+(t.wht?' · หัก ณ ที่จ่าย '+m2(t.wht):''))+kpi('รับสุทธิ (ยอดโอน)',m2(t.net),'รวมรายรับ − รวมรายจ่าย')+kpi('หนี้สินที่หัก',m2(t.debt),t.welfare?'กองทุนสงเคราะห์ '+m2(t.welfare):'')+'</div>'+
    '<div class="pg-tabs" role="tablist"><button data-rv="grid" aria-pressed="'+(PY.rv==='grid')+'"><b>1</b>กรอกรายรับ–รายจ่าย<small>'+(R.canEdit?'HR กรอกทุกคนในตารางเดียว':'ดูยอดที่กรอก')+'</small></button><button data-rv="sum" aria-pressed="'+(PY.rv!=='grid')+'"><b>2</b>สรุปผลคำนวณ<small>ตรวจรายคน · ต้องตรวจ '+(t.warn||0)+' คน</small></button></div>'+
    '<section class="card"><div class="ch" style="flex-wrap:wrap;gap:8px">'+pySearch('py-q',PY.q,'ค้นหาชื่อ ชื่อเล่น รหัส')+ofSel('py',1)+
-    (PY.rv==='grid'?'':'<label class="chk"><input type="checkbox" id="py-w"'+(PY.warn?' checked':'')+'> ต้องตรวจ ('+(t.warn||0)+')</label>')+'<span class="sp"></span>'+exBtn('xls','py-xl')+(st==='closed'||st==='paid'?exBtn('txt','py-bank','Export Text','title="ไฟล์โอนเงินเดือนเข้าธนาคารกสิกรไทย (.txt)"'):exBtn('txt','py-bank0','Export Text','disabled title="ไฟล์โอนกสิกร · ปิดงวดบัญชีก่อนจึงดาวน์โหลดได้"'))+'</div>'+
+    (PY.rv==='grid'?'':'<label class="chk"><input type="checkbox" id="py-w"'+(PY.warn?' checked':'')+'> ต้องตรวจ ('+(t.warn||0)+')</label>')+'<span class="sp"></span>'+exBtn('xls','py-xl')+(st==='closed'||st==='paid'?exBtn('txt','py-bank','Export Text','title="ไฟล์โอนเงินเดือนเข้าธนาคารกสิกรไทย (.txt)"'):exBtn('txt','py-bank0','Export Text','aria-disabled="true" data-tip="ไฟล์โอนกสิกร · ปิดงวดบัญชีก่อนจึงดาวน์โหลดได้"'))+'</div>'+
    (PY.rv==='grid'?'<div id="pg-body"></div></section>':'<div class="tw"><table class="py-t"><thead><tr><th>พนักงาน</th><th>แผนก</th><th>ประเภท</th><th class="r">อัตราค่าจ้าง</th><th class="r">วันทำงาน</th><th class="r">ขาดงาน</th><th class="r">รวมรายรับ</th><th class="r">รวมรายจ่าย</th><th class="r">รับสุทธิ</th><th>ต้องตรวจ</th></tr></thead><tbody>'+
    (rows.length?rows.map(function(x){return '<tr class="ck" data-pe="'+x.employee_id+'"><td><b>'+esc(x.name)+'</b><div class="faint" style="font-size:11.5px">'+esc(x.code)+(x.nickname?' · '+esc(x.nickname):'')+'</div></td><td>'+esc(x.dept||'—')+'</td><td>'+esc(PY.bs.types[x.type]||x.type)+'</td><td class="r num">'+m2(x.base)+'</td><td class="r num">'+x.days+'</td><td class="r num">'+(x.absent?x.absent+' วัน':'—')+'</td><td class="r num">'+m2(x.inc)+'</td><td class="r num">'+m2(x.ded)+'</td><td class="r num"><b'+(x.net<0?' style="color:var(--bad)"':'')+'>'+m2(x.net)+'</b></td><td>'+x.warn.map(function(w){return '<span class="badge '+(/ติดลบ/.test(w)?'b-bad':'b-warn')+'">'+esc(w)+'</span>'}).join(' ')+'</td></tr>'}).join(''):'<tr><td colspan="10" class="muted" style="padding:24px;text-align:center">ไม่มีรายการ</td></tr>')+
    '</tbody></table></div><div class="faint" style="font-size:12px;padding:10px 14px">แสดง '+rows.length+' จาก '+R.rows.length+' คน · กดแถวเพื่อดูรายละเอียด'+(R.canEdit?' / แก้รายรับ–รายจ่าย':'')+'</div></section>'));
