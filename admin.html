@@ -160,6 +160,14 @@ td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}tr
 .lg-send{background:#141414;color:#fff;border:0;height:50px;border-radius:12px;font-weight:600;font-size:15.5px;cursor:pointer;justify-content:center}
 .lg-okc{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:10px 0}.lg-okc .lg-send{align-self:stretch;margin-top:8px}
 .lg-okic{width:56px;height:56px;border-radius:50%;background:#E3F4EA;color:#1A8A4A;display:grid;place-items:center;font-size:28px;font-weight:700}
+/* ฝั่งขวา (28 ต.ค. 2569 จัดใหม่): โลโก้มุมซ้ายบน · ฟอร์มกลางจอชิดซ้าย · ท้ายหน้า © + เบราว์เซอร์ */
+.login.split .lg-side{flex-direction:column;justify-content:space-between;align-items:stretch;min-height:100vh;min-height:100dvh;padding:36px clamp(28px,4vw,64px) 28px}
+.login.split .lg-top{justify-content:flex-start;margin:0;align-self:center;width:min(420px,100%)}.login.split .lg-top img{height:38px}
+.login.split .lg-card{align-self:center;width:min(420px,100%);margin:40px 0;gap:16px}
+.login.split .lg-h{text-align:left;margin-bottom:8px}.login.split .lg-h h1{font-size:clamp(32px,2.6vw,38px)}.login.split .lg-h p{margin-top:8px;font-size:15.5px}
+.login.split .lg-first{text-align:left;font-size:14px;margin-top:4px}
+.login.split .lg-foot{align-self:center;width:min(420px,100%);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;text-align:left;font-size:12.5px;color:#A8A8A8}
+@media(max-width:999px){.login.split .lg-side{padding:24px 18px 20px}.login.split .lg-top{justify-content:center}.login.split .lg-card{margin:24px 0}.login.split .lg-foot{justify-content:center;text-align:center}}
 @keyframes lgUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}@keyframes lgWave{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
 
 .lg-card{position:relative;z-index:1;width:min(960px,100%);background:#fff;border-radius:24px;box-shadow:0 20px 50px rgba(0,0,0,.10);padding:56px 56px 40px;display:flex;flex-direction:column;gap:44px}
@@ -655,8 +663,7 @@ function lgSplit(pub,IC,GOO){
      '<div class="ph-map"><span class="ph-rad"></span><span class="ph-me">'+pin+'</span><em>● ในพื้นที่ · สำนักงาน</em></div>'+
      '<div class="ph-t"><b>08:47</b><small>เวลาเข้างาน 09:00 · ตรงเวลา</small></div>'+
      '<div class="ph-btn">ลงเวลาเข้างาน</div><div class="ph-or"><i></i>หรือ<i></i></div><div class="ph-btn2">ขอลา / ดูตารางงาน</div><span class="ph-home"></span></div></div></div>';
-  return '<div class="login one split">'+art+'<div class="lg-side"><main class="lg-card">'+
-    '<header class="lg-top"><img src="push-media-logo-black.svg" alt="Push Media · Innovative solutions"></header>'+
+  return '<div class="login one split">'+art+'<div class="lg-side"><header class="lg-top"><img src="push-media-logo-black.svg" alt="Push Media · Innovative solutions"></header><main class="lg-card">'+
     '<div class="lg-h"><h1>ยินดีต้อนรับ</h1><p>เข้าสู่ระบบ <b id="lg-app">'+esc(pub.app||'Push Media Center')+'</b><br>ด้วยบัญชีพนักงานของคุณ</p></div>'+
     '<div class="lg-alert" id="lg-noemail" role="alert" hidden></div>'+
     '<button class="lg-btn lg-line" id="lg-line"><span class="ic">'+IC.line+'</span><span class="lb">เข้าสู่ระบบด้วย LINE</span></button>'+
@@ -664,8 +671,8 @@ function lgSplit(pub,IC,GOO){
     '<div class="lg-row"><span>'+(GOO?'Google: ใช้อีเมลที่ลงทะเบียนไว้':'ใช้บัญชี LINE เดียวกับแอปพนักงาน')+'</span><button type="button" class="lg-link" data-help="">Forgot Password?</button></div>'+
     (DEV?'<div class="cb" style="background:var(--warn-s);border-radius:8px;font-size:13px"><b>โหมดทดสอบในเครื่อง</b> · เข้าเป็น <button class="btn sm" data-dev="Uhr1|มิ้นท์">HR</button> <button class="btn sm" data-dev="Umgr1|โอ๊ต">ผู้จัดการ</button> <button class="btn sm" data-dev="Ulead1|ต้น">หัวหน้าทีม</button> <button class="btn sm" data-dev="Uemp1|บอย">พนักงาน</button></div>':'')+
     '<div id="lg-err" class="er" role="alert" style="color:var(--bad);font-size:14px;text-align:center"></div>'+
-    '<div class="lg-first">ใช้ครั้งแรก? <b>เปิดแอปพนักงานใน LINE</b> แล้วเชื่อมบัญชี หรือขอลิงก์เชิญจาก HR</div>'+
-    '<div class="lg-foot">ใช้ได้บน Chrome · Edge · Safari</div></main></div></div>';
+    '<div class="lg-first">ใช้ครั้งแรก? <b>เปิดแอปพนักงานใน LINE</b> เพื่อเชื่อมบัญชี<br>หรือขอลิงก์เชิญจาก HR</div>'+
+    '</main><footer class="lg-foot"><span>© '+(new Date().getFullYear()+543)+' '+esc(pub.company||'Push Media')+'</span><span>ใช้ได้บน Chrome · Edge · Safari</span></footer></div></div>';
 }
 /* ลืมรหัสผ่าน / เข้าใช้ไม่ได้ → กรอกข้อมูลบางส่วน ส่งให้ HR/admin ตรวจในศูนย์อนุมัติ (loginHelp ไม่ต้องเข้าสู่ระบบ) · ไม่ถามรหัสผ่าน */
 function lgHelp(pre){
