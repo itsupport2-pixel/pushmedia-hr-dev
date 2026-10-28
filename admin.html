@@ -548,6 +548,7 @@ body.fo{padding-top:36px}body.fo .tb{top:36px}body.fo .side{top:36px;height:calc
 .py-hd{display:flex;align-items:flex-end;gap:12px;margin-bottom:12px;flex-wrap:wrap}.py-hd h2{font-size:24px}.py-acts{display:flex;gap:8px;flex-wrap:wrap}
 .py-steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
 .pg-t thead tr.pg-sum th{background:#F4F8FE;color:var(--fg);font-weight:700;font-size:12.5px;text-align:right;padding:7px 10px;border-top:1px solid var(--line)}.pg-t thead tr.pg-sum th.pg-n{text-align:left}.pg-t thead tr.pg-sum th.au{background:#EEF3FB}
+.pk[data-one] .pk-s input{width:100%;max-width:420px}
 .cl-list{display:flex;flex-direction:column;gap:6px}.cl-row{display:flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:#fff}.cl-row.off{opacity:.55;background:#F6F6F6}.cl-row.off .cl-in{text-decoration:line-through}.cl-n{width:22px;text-align:right;color:var(--fnt);font-size:12px}.cl-in{flex:1;min-width:0;height:34px;border:1px solid var(--line);border-radius:8px;padding:0 10px;font:inherit;font-size:14px}
 .pg-t tfoot td{border-top:2px solid var(--line);background:#FAFAFA;padding:8px 10px}
 .py-t .py-itc{background:#F4F8FE}.py-t tfoot td{border-top:2px solid var(--line);padding:10px 12px;background:#FAFAFA}
@@ -1115,7 +1116,7 @@ function pyLoanAct(id,act){var l=PY.loans.filter(function(x){return x.id===id})[
 function pyLoan(id){var l=id?PY.loans.filter(function(x){return x.id===id})[0]:{kind:'loan',status:'active',start_ym:dIso(new Date()).slice(0,7),skips:[]},K=PY.bs.loanKinds,ed=PY.bs.canEdit,dis=ed?'':' disabled';
   var ppl=PY.prof.slice().sort(function(a,b){return a.code<b.code?-1:1}),skips=(l.skips||[]).slice();
   drawer(id?'หนี้สิน · '+l.name:'เพิ่มหนี้สินพนักงาน','<div class="dfs"><div class="dfg">'+
-    '<label class="f s2" id="w-employee_id"><span>พนักงาน <b class="req">*</b></span><select id="ln-e"'+(id?' disabled':dis)+'><option value="">— เลือก —</option>'+ppl.map(function(p){return '<option value="'+p.employee_id+'"'+(l.employee_id===p.employee_id?' selected':'')+'>'+esc(p.code+' · '+p.name)+'</option>'}).join('')+'</select></label>'+
+    '<div class="f s2" id="w-employee_id"><span>พนักงาน <b class="req">*</b></span>'+pyPick('ln-e',l.employee_id||'',!id&&ed,true)+'</div>'+
     '<label class="f" id="w-kind"><span>ประเภท</span><select id="ln-k"'+dis+'>'+Object.keys(K).map(function(k){return '<option value="'+k+'"'+(l.kind===k?' selected':'')+'>'+K[k]+'</option>'}).join('')+'</select></label>'+
     '<label class="f"><span>รายละเอียด</span><input id="ln-t" maxlength="80" value="'+esc(l.title||'')+'" placeholder="เช่น ยืมเงินบริษัท ต.ค. 69"'+dis+'></label>'+
     '<label class="f" id="w-principal"><span>ยอด (บาท) <b class="req">*</b></span><input id="ln-p" inputmode="decimal" value="'+(l.principal||'')+'"'+dis+'></label>'+
@@ -1126,7 +1127,7 @@ function pyLoan(id){var l=id?PY.loans.filter(function(x){return x.id===id})[0]:{
     (id&&ed?'<label class="f s2" id="w-reason"><span>เหตุผลการแก้ไข <b class="req">*</b></span><input id="ln-r" placeholder="เช่น พนักงานขอเลื่อนงวด"></label>':'')+'</div></div>'+
     '<div class="dfs"><h4><span class="n">⌗</span>ตารางผ่อน</h4><p class="faint" style="font-size:12.5px;margin:0 0 6px">ติ๊ก "พักหนี้" = งวดนั้นไม่หัก (ยอด 0) แล้วต่อท้ายให้ 1 งวด · ไม่มีดอกเบี้ย (รอยืนยันจาก HR)</p><div id="ln-sc"></div></div>',
    ed?'<button class="btn" id="px">ยกเลิก</button><button class="btn pri" id="pok">บันทึก</button>':'<button class="btn" id="px">ปิด</button>');
-  $('.drw').classList.add('wide');$('#px').onclick=closeD;
+  $('.drw').classList.add('wide');$('#px').onclick=closeD;pyPickBind('ln-e');loadPhotos();
   var sched=function(){var p=+String($('#ln-p').value).replace(/,/g,'')||0,i=+String($('#ln-i').value).replace(/,/g,'')||0,ym=$('#ln-s').value,el=$('#ln-sc');if(!(p>0&&i>0&&ym)){el.innerHTML='<div class="faint">ใส่ยอด ผ่อนงวดละ และงวดเริ่ม</div>';return}
     var left=p,n=0,rows=[],cum=0,paid=id?l.paid:0,add=function(y,k){var a=+y.slice(0,4),m=+y.slice(5,7)-1+k;a+=Math.floor(m/12);m=(m%12+12)%12+1;return a+'-'+('0'+m).slice(-2)};
     while(left>0.004&&rows.length<240){if(skips.indexOf(ym)>=0)rows.push({ym:ym,skip:1,left:left});else{var a=Math.min(i,left);a=Math.round(a*100)/100;n++;left=Math.round((left-a)*100)/100;cum=Math.round((cum+a)*100)/100;rows.push({ym:ym,n:n,a:a,left:left,done:cum<=paid+0.004})}ym=add(ym,1)}
@@ -1253,17 +1254,18 @@ function pyColLayout(){var it=PY.bs.items.slice(),G={inc:it.filter(function(i){r
     aCall('payItemsLayout',list).then(function(r){busy(b,0);if(!r.ok){var e=r.errors||{},k=Object.keys(e);toast(e[k[0]]+(k.length>1?' (+'+(k.length-1)+')':''),1);return}
       closeD();toast(r.changed?'บันทึกหัวคอลัมน์แล้ว · คำนวณงวดร่างใหม่แล้ว':'ไม่มีการเปลี่ยนแปลง');PY.run=null;pyReload()}).catch(function(e){busy(b,0);toast(e.message,1)})}}
 /* ── เลือกพนักงาน (ค้นหาชื่อ/รหัส · เห็นรูปและชื่อ) · ค่าเก็บเป็น id คั่นด้วย , ใน hidden input ── */
-function pyPick(id,ids,on){var P={};(PY.prof||[]).forEach(function(p){P[p.employee_id]=p});var sel=String(ids||'').split(',').filter(function(x){return P[x]});
-  return '<div class="pk" id="pk-'+id+'"><input type="hidden" id="'+id+'" value="'+esc(sel.join(','))+'"><div class="pk-c">'+sel.map(function(x){var p=P[x];return '<span class="pk-chip"><span class="av" data-av="'+x+'">'+esc((p.nickname||p.name).slice(0,1))+'</span><span><b>'+esc(p.name)+'</b><small>'+esc(p.code)+(p.dept?' · '+esc(p.dept):'')+'</small></span>'+(on?'<button type="button" data-pkx="'+x+'" aria-label="เอาออก">✕</button>':'')+'</span>'}).join('')+(sel.length?'':'<span class="faint" style="font-size:12.5px">ยังไม่มี</span>')+'</div>'+
-   (on?'<div class="pk-s"><input type="search" data-pkq placeholder="ค้นหาชื่อ ชื่อเล่น หรือรหัสพนักงาน…" autocomplete="off"><div class="pk-r" hidden></div></div>':'')+'</div>'}
+function pyPick(id,ids,on,one){var P={};(PY.prof||[]).forEach(function(p){P[p.employee_id]=p});var sel=String(ids||'').split(',').filter(function(x){return P[x]});if(one)sel=sel.slice(0,1);   // one = เลือกได้คนเดียว (หนี้สิน · 28 ต.ค. 2569)
+  return '<div class="pk" id="pk-'+id+'"'+(one?' data-one="1"':'')+'><input type="hidden" id="'+id+'" value="'+esc(sel.join(','))+'"><div class="pk-c">'+sel.map(function(x){var p=P[x];return '<span class="pk-chip"><span class="av" data-av="'+x+'">'+esc((p.nickname||p.name).slice(0,1))+'</span><span><b>'+esc(p.name)+'</b><small>'+esc(p.code)+(p.dept?' · '+esc(p.dept):'')+'</small></span>'+(on?'<button type="button" data-pkx="'+x+'" aria-label="เอาออก">✕</button>':'')+'</span>'}).join('')+(sel.length||one?'':'<span class="faint" style="font-size:12.5px">ยังไม่มี</span>')+'</div>'+
+   (on&&!(one&&sel.length)?'<div class="pk-s"><input type="search" data-pkq placeholder="ค้นหาชื่อ ชื่อเล่น หรือรหัสพนักงาน…" autocomplete="off"><div class="pk-r" hidden></div></div>':'')+'</div>'}
 function pyPickBind(id){var w=$('#pk-'+id);if(!w)return;var h=$('#'+id),q=w.querySelector('[data-pkq]'),box=w.querySelector('.pk-r'),P=PY.prof||[];
-  var redraw=function(){var on=!!q;w.outerHTML=pyPick(id,h.value,on);pyPickBind(id);loadPhotos()};
+  var one=w.dataset.one==='1',on0=!!q||!!w.querySelector('[data-pkx]');
+  var redraw=function(){w.outerHTML=pyPick(id,h.value,on0,one);pyPickBind(id);loadPhotos();if(h.onpick)h.onpick()};
   w.querySelectorAll('[data-pkx]').forEach(function(b){b.onclick=function(){h.value=h.value.split(',').filter(function(x){return x&&x!==b.dataset.pkx}).join(',');redraw()}});
   if(!q)return;
   var show=function(){var t=q.value.trim().toLowerCase(),cur=h.value.split(',');if(!t){box.hidden=true;return}
     var m=P.filter(function(p){return cur.indexOf(p.employee_id)<0&&(p.code+' '+p.name+' '+p.nickname+' '+p.dept).toLowerCase().indexOf(t)>=0}).slice(0,8);
     box.innerHTML=m.length?m.map(function(p){return '<button type="button" data-pka="'+p.employee_id+'"><span class="av" data-av="'+p.employee_id+'">'+esc((p.nickname||p.name).slice(0,1))+'</span><span><b>'+esc(p.name)+(p.nickname?' ('+esc(p.nickname)+')':'')+'</b><small>'+esc(p.code)+' · '+esc(p.dept||'—')+(p.team?' · '+esc(p.team):'')+'</small></span></button>'}).join(''):'<div class="faint" style="padding:10px 12px">ไม่พบ</div>';box.hidden=false;loadPhotos();
-    box.querySelectorAll('[data-pka]').forEach(function(b){b.onmousedown=function(e){e.preventDefault();h.value=h.value.split(',').filter(String).concat(b.dataset.pka).join(',');redraw();var nq=$('#pk-'+id+' [data-pkq]');if(nq)nq.focus()}})};
+    box.querySelectorAll('[data-pka]').forEach(function(b){b.onmousedown=function(e){e.preventDefault();h.value=one?b.dataset.pka:h.value.split(',').filter(String).concat(b.dataset.pka).join(',');redraw();var nq=$('#pk-'+id+' [data-pkq]');if(nq)nq.focus()}})};
   q.oninput=show;q.onfocus=show;q.onblur=function(){setTimeout(function(){box.hidden=true},150)};
   q.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();var f=box.querySelector('[data-pka]');if(f)f.onmousedown(e)}}}
 /* ── ส่งออก Excel (รูปแบบรายงานผลการคำนวณเงินเดือนสุทธิเดิม · จัดกลุ่มแผนก + แถวรวม · ซ่อนคอลัมน์ที่เป็น 0 ทั้งงวด) ── */
