@@ -1087,7 +1087,7 @@ function pySalDraw(){var ed=PY.bs.canEdit,T=PY.bs.types,TM=PY.bs.taxModes,ch=PSL
        '<td class="r"><input class="ps-in r'+dt(p,'base_salary')+'" data-ps="'+id+'|base_salary" inputmode="decimal" value="'+esc(fmt(v(p,'base_salary')))+'" placeholder="ยังไม่มี"'+dis+'></td>'+
        '<td><span class="badge '+(sso?'b-ok':'b-mute')+'">'+(sso?'คิดตามฐานเงินเดือนจริง':'ไม่คิดประกันสังคม')+'</span></td>'+
        '<td><select class="ps-in ps-tax'+dt(p,'tax_mode')+'" data-ps="'+id+'|tax_mode"'+dis+'>'+Object.keys(TM).map(function(k){return '<option value="'+k+'"'+(tm===k?' selected':'')+'>'+esc(TM[k])+'</option>'}).join('')+'</select></td>'+
-       '<td class="r"><input class="ps-in r'+dt(p,'tax_value')+'" data-ps="'+id+'|tax_value" inputmode="decimal" value="'+esc(useV?fmt(v(p,'tax_value')):'')+'" placeholder="'+(tm==='p1_fixed'?'บาท / เดือน':tm==='p1_pct'?'%':tm.indexOf('p3')===0?wr+'%':'—')+'"'+(useV&&ed?'':' disabled')+'></td>'+
+       '<td class="r"><input class="ps-in r'+dt(p,'tax_value')+'" data-ps="'+id+'|tax_value" inputmode="decimal" value="'+esc(useV?fmt(v(p,'tax_value')):'')+'" placeholder="'+(tm==='p1_fixed'?'บาท / เดือน':tm==='p1_pct'?'%':'ใส่ยอด หรือ %')+'"'+(ed?'':' disabled')+'></td>'+
        '<td class="mono faint">'+(p.has_id?esc(p.id_masked):'—')+'</td><td class="faint">'+(p.has_bank?esc(p.bank_name)+'<small class="mono">'+esc(p.bank_masked)+'</small>':'—')+'</td></tr>'}).join('')+
    '</tbody></table></div>'+(ed?'<div class="pg-save'+(n?' on':'')+'"><b>'+(n?'แก้ไข '+n+' ช่อง · ยังไม่บันทึก':'ยังไม่มีการแก้ไข')+'</b><input id="ps-rs" placeholder="หมายเหตุ (ไม่บังคับ) เช่น ปรับเงินเดือนประจำปี"><button class="btn" id="ps-x"'+(n?'':' disabled')+'>ยกเลิกที่แก้</button><button class="btn pri" id="ps-ok"'+(n?'':' disabled')+'>บันทึก</button></div>':'')+
    '<div class="faint" style="font-size:12px;padding:10px 14px">'+rows.length+' คน · เลขประจำตัวประชาชน / ที่อยู่ แก้ที่แท็บ ข้อมูลรายคน · เลขบัญชีแก้ที่ ข้อมูลพนักงาน</div></section>');
@@ -1096,7 +1096,12 @@ function pySalDraw(){var ed=PY.bs.canEdit,T=PY.bs.types,TM=PY.bs.taxModes,ch=PSL
   var orig=function(p,k){return k==='base_salary'?(p.base_salary?String(p.base_salary):''):k==='tax_value'?(p.tax_value?String(p.tax_value):''):(p[k]||(k==='pay_type'?'employee':''))};
   var put=function(el){var x=el.dataset.ps.split('|'),p=PY.prof.filter(function(r){return r.employee_id===x[0]})[0],o=orig(p,x[1]),val=String(el.value).replace(/[,\s฿%]/g,'');
     if(x[1]==='base_salary'||x[1]==='tax_value'){if(val!==''&&Number(val)===Number(o))val=o}
-    if(val===o){if(ch[x[0]]){delete ch[x[0]][x[1]];if(!Object.keys(ch[x[0]]).length)delete ch[x[0]]}}else (ch[x[0]]=ch[x[0]]||{})[x[1]]=val};
+    if(val===o){if(ch[x[0]]){delete ch[x[0]][x[1]];if(!Object.keys(ch[x[0]]).length)delete ch[x[0]]}}else (ch[x[0]]=ch[x[0]]||{})[x[1]]=val;
+    /* ใส่ยอดภาษีเอง (28 ต.ค. 2569 ผู้ใช้ขอ): ช่องนี้กรอกได้ทุกแถว · วิธีภาษีที่ไม่ใช้ยอด → เปลี่ยนเป็น ภ.ง.ด.1 คงที่ (หรือ % ถ้าพิมพ์ %) ให้เอง · ลบยอดออก → กลับเป็นวิธีเดิม */
+    if(x[1]==='tax_value'){var c=ch[x[0]]||{},m0=orig(p,'tax_mode'),m=('tax_mode' in c)?c.tax_mode:m0,raw=String(el.value);
+      if(val!==''&&m!=='p1_fixed'&&m!=='p1_pct'){(ch[x[0]]=ch[x[0]]||{}).tax_mode=/%/.test(raw)?'p1_pct':'p1_fixed';PSL.auto=x[0]}
+      else if(val===''&&PSL.auto===x[0]&&ch[x[0]]){delete ch[x[0]].tax_mode;if(m0!==ch[x[0]].tax_mode&&!Object.keys(ch[x[0]]).length)delete ch[x[0]]}
+      var se=$('[data-ps="'+x[0]+'|tax_mode"]');if(se){var nm=(ch[x[0]]&&ch[x[0]].tax_mode)||m0;se.value=nm;se.classList.toggle('dirty',nm!==m0);el.placeholder=nm==='p1_pct'?'%':nm==='p1_fixed'?'บาท / เดือน':'ใส่ยอด หรือ %'}}};
   var bar=function(){var b=$('.pg-save'),n=Object.keys(ch).reduce(function(s,k){return s+Object.keys(ch[k]).length},0);b.classList.toggle('on',!!n);b.querySelector('b').textContent=n?'แก้ไข '+n+' ช่อง · ยังไม่บันทึก':'ยังไม่มีการแก้ไข';$('#ps-x').disabled=$('#ps-ok').disabled=!n};
   $$('[data-ps]').forEach(function(el){if(el.tagName==='SELECT')el.onchange=function(){put(el);pySalDraw()};else{el.onfocus=function(){el.value=String(el.value).replace(/,/g,'');el.select()};el.oninput=function(){put(el);el.classList.toggle('dirty',!!(ch[el.dataset.ps.split('|')[0]]||{})[el.dataset.ps.split('|')[1]]);bar()};el.onblur=function(){if(el.value!=='')el.value=fmt(el.value)};
     el.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();var k=el.dataset.ps.split('|')[1],a=$$('[data-ps$="|'+k+'"]'),i=a.indexOf(el);if(a[i+1]){a[i+1].focus()}}}}});
