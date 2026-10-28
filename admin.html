@@ -550,6 +550,7 @@ body.fo{padding-top:36px}body.fo .tb{top:36px}body.fo .side{top:36px;height:calc
 .pg-t thead tr.pg-sum th{background:#F4F8FE;color:var(--fg);font-weight:700;font-size:12.5px;text-align:right;padding:7px 10px;border-top:1px solid var(--line)}.pg-t thead tr.pg-sum th.pg-n{text-align:left}.pg-t thead tr.pg-sum th.au{background:#EEF3FB}
 .pk[data-one] .pk-s input{width:100%;max-width:420px}
 .cl-list{display:flex;flex-direction:column;gap:6px}.cl-row{display:flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid var(--line);border-radius:10px;background:#fff}.cl-row.off{opacity:.55;background:#F6F6F6}.cl-row.off .cl-in{text-decoration:line-through}.cl-n{width:22px;text-align:right;color:var(--fnt);font-size:12px}.cl-in{flex:1;min-width:0;height:34px;border:1px solid var(--line);border-radius:8px;padding:0 10px;font:inherit;font-size:14px}
+.ps-t td.gi select{width:100%;min-width:150px;height:34px;border:0;background:transparent;font:inherit;font-size:13px;padding:0 6px}.ps-t td.gi input{min-width:110px}.ps-t th{white-space:normal;line-height:1.3}
 .pg-t tfoot td{border-top:2px solid var(--line);background:#FAFAFA;padding:8px 10px}
 .py-t .py-itc{background:#F4F8FE}.py-t tfoot td{border-top:2px solid var(--line);padding:10px 12px;background:#FAFAFA}
 .py-t tr.grp td{background:#EEF3FB;font-weight:600;font-size:12.5px;color:var(--fg)}
@@ -960,11 +961,11 @@ function m2z(n){return n?m2(n):'—'}
 var PYST={draft:['ร่าง','b-mute'],review:['รอตรวจ/อนุมัติ','b-warn'],approved:['อนุมัติแล้ว · รอปิดงวด','b-info'],closed:['ปิดงวดแล้ว · รอโอน','b-ok'],paid:['จ่ายแล้ว','b-ok']};
 var PYSRC={auto:'อัตโนมัติ',fixed:'ประจำรายคน',input:'กรอกในงวด'};
 function pyBadge(s){var x=PYST[s]||[s,'b-mute'];return '<span class="badge '+x[1]+'">'+x[0]+'</span>'}
-function vPay(){var T=[['runs','งวดเงินเดือน'],['people','ข้อมูลรายคน'],['loans','หนี้สินพนักงาน'],['items','รายการรายรับ–รายจ่าย'],['cfg','ตั้งค่า']];
+function vPay(){var T=[['runs','งวดเงินเดือน'],['sal','ข้อมูลเงินเดือน'],['people','ข้อมูลรายคน'],['loans','หนี้สินพนักงาน'],['items','รายการรายรับ–รายจ่าย'],['cfg','ตั้งค่า']];
   return '<div class="ph"><div><h1>เงินเดือน</h1><div class="sub">ตัดยอดทุกวันที่ '+esc(PY.bs?PY.bs.cfg.pay_cutoff_day:'25')+' · เห็นเฉพาะผู้ดูแลระบบ / HR / ฝ่ายบัญชีที่ได้รับสิทธิ์ · ทุกการแก้บันทึกใน Audit Log</div></div></div>'+
    '<div class="rp-tabs" role="tablist">'+T.map(function(t){return '<button data-pyt="'+t[0]+'" aria-pressed="'+(PY.tab===t[0])+'">'+t[1]+'</button>'}).join('')+'</div><div id="py-body"><div class="loading"><span class="spin"></span>กำลังโหลด…</div></div>'}
 function bPay(){$$('[data-pyt]').forEach(function(b){b.onclick=function(){PY.tab=b.dataset.pyt;PY.runId=null;render()}});
-  var go2=function(){({runs:PY.runId?pyRun:pyRuns,people:pyPeople,loans:pyLoans,items:pyItems,cfg:pyCfg})[PY.tab]()};
+  var go2=function(){({runs:PY.runId?pyRun:pyRuns,sal:pySal,people:pyPeople,loans:pyLoans,items:pyItems,cfg:pyCfg})[PY.tab]()};
   if(PY.bs&&Date.now()-PY.bsAt<60000)return go2();
   aCall('payBootstrap').then(function(r){PY.bs=r;PY.bsAt=Date.now();go2()}).catch(function(e){pyErr(e)})}
 function pyErr(e){var b=$('#py-body');if(b)b.innerHTML='<div class="alert">'+esc(e.message||e)+'</div>'}
@@ -1061,6 +1062,36 @@ function pyPerson(id){var R=PY.run,x=R.rows.filter(function(r){return r.employee
       closeD();toast('บันทึกแล้ว · คำนวณใหม่');pyRefreshRun()}).catch(function(e){busy(b,0);toast(e.message,1)})}}
 
 /* ── ข้อมูลรายคน: ฐานเงินเดือน · ประเภทการจ้าง · กองทุนสงเคราะห์ · รายการประจำ ── */
+/* ── ข้อมูลเงินเดือน (28 ต.ค. 2569 · แบบ HumanSoft "ข้อมูลเงินเดือน"): ตารางแก้ได้ทุกคนในหน้าเดียว
+ * ฐานเงินเดือน · ประเภทการจ้าง · ภาษี (วิธี + จำนวนคงที่ต่อเดือน / %) → หัก ณ ที่จ่ายอัตโนมัติในงวด · บันทึกทีเดียว · เหตุผลไม่บังคับ */
+var PSL={ch:{},q:'',none:false};
+function pySal(force){if(!force&&PY.prof)return pySalDraw();pyBody('<div class="loading"><span class="spin"></span>กำลังโหลด…</div>');aCall('payProfiles').then(function(r){PY.prof=r;pySalDraw()}).catch(pyErr)}
+function pySalDraw(){var ed=PY.bs.canEdit,T=PY.bs.types,TM=PY.bs.taxModes||{'':'ตามประเภทการจ้าง',none:'ไม่หัก',fixed:'จำนวนคงที่ต่อเดือน',pct:'% ของรายได้'},ch=PSL.ch,q=PSL.q.trim().toLowerCase();
+  var all=PY.prof.slice().sort(function(a,b){return a.code<b.code?-1:1}),rows=all.filter(function(p){return (!q||(p.code+' '+p.name+' '+p.nickname+' '+p.dept+' '+(p.position||'')).toLowerCase().indexOf(q)>=0)&&ofOk('ps',p.dept,p.team)&&(!PSL.none||!p.base_salary)});
+  var v=function(p,k){var c=ch[p.employee_id];return c&&k in c?c[k]:(k==='base_salary'?(p.base_salary?String(p.base_salary):''):k==='tax_value'?(p.tax_value?String(p.tax_value):''):(p[k]||''))};
+  var dt=function(p,k){var c=ch[p.employee_id];return c&&k in c?' dirty':''};
+  var ssoTxt=function(t){return t==='employee'?'คิดตามฐานเงินเดือนจริง':'ไม่คิดประกันสังคม'};
+  var n=Object.keys(ch).reduce(function(s,k){return s+Object.keys(ch[k]).length},0),dis=ed?'':' disabled';
+  pyBody('<section class="card"><div class="ch" style="gap:8px;flex-wrap:wrap">'+pySearch('ps-q',PSL.q,'ค้นหาชื่อ ชื่อเล่น รหัส ตำแหน่ง')+ofSel('ps',1)+'<label class="chk"><input type="checkbox" id="ps-n"'+(PSL.none?' checked':'')+'> ยังไม่มีฐานเงินเดือน ('+all.filter(function(p){return !p.base_salary}).length+')</label><span class="sp"></span><span class="faint" style="font-size:12.5px">ภาษีคงที่ / % → หักอัตโนมัติในคอลัมน์ "หัก ณ ที่จ่าย" ของงวด</span></div>'+
+   '<div class="pg-w"><table class="pg-t ps-t"><thead><tr><th class="pg-n">พนักงาน</th><th>ตำแหน่ง</th><th>ประเภทการจ้าง</th><th>ฐานเงินเดือน</th><th>ประกันสังคม</th><th>ภาษี</th><th>จำนวนภาษีคงที่ต่อเดือน /<br>% ภาษีของรายได้</th><th>เลขประจำตัวประชาชน</th><th>บัญชีธนาคาร</th></tr></thead><tbody>'+
+   rows.map(function(p){var id=p.employee_id,ty=v(p,'pay_type')||'employee',tm=v(p,'tax_mode'),useV=tm==='fixed'||tm==='pct';
+     return '<tr><td class="pg-n"><b>'+esc(p.name)+'</b><small>'+esc(p.code)+(p.nickname?' · '+esc(p.nickname):'')+' · '+esc(p.dept||'—')+'</small></td><td>'+esc(p.position||'—')+'</td>'+
+       '<td class="gi'+dt(p,'pay_type')+'"><select data-ps="'+id+'|pay_type"'+dis+'>'+Object.keys(T).map(function(k){return '<option value="'+k+'"'+(ty===k?' selected':'')+'>'+esc(T[k])+'</option>'}).join('')+'</select></td>'+
+       '<td class="gi'+dt(p,'base_salary')+'"><input data-ps="'+id+'|base_salary" inputmode="decimal" value="'+esc(v(p,'base_salary'))+'" placeholder="ยังไม่มี"'+dis+'></td>'+
+       '<td class="faint" style="white-space:nowrap">'+ssoTxt(ty)+'</td>'+
+       '<td class="gi'+dt(p,'tax_mode')+'"><select data-ps="'+id+'|tax_mode"'+dis+'>'+Object.keys(TM).map(function(k){return '<option value="'+k+'"'+(tm===k?' selected':'')+'>'+esc(k===''?(ty==='contractor'?'ตามประเภท (หัก '+(PY.bs.cfg.pay_wht_rate||3)+'%)':'ตามประเภท (ไม่หัก)'):TM[k])+'</option>'}).join('')+'</select></td>'+
+       '<td class="gi'+dt(p,'tax_value')+'"><input data-ps="'+id+'|tax_value" inputmode="decimal" value="'+esc(useV?v(p,'tax_value'):'')+'" placeholder="'+(tm==='fixed'?'บาท / เดือน':tm==='pct'?'% เช่น 5':'—')+'"'+(useV&&ed?'':' disabled')+'></td>'+
+       '<td class="faint mono" style="white-space:nowrap">'+(p.has_id?esc(p.id_masked):'<span class="badge b-warn">ยังไม่มี</span>')+'</td><td class="faint" style="white-space:nowrap">'+(p.has_bank?esc(p.bank_name)+' '+esc(p.bank_masked):'—')+'</td></tr>'}).join('')+
+   '</tbody></table></div>'+(ed?'<div class="pg-save'+(n?' on':'')+'"><b>'+(n?'แก้ไข '+n+' ช่อง · ยังไม่บันทึก':'ยังไม่มีการแก้ไข')+'</b><input id="ps-rs" placeholder="หมายเหตุ (ไม่บังคับ) เช่น ปรับเงินเดือนประจำปี"><button class="btn" id="ps-x"'+(n?'':' disabled')+'>ยกเลิกที่แก้</button><button class="btn pri" id="ps-ok"'+(n?'':' disabled')+'>บันทึก</button></div>':'')+
+   '<div class="faint" style="font-size:12px;padding:10px 14px">'+rows.length+' คน · เลขประจำตัวประชาชน / ที่อยู่ แก้ที่แท็บ ข้อมูลรายคน · เลขบัญชีแก้ที่ ข้อมูลพนักงาน</div></section>');
+  $('#ps-q').oninput=function(){PSL.q=this.value;var c=this.selectionStart;pySalDraw();var i=$('#ps-q');i.focus();i.setSelectionRange(c,c)};$('#ps-n').onchange=function(){PSL.none=this.checked;pySalDraw()};ofBind('ps',pySalDraw,1);
+  if(!ed)return;
+  var put=function(el){var x=el.dataset.ps.split('|'),p=PY.prof.filter(function(r){return r.employee_id===x[0]})[0],o=x[1]==='base_salary'?(p.base_salary?String(p.base_salary):''):x[1]==='tax_value'?(p.tax_value?String(p.tax_value):''):(p[x[1]]||(x[1]==='pay_type'?'employee':'')),val=String(el.value).replace(/[,\s฿%]/g,'');
+    if(val===o){if(ch[x[0]]){delete ch[x[0]][x[1]];if(!Object.keys(ch[x[0]]).length)delete ch[x[0]]}}else (ch[x[0]]=ch[x[0]]||{})[x[1]]=val};
+  $$('[data-ps]').forEach(function(el){el.onchange=function(){put(el);pySalDraw()};if(el.tagName==='INPUT')el.oninput=function(){put(el);var b=$('.pg-save');var n=Object.keys(ch).reduce(function(s,k){return s+Object.keys(ch[k]).length},0);b.classList.toggle('on',!!n);b.querySelector('b').textContent=n?'แก้ไข '+n+' ช่อง · ยังไม่บันทึก':'ยังไม่มีการแก้ไข';$('#ps-x').disabled=$('#ps-ok').disabled=!n;el.parentNode.classList.add('dirty')}});
+  $('#ps-x').onclick=function(){PSL.ch={};pySalDraw()};
+  $('#ps-ok').onclick=function(){var b=this;busy(b,1);aCall('paySaveProfilesBulk',ch,$('#ps-rs').value).then(function(r){busy(b,0);if(!r.ok){var k=Object.keys(r.errors||{});k.forEach(function(z){var el=$('[data-ps="'+z+'"]');if(el)el.parentNode.classList.add('bad')});toast((r.errors[k[0]]||'ตรวจข้อมูล')+(k.length>1?' (+'+(k.length-1)+')':''),1);return}
+    PSL.ch={};toast('บันทึก '+r.changed+' คน · คำนวณงวดร่างใหม่แล้ว');PY.run=null;pySal(true)}).catch(function(e){busy(b,0);toast(e.message,1)})}}
 function pyPeople(force){if(!force&&PY.prof)return pyPeopleDraw();pyBody('<div class="loading"><span class="spin"></span>กำลังโหลด…</div>');aCall('payProfiles').then(function(r){PY.prof=r;pyPeopleDraw()}).catch(pyErr)}
 function pyPeopleDraw(){var q=PY.pq.trim().toLowerCase(),all=PY.prof.slice().sort(function(a,b){return a.code<b.code?-1:1}),ed=PY.bs.canEdit,items={};PY.bs.items.forEach(function(i){items[i.code]=i});
   var rows=all.filter(function(p){return (!q||(p.code+' '+p.name+' '+p.nickname+' '+p.dept).toLowerCase().indexOf(q)>=0)&&ofOk('pp',p.dept,p.team)&&(!PY.pnone||!p.base_salary)}),none=all.filter(function(p){return !p.base_salary}).length;
