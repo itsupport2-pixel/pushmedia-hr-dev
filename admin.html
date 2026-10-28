@@ -543,7 +543,8 @@ body.fo{padding-top:36px}body.fo .tb{top:36px}body.fo .side{top:36px;height:calc
 .py-t{border-collapse:collapse;width:100%;font-size:13px}.py-t th{font-size:11.5px;font-weight:600;color:var(--mut);text-align:left;background:#F7F7F7;padding:9px 12px;white-space:nowrap;border-bottom:1px solid var(--line)}
 .py-t td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:middle}.py-t .r{text-align:right}.py-t tr.ck{cursor:pointer}.py-t tr.ck:hover td{background:#FAFAFA}.py-t.sm td,.py-t.sm th{padding:6px 8px;font-size:12.5px}
 .py-hd{display:flex;align-items:flex-end;gap:12px;margin-bottom:12px;flex-wrap:wrap}.py-hd h2{font-size:24px}.py-acts{display:flex;gap:8px;flex-wrap:wrap}
-.py-steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.py-steps span{display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:99px;background:var(--sf);border:1px solid var(--line);font-size:13px;color:var(--fnt)}
+.py-steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.py-dates{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin:0 0 14px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--sf)}.py-dates label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--mut)}.py-dates input{height:38px;border:1px solid var(--line);border-radius:9px;padding:0 10px;font:inherit;font-size:14px;color:var(--fg);background:#fff}.py-dates small{flex-basis:100%;font-size:12px}.py-steps span{display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:99px;background:var(--sf);border:1px solid var(--line);font-size:13px;color:var(--fnt)}
 .py-steps i{font-style:normal;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#EDEDED;font-size:11px;font-weight:600}.py-steps .on{color:var(--fg);font-weight:600;border-color:var(--acc)}.py-steps .on i{background:var(--acc);color:#fff}.py-steps .done{color:var(--ok)}.py-steps .done i{background:var(--ok-s);color:var(--ok)}
 .py-ks{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px}.py-k{background:var(--sf);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;gap:2px}
 .py-k span{font-size:12.5px;color:var(--mut)}.py-k b{font-size:22px;font-weight:700}.py-k small{font-size:11.5px;color:var(--fnt)}
@@ -974,7 +975,8 @@ function pyRunDraw(){var R=PY.run,r=R.run,t=r.totals||{},st=r.status,STEP=['draf
   if((st==='closed'||st==='paid')&&(R.canReopen||R.isAdmin))btns+='<button class="btn" data-act="reopen">ย้อนงวด</button>';
   var kpi=function(l,v,d){return '<div class="py-k"><span>'+l+'</span><b class="num">'+v+'</b><small>'+(d||'&nbsp;')+'</small></div>'};
   pyBody('<div class="py-hd"><div><a class="lnk" id="py-back">‹ รายการงวด</a><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><h2 style="margin:0">งวด '+esc(ymTh(r.ym))+'</h2>'+pyBadge(st)+(st==='closed'||st==='paid'?'<span class="badge b-mute">🔒 อ่านอย่างเดียว</span>':'')+'</div>'+
-    '<div class="muted" style="font-size:13px">'+dTh(r.from)+' – '+dTh(r.to)+' · จ่าย '+dTh(r.pay_date)+(r.calc_at?' · คำนวณล่าสุด '+esc(r.calc_at.slice(11,16))+' น. '+dTh(r.calc_at.slice(0,10)):'')+'</div></div><span class="sp"></span><div class="py-acts">'+btns+'</div></div>'+
+    '<div class="muted" style="font-size:13px">'+dTh(r.from)+' – '+dTh(r.to)+' · จ่าย '+dTh(r.pay_date)+' · ภาษี '+dTh(r.tax_date)+(r.calc_at?' · คำนวณล่าสุด '+esc(r.calc_at.slice(11,16))+' น. '+dTh(r.calc_at.slice(0,10)):'')+'</div></div><span class="sp"></span><div class="py-acts">'+btns+'</div></div>'+
+   (R.isHR&&st!=='paid'?'<div class="py-dates"><label><span>วันที่จ่าย</span><input type="date" id="py-pd" value="'+esc(r.pay_date)+'"></label><label><span>วันที่จ่ายภาษี</span><input type="date" id="py-td" value="'+esc(r.tax_date)+'"></label><button class="btn" id="py-dsv">บันทึก</button><small class="muted">ใช้เป็นวันที่เงินเข้าบัญชีในไฟล์โอนกสิกร · แก้ได้จนกว่าจะยืนยันโอน</small></div>':'')+
    '<div class="py-steps">'+['ร่าง · HR กรอก/คำนวณ','ส่งตรวจ','อนุมัติ','ปิดงวดบัญชี','จ่ายแล้ว'].map(function(s,i){return '<span class="'+(i<si?'done':i===si?'on':'')+'"><i>'+(i<si?'✓':i+1)+'</i>'+s+'</span>'}).join('')+'</div>'+
    (st==='approved'?'<div class="note-w">งวด "'+esc(ymTh(r.ym))+'" อนุมัติแล้ว · กรุณาปิดงวดบัญชีเพื่อสร้างไฟล์โอนธนาคาร</div>':'')+
    (R.missing&&st==='draft'?'<div class="note-b">พนักงาน '+R.missing+' คนยังไม่มีฐานเงินเดือน (ไม่อยู่ในงวดนี้)'+(R.isHR?' <button class="btn sm" data-pyt2="people">ไปที่ข้อมูลรายคน</button>':'')+'</div>':'')+
@@ -987,6 +989,7 @@ function pyRunDraw(){var R=PY.run,r=R.run,t=r.totals||{},st=r.status,STEP=['draf
    '</tbody></table></div><div class="faint" style="font-size:12px;padding:10px 14px">แสดง '+rows.length+' จาก '+R.rows.length+' คน · กดแถวเพื่อดูรายละเอียด'+(R.canEdit?' / แก้รายรับ–รายจ่าย':'')+'</div></section>'));
   $$('[data-rv]').forEach(function(b){b.onclick=function(){PY.rv=b.dataset.rv;pyRunDraw()}});if(PY.rv==='grid')pyGrid();
   $('#py-back').onclick=function(){PY.runId=null;PY.run=null;pyRuns()};
+  if($('#py-dsv'))$('#py-dsv').onclick=function(){var b=this;busy(b,1);aCall('paySetDates',r.id,$('#py-pd').value,$('#py-td').value).then(function(){busy(b,0);toast('บันทึกวันที่จ่าย / วันที่จ่ายภาษีแล้ว');pyRun(true)}).catch(function(e){busy(b,0);toast(e.message,1)})};
   $$('[data-pyt2]').forEach(function(b){b.onclick=function(){PY.tab=b.dataset.pyt2;PY.runId=null;render()}});
   $('#py-q').oninput=function(){PY.q=this.value;var p=this.selectionStart;pyRunDraw();var i=$('#py-q');i.focus();i.setSelectionRange(p,p)};
   ofBind('py',pyRunDraw,1);if($('#py-w'))$('#py-w').onchange=function(){PY.warn=this.checked;pyRunDraw()};
@@ -1108,7 +1111,7 @@ function pyItems(){var it=PY.bs.items,ed=PY.bs.canEdit,AUTO={salary:'ฐาน �
 
 /* ── ตั้งค่าเงินเดือน ── */
 function pyCfg(){var c=PY.bs.cfg,ed=PY.bs.canEdit,adm=A.d.me.role==='admin',dis=ed?'':' disabled';
-  var F=[['pay_cutoff_day','ตัดยอดทุกวันที่','เช่น 25 → งวด ต.ค. = 26 ก.ย. – 25 ต.ค.'],['pay_day','วันจ่ายเงินเดือน','ว่าง = สิ้นเดือน'],['pay_divisor','ตัวหารวันทำงาน','เงินเดือน ÷ ตัวหาร = ค่าจ้างต่อวัน (ขาดงาน/เข้าใหม่)'],
+  var F=[['pay_cutoff_day','ตัดยอดทุกวันที่','เช่น 25 → งวด ต.ค. = 26 ก.ย. – 25 ต.ค.'],['pay_day','วันจ่ายเงินเดือน','ว่าง = สิ้นเดือน'],['pay_tax_day','วันจ่ายภาษี (เดือนถัดไป)','ค่าเริ่มต้นของงวดใหม่ เช่น 15 → งวด ต.ค. จ่ายภาษี 15 พ.ย. (แก้รายงวดได้)'],['pay_divisor','ตัวหารวันทำงาน','เงินเดือน ÷ ตัวหาร = ค่าจ้างต่อวัน (ขาดงาน/เข้าใหม่)'],
     ['pay_sso_rate','ประกันสังคม (%)','พนักงานจ่าย'],['pay_sso_min_base','ฐานต่ำสุด (บาท)','1,650 → หักต่ำสุด 83'],['pay_sso_max_base','ฐานสูงสุด (บาท)','17,500 → หักสูงสุด 875 (ปี 2569–2571)'],
     ['pay_wht_rate','หัก ณ ที่จ่าย สัญญาบริการ (%)',''],['pay_welfare_rate','กองทุนเงินสงเคราะห์ลูกจ้าง (%)',''],['pay_welfare_from','กองทุนสงเคราะห์ เริ่มหักงวด','เดือน ค.ศ. เช่น 2027-01 = ม.ค. 2570'],['pay_welfare_max_base','กองทุนสงเคราะห์ ฐานสูงสุด (บาท)','ว่าง = ไม่มีเพดาน (รอยืนยัน)']];
   var codes=function(ids){var m={};(PY.prof||[]).forEach(function(p){m[p.employee_id]=p.code});return String(ids||'').split(',').filter(String).map(function(i){return m[i]||i}).join(', ')};
