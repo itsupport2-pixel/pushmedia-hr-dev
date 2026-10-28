@@ -101,6 +101,9 @@ td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}tr
 .lg-top{position:relative;z-index:1;width:min(960px,100%);display:flex;justify-content:flex-end;margin-bottom:clamp(20px,6vh,70px)}.lg-top img{height:46px;width:auto}
 .lg-intro{position:fixed;inset:0;z-index:60;display:grid;place-items:center;pointer-events:none}.lg-intro svg{width:min(560px,78vw);height:auto;transform-origin:0 0;overflow:visible}
 .login.intro .lg-top img{opacity:0}.login.intro .lg-card{animation:lgUp .7s cubic-bezier(.2,.8,.2,1) 2.45s both}.login.intro .lg-wave{animation:lgWave .9s cubic-bezier(.2,.8,.2,1) 2.2s both}
+/* หน้าเข้าสู่ระบบแบบคอลัมน์เดียว (ไม่มีช่องรหัสผู้ดูแล) */
+.login.one .lg-top,.login.one .lg-card{width:min(520px,100%)}.login.one .lg-card{padding:44px 44px 30px;gap:28px}.login.one .lg-top{justify-content:center}.login.one .lg-cols{display:block}.login.one .lg-h{text-align:center}.login.one .lg-h h1{font-size:clamp(26px,3vw,34px)}.login.one .lg-h h1 span{display:block;font-size:.62em;font-weight:500;color:#6B6B6B;margin-bottom:2px}.login.one .lg-h p{margin-top:10px}.login.one .lg-note,.login.one .lg-hint{text-align:center}.login.one .lg-btn{height:52px}.login.one .lg-foot{text-align:center}
+@media(max-width:700px){.login.one .lg-card{padding:28px 22px 22px;gap:22px}}
 @keyframes lgUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}@keyframes lgWave{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
 
 .lg-card{position:relative;z-index:1;width:min(960px,100%);background:#fff;border-radius:24px;box-shadow:0 20px 50px rgba(0,0,0,.10);padding:56px 56px 40px;display:flex;flex-direction:column;gap:44px}
@@ -592,21 +595,22 @@ function renderLogin(){
    lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>',
    eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>'};
   var GOO=!!CFG.googleClientId||DEV;   // ปุ่ม Google แสดงเมื่อตั้ง OAuth Client ID ใน config.js แล้ว (เครื่องผู้พัฒนาใช้บัญชีจำลอง)
-  $('#app').innerHTML='<div class="login"><svg class="lg-wave" viewBox="0 0 1440 400" preserveAspectRatio="none" aria-hidden="true"><path fill="#2B2B2B" d="M0 40 C 432 150, 1008 140, 1440 -70 L 1440 400 L 0 400 Z"/><path fill="#111111" d="M0 90 C 461 210, 1037 200, 1440 -10 L 1440 400 L 0 400 Z"/></svg>'+
+  var ADM=/[?&]admin=1/.test(location.search);   // ช่องรหัสผ่านผู้ดูแลระบบ: ซ่อนจากหน้าเข้าสู่ระบบ (28 ต.ค. 2569 ผู้ใช้ขอ) · เปิดได้ที่ admin.html?admin=1 เท่านั้น (ทางเข้าสำรอง/ฉุกเฉิน)
+  $('#app').innerHTML='<div class="login'+(ADM?'':' one')+'"><svg class="lg-wave" viewBox="0 0 1440 400" preserveAspectRatio="none" aria-hidden="true"><path fill="#2B2B2B" d="M0 40 C 432 150, 1008 140, 1440 -70 L 1440 400 L 0 400 Z"/><path fill="#111111" d="M0 90 C 461 210, 1037 200, 1440 -10 L 1440 400 L 0 400 Z"/></svg>'+
    '<header class="lg-top"><img src="push-media-logo-black.svg" alt="Push Media · Innovative solutions"></header>'+
    '<main class="lg-card"><div class="lg-h"><h1><span>เข้าสู่ระบบ</span><b id="lg-app">'+esc(pub.app||'Push Media Center')+'</b></h1><p><b>ใช้ครั้งแรก?</b> เปิดแอปพนักงานใน LINE แล้วเชื่อมบัญชี หรือขอลิงก์เชิญจาก HR</p></div>'+
-    '<div class="lg-cols"><section class="lg-col"><h2>บัญชีพนักงาน</h2><div class="lg-alert" id="lg-noemail" role="alert" hidden></div><div class="lg-note">HR หัวหน้างาน ผู้จัดการ · เปิดเมนูตามสิทธิ์</div>'+
+    '<div class="lg-cols"><section class="lg-col">'+(ADM?'<h2>บัญชีพนักงาน</h2>':'')+'<div class="lg-alert" id="lg-noemail" role="alert" hidden></div><div class="lg-note">HR หัวหน้างาน ผู้จัดการ · เปิดเมนูตามสิทธิ์</div>'+
      '<button class="lg-btn lg-line" id="lg-line"><span class="ic">'+IC.line+'</span><span class="lb">เข้าสู่ระบบด้วย LINE</span></button>'+
-     (GOO?'<button class="lg-btn lg-goo" id="lg-goo"><span class="ic">'+IC.goo+'</span><span class="lb">เข้าสู่ระบบด้วย Google</span></button><div class="lg-hint">Google: ใช้อีเมลเดียวกับที่ลงทะเบียนในข้อมูลพนักงาน</div>':'<div class="lg-hint">ใช้บัญชี LINE เดียวกับที่ลงเวลาในแอปพนักงาน</div>')+'</section>'+
+     (GOO?'<button class="lg-btn lg-goo" id="lg-goo"><span class="ic">'+IC.goo+'</span><span class="lb">เข้าสู่ระบบด้วย Google</span></button><div class="lg-hint">Google: ใช้อีเมลเดียวกับที่ลงทะเบียนในข้อมูลพนักงาน</div>':'<div class="lg-hint">ใช้บัญชี LINE เดียวกับที่ลงเวลาในแอปพนักงาน</div>')+'</section>'+(ADM?
      '<div class="lg-or" aria-hidden="true">หรือ</div>'+
-     '<form class="lg-col" id="lg-pw"><h2>ผู้ดูแลระบบ</h2><label class="lg-lab" for="pw">รหัสผ่าน</label><div class="lg-in">'+IC.lock+'<input id="pw" type="password" autocomplete="current-password" placeholder="รหัสผ่านผู้ดูแลระบบ"><button type="button" class="lg-eye" id="lg-eye" aria-label="แสดงรหัสผ่าน">'+IC.eye+'</button></div><button class="lg-go">เข้าสู่ระบบ</button></form></div>'+
+     '<form class="lg-col" id="lg-pw"><h2>ผู้ดูแลระบบ</h2><label class="lg-lab" for="pw">รหัสผ่าน</label><div class="lg-in">'+IC.lock+'<input id="pw" type="password" autocomplete="current-password" placeholder="รหัสผ่านผู้ดูแลระบบ"><button type="button" class="lg-eye" id="lg-eye" aria-label="แสดงรหัสผ่าน">'+IC.eye+'</button></div><button class="lg-go">เข้าสู่ระบบ</button></form>':'')+'</div>'+
     (DEV?'<div class="cb" style="background:var(--warn-s);border-radius:8px;font-size:13px"><b>โหมดทดสอบในเครื่อง</b> · เข้าเป็น <button class="btn sm" data-dev="Uhr1|มิ้นท์">HR</button> <button class="btn sm" data-dev="Umgr1|โอ๊ต">ผู้จัดการ</button> <button class="btn sm" data-dev="Ulead1|ต้น">หัวหน้าทีม</button> <button class="btn sm" data-dev="Uemp1|บอย">พนักงาน</button> · รหัส admin: demo1234</div>':'')+
     '<div id="lg-err" class="er" role="alert" style="color:var(--bad);font-size:14px;text-align:center"></div><div class="lg-foot">เข้าใช้ไม่ได้? ติดต่อ HR หรือผู้ดูแลระบบ · ใช้ได้บน Chrome · Edge · Safari</div></main></div>';
   if($('#lg-goo')){if(!DEV)gsiLoad().catch(function(){});$('#lg-goo').onclick=googleLogin}
-  $('#lg-eye').onclick=function(){var i=$('#pw'),v=i.type==='password';i.type=v?'text':'password';this.setAttribute('aria-label',v?'ซ่อนรหัสผ่าน':'แสดงรหัสผ่าน')};
+  if($('#lg-eye'))$('#lg-eye').onclick=function(){var i=$('#pw'),v=i.type==='password';i.type=v?'text':'password';this.setAttribute('aria-label',v?'ซ่อนรหัสผ่าน':'แสดงรหัสผ่าน')};
   lgIntro();
   $('#lg-line').onclick=function(){lineLogin()};
-  $('#lg-pw').onsubmit=function(ev){ev.preventDefault();var b=ev.submitter;busy(b,1);call('loginAdmin',$('#pw').value).then(function(r){done(r.token)}).catch(function(e){busy(b,0);$('#lg-err').textContent=e.message})};
+  if($('#lg-pw'))$('#lg-pw').onsubmit=function(ev){ev.preventDefault();var b=ev.submitter;busy(b,1);call('loginAdmin',$('#pw').value).then(function(r){done(r.token)}).catch(function(e){busy(b,0);$('#lg-err').textContent=e.message})};
   $$('[data-dev]').forEach(function(b){b.onclick=function(){var p=b.dataset.dev.split('|');loginWith('dev|'+p[0]+'|'+p[1])}});
 }
 /* Google: โหลดสคริปต์ล่วงหน้าตอนเปิดหน้า เพื่อให้กดแล้วเปิดหน้าต่างได้ทันที (เบราว์เซอร์บล็อกหน้าต่างที่ไม่ได้เปิดจากการกดโดยตรง)
