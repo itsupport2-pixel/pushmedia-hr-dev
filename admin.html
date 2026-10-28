@@ -19,7 +19,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js" charset="utf-8"></script>
 <script src="config.js"></script>
-<script src="i18n.js?v=2"></script>
+<script src="i18n.js?v=3"></script>
 <style>
 /* สี Push Media ขาว–ดำ ตามโลโก้ (22 ต.ค. 2569) · สีสถานะ ok/warn/bad คงไว้ */
 :root{--nav:#0B0B0B;--nav2:#1F1F1F;--nav-ink:#C8C8C8;--acc:#111111;--acc-soft:#EDEDED;--bg:#F4F4F4;--sf:#FFFFFF;--sf2:#F8F8F8;--line:#E3E3E3;
@@ -100,7 +100,7 @@ td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}tr
 .lg-wave{position:absolute;left:0;right:0;bottom:0;width:100%;height:46%;z-index:0;pointer-events:none}
 .lg-top{position:relative;z-index:1;width:min(960px,100%);display:flex;justify-content:flex-end;margin-bottom:clamp(20px,6vh,70px)}.lg-top img{height:46px;width:auto}
 .lg-intro{position:fixed;inset:0;z-index:60;display:grid;place-items:center;pointer-events:none}.lg-intro svg{width:min(560px,78vw);height:auto;transform-origin:0 0;overflow:visible}
-.login.intro .lg-top img{opacity:0}.login.intro .lg-card,.login.intro .lg-foot{animation:lgUp .7s cubic-bezier(.2,.8,.2,1) 2.45s both}.login.intro .lg-wave{animation:lgWave .9s cubic-bezier(.2,.8,.2,1) 2.2s both}
+.login.intro .lg-top img{opacity:0}.login.intro .lg-card,.login.intro .lg-foot,.login.intro .lg-top-sp{animation:lgUp .7s cubic-bezier(.2,.8,.2,1) 2.45s both}.login.intro .lg-wave{animation:lgWave .9s cubic-bezier(.2,.8,.2,1) 2.2s both}
 /* หน้าเข้าสู่ระบบแบบคอลัมน์เดียว (ไม่มีช่องรหัสผู้ดูแล) */
 .login.one .lg-top,.login.one .lg-card{width:min(520px,100%)}.login.one .lg-card{padding:44px 44px 30px;gap:28px}.login.one .lg-top{justify-content:center}.login.one .lg-cols{display:block}.login.one .lg-h{text-align:center}.login.one .lg-h h1{font-size:clamp(26px,3vw,34px)}.login.one .lg-h h1 span{display:block;font-size:.62em;font-weight:500;color:#6B6B6B;margin-bottom:2px}.login.one .lg-h p{margin-top:10px}.login.one .lg-note,.login.one .lg-hint{text-align:center}.login.one .lg-btn{height:52px}.login.one .lg-foot{text-align:center}
 @media(max-width:700px){.login.one .lg-card{padding:28px 22px 22px;gap:22px}}
@@ -698,6 +698,7 @@ function lgHelp(pre){
       f.querySelector('.lg-x').onclick=close;$('#lh-done').onclick=close;$('#lh-done').focus()}).catch(function(e){busy(b,0);er.textContent=e.message})};
 }
 function renderLogin(){
+  if(window.setLang&&window.hrLangSaved&&!hrLangSaved())setLang('en',true);   // หน้าเข้าสู่ระบบ: ค่าเริ่มต้นอังกฤษ (ยังไม่เคยเลือก) · ไม่จำ → หลังบ้านยังเป็นภาษาเดิมของผู้ใช้
   call('publicInfo').then(function(p){store('hr_pub',p);document.title=(p.app||'Push Media Center');var b=$('#lg-app');if(b)b.textContent=p.app||'Push Media Center'}).catch(function(){});
   var pub=store('hr_pub')||{};
   var IC={line:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.5s5.9-3.5 8-6c1.5-1.6 2-3.2 2-4.8C22 6.6 17.5 3 12 3Zm-4.6 10.6H5.5a.5.5 0 0 1-.5-.5V9.2a.5.5 0 0 1 1 0v3.4h1.4a.5.5 0 0 1 0 1Zm2-.5a.5.5 0 0 1-1 0V9.2a.5.5 0 0 1 1 0Zm4.7 0a.5.5 0 0 1-.9.3l-2-2.7v2.4a.5.5 0 0 1-1 0V9.2a.5.5 0 0 1 .9-.3l2 2.7V9.2a.5.5 0 0 1 1 0Zm3.1-2.4a.5.5 0 0 1 0 1h-1.4v.9h1.4a.5.5 0 0 1 0 1h-1.9a.5.5 0 0 1-.5-.5V9.2c0-.3.2-.5.5-.5h1.9a.5.5 0 0 1 0 1h-1.4v.9Z"/></svg>',
@@ -758,6 +759,7 @@ function reload(keep){return aCall('adminBootstrap').then(function(d){if(!d||!d.
 /* ───────── shell ───────── */
 function render(){
   if(!A.d||!A.d.me){if(A.tok)boot();else renderLogin();return}
+  if(window.setLang&&window.hrLangSaved&&!hrLangSaved()&&hrLang()==='en')setLang('th',true);   // เข้าระบบแล้ว: ยังไม่เคยเลือกภาษา = ไทยเหมือนเดิม
   var me=A.d.me,lr=A.d.linkRequests.length,allowed=navFor(me),cur=NAVOF[A.view]||A.view;
   if(selfOnly()&&(A.view==='profile'||A.view==='form'))A.view='dash';
   if(allowed.indexOf(cur)<0){A.view=allowed[0];cur=A.view}

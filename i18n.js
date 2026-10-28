@@ -289,7 +289,9 @@
   }
   window.hrLang = function () { return LANG; };
   window.hrT = tr;
-  window.setLang = function (l) { LANG = l === 'en' ? 'en' : 'th'; try { localStorage.setItem('hr_lang', LANG); } catch (e) {} apply(); };
+  // temp = ไม่จำลงเครื่อง (หน้าเข้าสู่ระบบเริ่มเป็นอังกฤษเมื่อยังไม่เคยเลือก · 28 ต.ค. 2569)
+  window.setLang = function (l, temp) { var n = l === 'en' ? 'en' : 'th'; if (!temp) { try { localStorage.setItem('hr_lang', n); } catch (e) {} } if (n === LANG && temp) return; LANG = n; apply(); };
+  window.hrLangSaved = function () { try { return localStorage.getItem('hr_lang') || ''; } catch (e) { return ''; } };
   document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-lang]'); if (b) { e.preventDefault(); window.setLang(b.getAttribute('data-lang')); } });
   // ปุ่มที่เพิ่งวาดใหม่ (หน้า render ใหม่) ต้องแสดงสถานะภาษาปัจจุบัน
   new MutationObserver(function () { document.querySelectorAll('[data-lang]').forEach(function (b) { var on = String(b.getAttribute('data-lang') === LANG); if (b.getAttribute('aria-pressed') !== on) b.setAttribute('aria-pressed', on); }); })
