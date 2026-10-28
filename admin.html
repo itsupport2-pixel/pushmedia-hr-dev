@@ -19,7 +19,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js" charset="utf-8"></script>
 <script src="config.js"></script>
-<script src="i18n.js?v=1"></script>
+<script src="i18n.js?v=2"></script>
 <style>
 /* สี Push Media ขาว–ดำ ตามโลโก้ (22 ต.ค. 2569) · สีสถานะ ok/warn/bad คงไว้ */
 :root{--nav:#0B0B0B;--nav2:#1F1F1F;--nav-ink:#C8C8C8;--acc:#111111;--acc-soft:#EDEDED;--bg:#F4F4F4;--sf:#FFFFFF;--sf2:#F8F8F8;--line:#E3E3E3;
@@ -146,7 +146,7 @@ td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}tr
 .lg-art{background:#fff}.lg-dots{background:radial-gradient(#E2E2E2 1.6px,transparent 1.8px) 0 0/15px 15px}.lg-chev{color:#F3F3F3}
 .lg-row{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12.5px;color:#9A9A9A;margin-top:-4px}
 @media(max-width:520px){.lg-row{flex-direction:column;gap:4px;text-align:center}}
-.lg-link{background:none;border:0;padding:4px 0;font:inherit;font-size:13.5px;font-weight:600;color:#141414;cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#C9C9C9}.lg-link:hover{text-decoration-color:#141414}.lg-link:focus-visible{outline:2px solid #141414;outline-offset:2px;border-radius:4px}
+.lg-link{background:none;border:0;padding:4px 0;font:inherit;font-size:12.5px;font-weight:500;color:#9A9A9A;cursor:pointer;text-decoration:none}.lg-link:hover{color:#141414}.lg-link:focus-visible{outline:2px solid #141414;outline-offset:2px;border-radius:4px}
 .login.split .lg-first{border-top:1px solid #F0F0F0;padding-top:16px}
 .lg-modal{position:fixed;inset:0;z-index:80;background:rgba(15,15,15,.42);display:grid;place-items:center;padding:16px;animation:lgFade .18s ease both}
 @keyframes lgFade{from{opacity:0}to{opacity:1}}
@@ -161,7 +161,7 @@ td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}tr
 .lg-okc{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:10px 0}.lg-okc .lg-send{align-self:stretch;margin-top:8px}
 .lg-okic{width:56px;height:56px;border-radius:50%;background:#E3F4EA;color:#1A8A4A;display:grid;place-items:center;font-size:28px;font-weight:700}
 /* ฝั่งขวา (28 ต.ค. 2569 จัดใหม่): โลโก้มุมซ้ายบน · ฟอร์มกลางจอชิดซ้าย · ท้ายหน้า © + เบราว์เซอร์ */
-.login.split .lg-top-sp{height:38px}
+.login.split .lg-top-sp{height:38px;display:flex;justify-content:flex-end;align-items:center;align-self:center;width:min(420px,100%)}
 .login.split .lg-side{flex-direction:column;justify-content:space-between;align-items:stretch;min-height:100vh;min-height:100dvh;padding:36px clamp(28px,4vw,64px) 28px}
 .login.split .lg-top{justify-content:flex-start;margin:0;align-self:center;width:min(420px,100%)}.login.split .lg-top img{height:38px}
 .login.split .lg-card{align-self:center;width:min(420px,100%);margin:40px 0;gap:16px}
@@ -169,6 +169,7 @@ td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}tr
 .login.split .lg-first{text-align:left;font-size:14px;margin-top:4px}
 .login.split .lg-foot{align-self:center;width:min(420px,100%);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;text-align:left;font-size:12.5px;color:#A8A8A8}
 @media(max-width:999px){.login.split .lg-side{padding:24px 18px 20px}.login.split .lg-top{justify-content:center}.login.split .lg-card{margin:24px 0}.login.split .lg-foot{justify-content:center;text-align:center}}
+.login .lg-top-sp .lang{display:flex;gap:2px;padding:3px;border-radius:99px;background:#F1F1F1;border:0}.login .lg-top-sp .lang button{border:0!important;background:none;height:28px;min-width:38px;padding:0 10px;border-radius:99px!important;font:600 12px/1 inherit;font-family:inherit;color:#5A5A5A;cursor:pointer;box-shadow:none}.login .lg-top-sp .lang button[aria-pressed="true"]{background:#141414;color:#fff}
 @keyframes lgUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}@keyframes lgWave{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
 
 .lg-card{position:relative;z-index:1;width:min(960px,100%);background:#fff;border-radius:24px;box-shadow:0 20px 50px rgba(0,0,0,.10);padding:56px 56px 40px;display:flex;flex-direction:column;gap:44px}
@@ -248,8 +249,8 @@ button.kpi:hover{border-color:var(--fnt)}.kpi .l{color:var(--mut);font-size:13px
 .tb .srch input{border:0;outline:0;background:none;font:inherit;font-size:13.5px;flex:1;min-width:0;color:#141414}
 .srch-r{position:absolute;top:46px;left:0;right:0;background:#fff;border:1px solid #E6E6E6;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.12);padding:6px;max-height:380px;overflow:auto}
 .srch-r button{display:flex;gap:10px;align-items:center;width:100%;padding:8px 10px;border:0;background:none;border-radius:8px;text-align:left;font:inherit;font-size:13.5px;cursor:pointer;color:#141414}.srch-r button:hover{background:#F3F3F3}.srch-r small{color:#8C8C8C;font-size:12px;margin-left:auto}.srch-r .e{padding:10px;color:#8C8C8C;font-size:13px}
-.tb .lang{display:flex;gap:2px;padding:3px;border-radius:99px;background:#F1F1F1;flex:none}.tb .lang button{border:0;background:none;height:30px;min-width:38px;padding:0 10px;border-radius:99px;font:600 12.5px/1 inherit;font-family:inherit;color:#5A5A5A;cursor:pointer}
-.tb .lang button[aria-pressed="true"]{background:#141414;color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12)}.tb .lang button:focus-visible{outline:2px solid #141414;outline-offset:1px}
+.tb .lang,.lg-top-sp .lang{display:flex;gap:2px;padding:3px;border-radius:99px;background:#F1F1F1;flex:none}.tb .lang button{border:0;background:none;height:30px;min-width:38px;padding:0 10px;border-radius:99px;font:600 12.5px/1 inherit;font-family:inherit;color:#5A5A5A;cursor:pointer}
+.tb .lang button[aria-pressed="true"],.lg-top-sp .lang button[aria-pressed="true"]{background:#141414;color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12)}.tb .lang button:focus-visible{outline:2px solid #141414;outline-offset:1px}
 .tb .ib{width:40px;height:40px;border-radius:99px;background:#F3F3F3;border:0;display:grid;place-items:center;cursor:pointer;position:relative;color:#141414;flex:none;padding:0}.tb .ib svg{width:20px;height:20px}
 .tb .ib .dot{position:absolute;top:7px;right:8px;width:9px;height:9px;border-radius:99px;background:#E5484D;border:2px solid #fff}
 .tb .usr{display:flex;align-items:center;gap:10px;cursor:pointer;background:none;border:0;font:inherit;text-align:left;padding:4px;border-radius:10px;color:#141414}.tb .usr:hover{background:#F6F6F6}
@@ -665,35 +666,35 @@ function lgSplit(pub,IC,GOO){
      '<div class="ph-map"><span class="ph-rad"></span><span class="ph-me">'+pin+'</span><em>● ในพื้นที่ · สำนักงาน</em></div>'+
      '<div class="ph-t"><b>08:47</b><small>เวลาเข้างาน 09:00 · ตรงเวลา</small></div>'+
      '<div class="ph-btn">ลงเวลาเข้างาน</div><div class="ph-or"><i></i>หรือ<i></i></div><div class="ph-btn2">ขอลา / ดูตารางงาน</div><span class="ph-home"></span></div></div></div>';
-  return '<div class="login one split">'+art+'<div class="lg-side"><span class="lg-top-sp" aria-hidden="true"></span><main class="lg-card">'+
-    '<div class="lg-h"><h1>ยินดีต้อนรับ</h1><p>เข้าสู่ระบบ <b id="lg-app">'+esc(pub.app||'Push Media Center')+'</b><br>ด้วยบัญชีพนักงานของคุณ</p></div>'+
+  return '<div class="login one split">'+art+'<div class="lg-side"><div class="lg-top-sp"><div class="lang" role="group" aria-label="ภาษา / Language" data-noi18n><button type="button" data-lang="th" aria-pressed="'+(window.hrLang&&hrLang()==='th')+'">TH</button><button type="button" data-lang="en" aria-pressed="'+(window.hrLang&&hrLang()==='en')+'">EN</button></div></div><main class="lg-card">'+
+    '<div class="lg-h"><h1>ยินดีต้อนรับ</h1><p><span>เข้าใช้งาน</span> <b id="lg-app">'+esc(pub.app||'Push Media Center')+'</b><br><span>ด้วยบัญชีพนักงานของคุณ</span></p></div>'+
     '<div class="lg-alert" id="lg-noemail" role="alert" hidden></div>'+
     '<button class="lg-btn lg-line" id="lg-line"><span class="ic">'+IC.line+'</span><span class="lb">เข้าสู่ระบบด้วย LINE</span></button>'+
     (GOO?'<div class="lg-or2" aria-hidden="true"><i></i>หรือ<i></i></div><button class="lg-btn lg-goo" id="lg-goo"><span class="ic">'+IC.goo+'</span><span class="lb">เข้าสู่ระบบด้วย Google</span></button>':'')+
     '<div class="lg-row"><span>'+(GOO?'Google: ใช้อีเมลที่ลงทะเบียนไว้':'ใช้บัญชี LINE เดียวกับแอปพนักงาน')+'</span><button type="button" class="lg-link" data-help="">Forgot Password?</button></div>'+
     (DEV?'<div class="cb" style="background:var(--warn-s);border-radius:8px;font-size:13px"><b>โหมดทดสอบในเครื่อง</b> · เข้าเป็น <button class="btn sm" data-dev="Uhr1|มิ้นท์">HR</button> <button class="btn sm" data-dev="Umgr1|โอ๊ต">ผู้จัดการ</button> <button class="btn sm" data-dev="Ulead1|ต้น">หัวหน้าทีม</button> <button class="btn sm" data-dev="Uemp1|บอย">พนักงาน</button></div>':'')+
     '<div id="lg-err" class="er" role="alert" style="color:var(--bad);font-size:14px;text-align:center"></div>'+
-    '<div class="lg-first">ใช้ครั้งแรก? <b>เปิดแอปพนักงานใน LINE</b> เพื่อเชื่อมบัญชี<br>หรือขอลิงก์เชิญจาก HR</div>'+
-    '</main><footer class="lg-foot"><span>© '+(new Date().getFullYear()+543)+' '+esc(pub.company||'Push Media')+'</span><span>ใช้ได้บน Chrome · Edge · Safari</span></footer></div></div>';
+    '<div class="lg-first">ใช้ครั้งแรก? <b>เปิดแอปพนักงานใน LINE</b> <span>เพื่อเชื่อมบัญชี</span><br><span>หรือขอลิงก์เชิญจาก HR</span></div>'+
+    '</main><footer class="lg-foot"><span data-noi18n>© '+new Date().getFullYear()+' '+esc(pub.company||'Push Media')+'</span><span>ใช้ได้บน Chrome · Edge · Safari</span></footer></div></div>';
 }
 /* ลืมรหัสผ่าน / เข้าใช้ไม่ได้ → กรอกข้อมูลบางส่วน ส่งให้ HR/admin ตรวจในศูนย์อนุมัติ (loginHelp ไม่ต้องเข้าสู่ระบบ) · ไม่ถามรหัสผ่าน */
 function lgHelp(pre){
   var O=[['line','เข้าด้วย LINE ไม่ได้ / เปลี่ยนบัญชี LINE'],['google','เข้าด้วย Google ไม่ได้ / ลืมอีเมลที่ใช้'],['pass','ลืมรหัสผ่านผู้ดูแลระบบ'],['new','พนักงานใหม่ ยังไม่มีบัญชี'],['other','อื่น ๆ']];
   var m=document.createElement('div');m.className='lg-modal';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');m.setAttribute('aria-labelledby','lh-t');
-  m.innerHTML='<form class="lg-mc" id="lh-f" novalidate><button type="button" class="lg-x" aria-label="ปิด">×</button><h2 id="lh-t">Forgot Password</h2><p class="lg-ms">ลืมรหัสผ่านหรือเข้าใช้ไม่ได้ กรอกข้อมูลเพื่อให้ HR / ผู้ดูแลระบบตรวจสอบและติดต่อกลับ · <b>ไม่ต้องใส่รหัสผ่าน</b></p>'+
+  m.innerHTML='<form class="lg-mc" id="lh-f" novalidate><button type="button" class="lg-x" aria-label="ปิด">×</button><h2 id="lh-t">Forgot Password</h2><p class="lg-ms"><span>ลืมรหัสผ่านหรือเข้าใช้ไม่ได้ กรอกข้อมูลเพื่อให้ HR / ผู้ดูแลระบบตรวจสอบและติดต่อกลับ</span> · <b>ไม่ต้องใส่รหัสผ่าน</b></p>'+
     '<label class="lg-fl">รหัสพนักงาน *<input name="emp_code" maxlength="20" autocomplete="off" placeholder="เช่น 0123"></label>'+
     '<label class="lg-fl">ชื่อ-นามสกุล *<input name="name" maxlength="80" autocomplete="name" placeholder="ชื่อ นามสกุล"></label>'+
     '<label class="lg-fl">เบอร์โทรหรืออีเมลที่ติดต่อกลับได้ *<input name="contact" maxlength="80" autocomplete="tel" placeholder="08x-xxx-xxxx หรือ name@company.com"></label>'+
     '<label class="lg-fl">ปัญหาที่พบ *<select name="issue"><option value="">เลือก…</option>'+O.map(function(o){return '<option value="'+o[0]+'"'+(o[0]===pre?' selected':'')+'>'+o[1]+'</option>'}).join('')+'</select></label>'+
     '<label class="lg-fl">รายละเอียดเพิ่มเติม<textarea name="detail" rows="3" maxlength="300" placeholder="เช่น เปลี่ยนเครื่อง/เบอร์ใหม่ เข้าแอป LINE ไม่ได้ตั้งแต่วันที่…"></textarea></label>'+
-    '<div class="lg-merr" role="alert"></div><button class="lg-btn lg-send">Send to HR · ส่งให้ HR ตรวจสอบ</button></form>';
+    '<div class="lg-merr" role="alert"></div><button class="lg-btn lg-send">ส่งให้ HR ตรวจสอบ</button></form>';
   document.body.appendChild(m);var f=m.querySelector('form'),er=m.querySelector('.lg-merr'),last=document.activeElement;
   var esc1=function(e){if(e.key==='Escape')close()},close=function(){m.remove();document.removeEventListener('keydown',esc1);if(last&&last.focus)last.focus()};
   document.addEventListener('keydown',esc1);m.querySelector('.lg-x').onclick=close;m.onclick=function(e){if(e.target===m)close()};
   setTimeout(function(){f.emp_code.focus()},30);
   f.onsubmit=function(ev){ev.preventDefault();er.textContent='';var p={emp_code:f.emp_code.value,name:f.name.value,contact:f.contact.value,issue:f.issue.value,detail:f.detail.value},b=f.querySelector('.lg-send');
     if(!p.emp_code.trim()||!p.name.trim()||!p.contact.trim()||!p.issue){er.textContent='กรอกช่องที่มี * ให้ครบ';return}
-    busy(b,1);call('loginHelp',p).then(function(r){f.innerHTML='<button type="button" class="lg-x" aria-label="ปิด">×</button><div class="lg-okc"><span class="lg-okic">✓</span><h2 id="lh-t">Request sent</h2><p class="lg-ms">เลขที่ <b>'+esc(r.no||'')+'</b><br>HR หรือผู้ดูแลระบบจะตรวจสอบและติดต่อกลับตามช่องทางที่ให้ไว้</p><button type="button" class="lg-btn lg-send" id="lh-done">ตกลง</button></div>';
+    busy(b,1);call('loginHelp',p).then(function(r){f.innerHTML='<button type="button" class="lg-x" aria-label="ปิด">×</button><div class="lg-okc"><span class="lg-okic">✓</span><h2 id="lh-t">Request sent</h2><p class="lg-ms"><span>เลขที่</span> <b>'+esc(r.no||'')+'</b><br><span>HR หรือผู้ดูแลระบบจะตรวจสอบและติดต่อกลับตามช่องทางที่ให้ไว้</span></p><button type="button" class="lg-btn lg-send" id="lh-done">เสร็จสิ้น</button></div>';
       f.querySelector('.lg-x').onclick=close;$('#lh-done').onclick=close;$('#lh-done').focus()}).catch(function(e){busy(b,0);er.textContent=e.message})};
 }
 function renderLogin(){
