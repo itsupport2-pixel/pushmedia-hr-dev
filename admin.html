@@ -971,7 +971,7 @@ function pyRunDraw(){var R=PY.run,r=R.run,t=r.totals||{},st=r.status,STEP=['draf
   if(st==='review'){if(R.isHR)btns+='<button class="btn" data-act="back">กลับไปแก้</button>';if(R.canApprove)btns+='<button class="btn pri" data-act="approve">อนุมัติ</button>'}
   if(st==='approved'&&R.isHR)btns+='<button class="btn" data-act="back">กลับไปแก้</button><button class="btn pri" data-act="close">ปิดงวดบัญชี</button>';
   if(st==='closed'&&R.isHR)btns+='<button class="btn pri" data-act="paid">ยืนยันโอนเงินแล้ว</button>';
-  if((st==='closed'||st==='paid')&&R.isAdmin)btns+='<button class="btn" data-act="reopen">ย้อนงวด</button>';
+  if((st==='closed'||st==='paid')&&(R.canReopen||R.isAdmin))btns+='<button class="btn" data-act="reopen">ย้อนงวด</button>';
   var kpi=function(l,v,d){return '<div class="py-k"><span>'+l+'</span><b class="num">'+v+'</b><small>'+(d||'&nbsp;')+'</small></div>'};
   pyBody('<div class="py-hd"><div><a class="lnk" id="py-back">‹ รายการงวด</a><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><h2 style="margin:0">งวด '+esc(ymTh(r.ym))+'</h2>'+pyBadge(st)+(st==='closed'||st==='paid'?'<span class="badge b-mute">🔒 อ่านอย่างเดียว</span>':'')+'</div>'+
     '<div class="muted" style="font-size:13px">'+dTh(r.from)+' – '+dTh(r.to)+' · จ่าย '+dTh(r.pay_date)+(r.calc_at?' · คำนวณล่าสุด '+esc(r.calc_at.slice(11,16))+' น. '+dTh(r.calc_at.slice(0,10)):'')+'</div></div><span class="sp"></span><div class="py-acts">'+btns+'</div></div>'+
