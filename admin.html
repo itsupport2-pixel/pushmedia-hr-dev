@@ -19,7 +19,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js" charset="utf-8"></script>
 <script src="config.js"></script>
-<script src="i18n.js?v=3"></script>
+<script src="i18n.js?v=4"></script>
 <style>
 /* สี Push Media ขาว–ดำ ตามโลโก้ (22 ต.ค. 2569) · สีสถานะ ok/warn/bad คงไว้ */
 :root{--nav:#0B0B0B;--nav2:#1F1F1F;--nav-ink:#C8C8C8;--acc:#111111;--acc-soft:#EDEDED;--bg:#F4F4F4;--sf:#FFFFFF;--sf2:#F8F8F8;--line:#E3E3E3;
@@ -1287,7 +1287,7 @@ function apDetail(x){var PART={full:'เต็มวัน',am:'ครึ่ง�
    (x.days.length?'<h4 style="margin:14px 0 6px">วันลา</h4><ul class="tl">'+x.days.map(function(d){return '<li>'+esc(d.date)+' · '+(PART[d.part]||d.part)+(d.status==='no'?' · ไม่อนุมัติ':'')+'</li>'}).join('')+'</ul>':'')+
    (x.flags.length?'<div class="alert" style="margin-top:12px;background:var(--warn-s);color:var(--warn)">'+x.flags.map(esc).join('<br>')+'</div>':'')+
    (x.history.length?'<h4 style="margin:14px 0 6px">ประวัติ</h4><ul class="tl">'+x.history.map(function(h){return '<li>'+(h.step==='hr'?'HR':h.step==='mgr'?'ขั้นที่ 2':'ขั้นที่ 1')+' · '+(ACT[h.action]||h.action)+' · '+esc(h.by)+' · '+esc(fdt(h.at))+(h.note?' · '+esc(h.note):'')+'</li>'}).join('')+'</ul>':'')+
-   (x.kind==='help'?'<div class="alert" style="margin-top:12px;background:#F5F5F5;color:var(--mut);font-size:13px">ตรวจตัวตนก่อนดำเนินการ เช่น โทรกลับตามเบอร์ในข้อมูลพนักงาน (ไม่ใช่เบอร์ที่กรอกมาเท่านั้น) · ห้ามแจ้งรหัสผ่านทางข้อความ</div>'+(x.mine?'<label class="f" style="margin-top:14px">บันทึก (จำเป็นเมื่อปิดเรื่อง)<textarea id="apn" rows="3" style="width:100%;border:1px solid var(--line);border-radius:7px;padding:8px"></textarea></label>':''):'')+
+   (x.kind==='help'?'<div class="alert" style="margin-top:12px;background:#F5F5F5;color:var(--mut);font-size:13px">ตรวจตัวตนก่อนดำเนินการ เช่น โทรกลับตามเบอร์ในข้อมูลพนักงาน (ไม่ใช่เบอร์ที่กรอกมาเท่านั้น) · ห้ามแจ้งรหัสผ่านทางข้อความ</div>'+(x.mine?'<label class="f" style="margin-top:14px">บันทึกการดำเนินการ (จำเป็นเมื่อปิดเรื่อง)<textarea id="apn" rows="3" style="width:100%;border:1px solid var(--line);border-radius:7px;padding:8px"></textarea></label>':''):'')+
    (x.mine&&x.kind==='leave'?'<label class="f" style="margin-top:14px">หมายเหตุ (จำเป็นเมื่อไม่อนุมัติ/ส่งกลับ · ผู้ขอจะเห็น)<textarea id="apn" rows="3" style="width:100%;border:1px solid var(--line);border-radius:7px;padding:8px"></textarea></label>':'');
   var foot=!x.mine?'':x.kind==='help'?'<button class="btn ok" id="ap-ok">ดำเนินการแล้ว</button><button class="btn bad" id="ap-no">ปิดเรื่อง</button>':x.kind==='device'?'<button class="btn ok" id="ap-ok">อนุญาตเครื่องนี้</button><button class="btn bad" id="ap-no">ไม่อนุญาต</button>':x.kind==='line'?'<button class="btn ok" id="ap-ok">ยืนยันว่าเป็นพนักงานคนนี้</button><button class="btn bad" id="ap-no">ไม่ใช่</button>':
     '<button class="btn ok" id="ap-ok">'+(x.status==='chg'?'อนุมัติการยกเลิก':'อนุมัติ')+'</button>'+(x.status==='chg'?'':'<button class="btn" id="ap-back">ส่งกลับแก้ไข</button>')+'<button class="btn bad" id="ap-no">ไม่อนุมัติ</button>';

@@ -238,7 +238,11 @@
     'พนักงานใหม่ ยังไม่มีบัญชี': 'New employee, no account yet', 'อื่น ๆ': 'Other', 'เช่น เปลี่ยนเครื่อง/เบอร์ใหม่ เข้าแอป LINE ไม่ได้ตั้งแต่วันที่…': 'e.g. new phone/number, cannot open the LINE app since…',
     'ส่งให้ HR ตรวจสอบ': 'Send to HR', 'กรอกช่องที่มี * ให้ครบ': 'Please fill in all fields marked *', 'เลขที่': 'Ref.', 'HR หรือผู้ดูแลระบบจะตรวจสอบและติดต่อกลับตามช่องทางที่ให้ไว้': 'HR or an administrator will review it and contact you',
     'เสร็จสิ้น': 'Done', 'ปิด': 'Close', 'สวัสดี,': 'Hello,', 'คุณสมชาย': 'Somchai', 'พุธ 28 ต.ค. 2569': 'Wed 28 Oct 2026', '● ในพื้นที่ · สำนักงาน': '● In area · Office', 'เวลาเข้างาน 09:00 · ตรงเวลา': 'Start 09:00 · On time',
-    'ลงเวลาเข้างาน': 'Clock in', 'ขอลา / ดูตารางงาน': 'Leave / Schedule', 'ภาษา / Language': 'Language' });
+    'ลงเวลาเข้างาน': 'Clock in', 'ขอลา / ดูตารางงาน': 'Leave / Schedule', 'ภาษา / Language': 'Language',
+    'แจ้งเข้าระบบไม่ได้': 'Sign-in help', 'ชื่อที่กรอก:': 'Name given:', 'ติดต่อกลับ:': 'Contact:', 'ไม่พบรหัสพนักงานนี้ในระบบ': 'Employee ID not found', 'ที่แจ้งมา': 'Message',
+    'ตรวจตัวตนก่อนดำเนินการ เช่น โทรกลับตามเบอร์ในข้อมูลพนักงาน (ไม่ใช่เบอร์ที่กรอกมาเท่านั้น) · ห้ามแจ้งรหัสผ่านทางข้อความ': "Verify identity first, e.g. call back using the phone number in the employee record (not only the number given) · never send passwords by message",
+    'บันทึกการดำเนินการ (จำเป็นเมื่อปิดเรื่อง)': 'Note (required when closing)', 'ปิดเรื่อง': 'Close request', 'กรอกเหตุผลที่ปิดเรื่อง': 'Enter a reason for closing', 'บันทึกว่าดำเนินการแล้ว': 'Marked as done', 'ปิดเรื่องแล้ว': 'Request closed',
+    'คำขอทั้งหมด': 'All requests', 'แจ้งปัญหา': 'Sign-in help', 'ชื่อที่กรอกไม่ตรงกับข้อมูลพนักงานของรหัสนี้ — ตรวจตัวตนก่อนดำเนินการ': "Name doesn't match this employee ID — verify identity first", 'ไม่พบรหัสพนักงานนี้ในระบบ — ตรวจตัวตนก่อนดำเนินการ': 'Employee ID not found — verify identity first' });
   // ชื่อคน/ชื่อเล่นที่บังเอิญอยู่ในรายการข้อความ (ปุ่มโหมดทดสอบ) → ไม่แปล
   ['ต้น', 'บอย', 'โอ๊ต', 'มิ้นท์', 'มิ้นต์'].forEach(function (k) { delete D[k]; });
   var TM = { 'ม.ค.': 'Jan', 'ก.พ.': 'Feb', 'มี.ค.': 'Mar', 'เม.ย.': 'Apr', 'พ.ค.': 'May', 'มิ.ย.': 'Jun', 'ก.ค.': 'Jul', 'ส.ค.': 'Aug', 'ก.ย.': 'Sep', 'ต.ค.': 'Oct', 'พ.ย.': 'Nov', 'ธ.ค.': 'Dec' };
