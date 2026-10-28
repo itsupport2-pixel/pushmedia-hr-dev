@@ -2054,7 +2054,7 @@ function bMap(){var load=function(){$('#mp-ls').innerHTML='<div class="loading">
   var qt;$('#mp-q').oninput=function(){var v=this.value;clearTimeout(qt);qt=setTimeout(function(){A.mpQ=v;drawMap()},200)};
   $('#mp-rl').onclick=load;
   loadLeaflet().then(function(){if(!$('#mp-map'))return;if(A.mpMap){try{A.mpMap.remove()}catch(e){}}
-    var m=A.mpMap=L.map('mp-map',{zoomControl:true,attributionControl:true,zoomSnap:0.25,zoomDelta:0.5,wheelPxPerZoomLevel:90,wheelDebounceTime:30}).setView([13.7325,100.4955],12);
+    var m=A.mpMap=L.map('mp-map',{zoomControl:true,attributionControl:true,zoomSnap:0,zoomDelta:1,wheelPxPerZoomLevel:14,wheelDebounceTime:60}).setView([13.7325,100.4955],12);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; OpenStreetMap'}).addTo(m);
     A.mpLayer=L.layerGroup().addTo(m);A.mpCl=null;A.mpFit=1;var zl=function(){var el=document.getElementById('mp-map');if(el)el.classList.toggle('z-lo',m.getZoom()<15)};m.on('zoomend',zl);zl();
     if(A.mp&&A.mp.date===A.mpDate)drawMap();else load()}).catch(function(e){$('#mp-map').innerHTML='<div class="alert" style="margin:16px">'+esc(e.message)+'</div>';load()})}
