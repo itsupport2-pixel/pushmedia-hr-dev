@@ -661,7 +661,7 @@ function lgSplit(pub,IC,GOO){
     '<div class="lg-alert" id="lg-noemail" role="alert" hidden></div>'+
     '<button class="lg-btn lg-line" id="lg-line"><span class="ic">'+IC.line+'</span><span class="lb">เข้าสู่ระบบด้วย LINE</span></button>'+
     (GOO?'<div class="lg-or2" aria-hidden="true"><i></i>หรือ<i></i></div><button class="lg-btn lg-goo" id="lg-goo"><span class="ic">'+IC.goo+'</span><span class="lb">เข้าสู่ระบบด้วย Google</span></button>':'')+
-    '<div class="lg-row"><span>'+(GOO?'Google: ใช้อีเมลที่ลงทะเบียนไว้':'ใช้บัญชี LINE เดียวกับแอปพนักงาน')+'</span><button type="button" class="lg-link" data-help="">ลืมรหัสผ่าน / เข้าใช้ไม่ได้?</button></div>'+
+    '<div class="lg-row"><span>'+(GOO?'Google: ใช้อีเมลที่ลงทะเบียนไว้':'ใช้บัญชี LINE เดียวกับแอปพนักงาน')+'</span><button type="button" class="lg-link" data-help="">Forgot Password?</button></div>'+
     (DEV?'<div class="cb" style="background:var(--warn-s);border-radius:8px;font-size:13px"><b>โหมดทดสอบในเครื่อง</b> · เข้าเป็น <button class="btn sm" data-dev="Uhr1|มิ้นท์">HR</button> <button class="btn sm" data-dev="Umgr1|โอ๊ต">ผู้จัดการ</button> <button class="btn sm" data-dev="Ulead1|ต้น">หัวหน้าทีม</button> <button class="btn sm" data-dev="Uemp1|บอย">พนักงาน</button></div>':'')+
     '<div id="lg-err" class="er" role="alert" style="color:var(--bad);font-size:14px;text-align:center"></div>'+
     '<div class="lg-first">ใช้ครั้งแรก? <b>เปิดแอปพนักงานใน LINE</b> แล้วเชื่อมบัญชี หรือขอลิงก์เชิญจาก HR</div>'+
@@ -671,20 +671,20 @@ function lgSplit(pub,IC,GOO){
 function lgHelp(pre){
   var O=[['line','เข้าด้วย LINE ไม่ได้ / เปลี่ยนบัญชี LINE'],['google','เข้าด้วย Google ไม่ได้ / ลืมอีเมลที่ใช้'],['pass','ลืมรหัสผ่านผู้ดูแลระบบ'],['new','พนักงานใหม่ ยังไม่มีบัญชี'],['other','อื่น ๆ']];
   var m=document.createElement('div');m.className='lg-modal';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');m.setAttribute('aria-labelledby','lh-t');
-  m.innerHTML='<form class="lg-mc" id="lh-f" novalidate><button type="button" class="lg-x" aria-label="ปิด">×</button><h2 id="lh-t">ลืมรหัสผ่าน / เข้าใช้ไม่ได้</h2><p class="lg-ms">กรอกข้อมูลเพื่อให้ HR หรือผู้ดูแลระบบตรวจสอบและติดต่อกลับ · <b>ไม่ต้องใส่รหัสผ่าน</b></p>'+
+  m.innerHTML='<form class="lg-mc" id="lh-f" novalidate><button type="button" class="lg-x" aria-label="ปิด">×</button><h2 id="lh-t">Forgot Password</h2><p class="lg-ms">ลืมรหัสผ่านหรือเข้าใช้ไม่ได้ กรอกข้อมูลเพื่อให้ HR / ผู้ดูแลระบบตรวจสอบและติดต่อกลับ · <b>ไม่ต้องใส่รหัสผ่าน</b></p>'+
     '<label class="lg-fl">รหัสพนักงาน *<input name="emp_code" maxlength="20" autocomplete="off" placeholder="เช่น 0123"></label>'+
     '<label class="lg-fl">ชื่อ-นามสกุล *<input name="name" maxlength="80" autocomplete="name" placeholder="ชื่อ นามสกุล"></label>'+
     '<label class="lg-fl">เบอร์โทรหรืออีเมลที่ติดต่อกลับได้ *<input name="contact" maxlength="80" autocomplete="tel" placeholder="08x-xxx-xxxx หรือ name@company.com"></label>'+
     '<label class="lg-fl">ปัญหาที่พบ *<select name="issue"><option value="">เลือก…</option>'+O.map(function(o){return '<option value="'+o[0]+'"'+(o[0]===pre?' selected':'')+'>'+o[1]+'</option>'}).join('')+'</select></label>'+
     '<label class="lg-fl">รายละเอียดเพิ่มเติม<textarea name="detail" rows="3" maxlength="300" placeholder="เช่น เปลี่ยนเครื่อง/เบอร์ใหม่ เข้าแอป LINE ไม่ได้ตั้งแต่วันที่…"></textarea></label>'+
-    '<div class="lg-merr" role="alert"></div><button class="lg-btn lg-send">ส่งให้ HR ตรวจสอบ</button></form>';
+    '<div class="lg-merr" role="alert"></div><button class="lg-btn lg-send">Send to HR · ส่งให้ HR ตรวจสอบ</button></form>';
   document.body.appendChild(m);var f=m.querySelector('form'),er=m.querySelector('.lg-merr'),last=document.activeElement;
   var esc1=function(e){if(e.key==='Escape')close()},close=function(){m.remove();document.removeEventListener('keydown',esc1);if(last&&last.focus)last.focus()};
   document.addEventListener('keydown',esc1);m.querySelector('.lg-x').onclick=close;m.onclick=function(e){if(e.target===m)close()};
   setTimeout(function(){f.emp_code.focus()},30);
   f.onsubmit=function(ev){ev.preventDefault();er.textContent='';var p={emp_code:f.emp_code.value,name:f.name.value,contact:f.contact.value,issue:f.issue.value,detail:f.detail.value},b=f.querySelector('.lg-send');
     if(!p.emp_code.trim()||!p.name.trim()||!p.contact.trim()||!p.issue){er.textContent='กรอกช่องที่มี * ให้ครบ';return}
-    busy(b,1);call('loginHelp',p).then(function(r){f.innerHTML='<button type="button" class="lg-x" aria-label="ปิด">×</button><div class="lg-okc"><span class="lg-okic">✓</span><h2 id="lh-t">ส่งเรื่องแล้ว</h2><p class="lg-ms">เลขที่ <b>'+esc(r.no||'')+'</b><br>HR หรือผู้ดูแลระบบจะตรวจสอบและติดต่อกลับตามช่องทางที่ให้ไว้</p><button type="button" class="lg-btn lg-send" id="lh-done">ตกลง</button></div>';
+    busy(b,1);call('loginHelp',p).then(function(r){f.innerHTML='<button type="button" class="lg-x" aria-label="ปิด">×</button><div class="lg-okc"><span class="lg-okic">✓</span><h2 id="lh-t">Request sent</h2><p class="lg-ms">เลขที่ <b>'+esc(r.no||'')+'</b><br>HR หรือผู้ดูแลระบบจะตรวจสอบและติดต่อกลับตามช่องทางที่ให้ไว้</p><button type="button" class="lg-btn lg-send" id="lh-done">ตกลง</button></div>';
       f.querySelector('.lg-x').onclick=close;$('#lh-done').onclick=close;$('#lh-done').focus()}).catch(function(e){busy(b,0);er.textContent=e.message})};
 }
 function renderLogin(){
@@ -703,7 +703,7 @@ function renderLogin(){
      '<button class="lg-btn lg-line" id="lg-line"><span class="ic">'+IC.line+'</span><span class="lb">เข้าสู่ระบบด้วย LINE</span></button>'+
      (GOO?'<button class="lg-btn lg-goo" id="lg-goo"><span class="ic">'+IC.goo+'</span><span class="lb">เข้าสู่ระบบด้วย Google</span></button><div class="lg-hint">Google: ใช้อีเมลเดียวกับที่ลงทะเบียนในข้อมูลพนักงาน</div>':'<div class="lg-hint">ใช้บัญชี LINE เดียวกับที่ลงเวลาในแอปพนักงาน</div>')+'</section>'+(ADM?
      '<div class="lg-or" aria-hidden="true">หรือ</div>'+
-     '<form class="lg-col" id="lg-pw"><h2>ผู้ดูแลระบบ</h2><label class="lg-lab" for="pw">รหัสผ่าน</label><div class="lg-in">'+IC.lock+'<input id="pw" type="password" autocomplete="current-password" placeholder="รหัสผ่านผู้ดูแลระบบ"><button type="button" class="lg-eye" id="lg-eye" aria-label="แสดงรหัสผ่าน">'+IC.eye+'</button></div><button class="lg-go">เข้าสู่ระบบ</button><button type="button" class="lg-link" data-help="pass" style="align-self:flex-end">Forgot Password · ลืมรหัสผ่าน?</button></form>':'')+'</div>'+
+     '<form class="lg-col" id="lg-pw"><h2>ผู้ดูแลระบบ</h2><label class="lg-lab" for="pw">รหัสผ่าน</label><div class="lg-in">'+IC.lock+'<input id="pw" type="password" autocomplete="current-password" placeholder="รหัสผ่านผู้ดูแลระบบ"><button type="button" class="lg-eye" id="lg-eye" aria-label="แสดงรหัสผ่าน">'+IC.eye+'</button></div><button class="lg-go">เข้าสู่ระบบ</button><button type="button" class="lg-link" data-help="pass" style="align-self:flex-end">Forgot Password?</button></form>':'')+'</div>'+
     (DEV?'<div class="cb" style="background:var(--warn-s);border-radius:8px;font-size:13px"><b>โหมดทดสอบในเครื่อง</b> · เข้าเป็น <button class="btn sm" data-dev="Uhr1|มิ้นท์">HR</button> <button class="btn sm" data-dev="Umgr1|โอ๊ต">ผู้จัดการ</button> <button class="btn sm" data-dev="Ulead1|ต้น">หัวหน้าทีม</button> <button class="btn sm" data-dev="Uemp1|บอย">พนักงาน</button> · รหัส admin: demo1234</div>':'')+
     '<div id="lg-err" class="er" role="alert" style="color:var(--bad);font-size:14px;text-align:center"></div><div class="lg-foot">เข้าใช้ไม่ได้? ติดต่อ HR หรือผู้ดูแลระบบ · ใช้ได้บน Chrome · Edge · Safari</div></main></div>');
   if($('#lg-goo')){if(!DEV)gsiLoad().catch(function(){});$('#lg-goo').onclick=googleLogin}
