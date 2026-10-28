@@ -108,7 +108,7 @@ td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}tr
 .login.split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(400px,.9fr);align-items:center;background:#fff;padding:0;min-height:100vh;min-height:100dvh}
 .login.split .lg-side{display:flex;justify-content:center;padding:40px 48px;position:relative;z-index:1}
 .login.split .lg-card{width:min(400px,100%);background:transparent;box-shadow:none;padding:0;border-radius:0;gap:18px}
-.login.split .lg-top{width:auto;justify-content:center;margin:0 0 6px}.login.split .lg-top img{height:40px}
+.login.split .lg-top{width:auto;justify-content:center;margin:0 0 18px}.login.split .lg-top img{height:40px}
 .login.split .lg-h{text-align:center}.login.split .lg-h h1{font-size:clamp(30px,2.6vw,38px);letter-spacing:-.015em}.login.split .lg-h p{margin:6px 0 0;color:#8A8A8A;font-size:15px}
 .login.split .lg-btn{height:54px;border-radius:12px;font-size:16px}.login.split .lg-hint{text-align:center}
 .lg-or2{display:flex;align-items:center;gap:14px;color:#B5B5B5;font-size:13px;margin:2px 0}.lg-or2 i{flex:1;height:1px;background:#ECECEC}
@@ -142,6 +142,23 @@ td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}tr
 @media(max-width:999px){.login.split{grid-template-columns:1fr;background:#F7F7F7}.lg-art{display:none}.login.split .lg-side{padding:40px 20px}.login.split .lg-card{background:#fff;padding:32px 22px 24px;border-radius:20px;box-shadow:0 14px 40px rgba(0,0,0,.07)}}
 @media(prefers-reduced-motion:reduce){.lg-ping,.lg-pin svg{animation:none}}
 .login.intro .lg-art{animation:lgArt .9s cubic-bezier(.2,.8,.2,1) 2.2s both}@keyframes lgArt{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+.login.split .lg-h h1{font-size:clamp(32px,2.8vw,40px)}.login.split .lg-h p{line-height:1.55}.login.split .lg-h p b{color:#141414;font-weight:600}
+.lg-art{background:#fff}.lg-dots{background:radial-gradient(#E2E2E2 1.6px,transparent 1.8px) 0 0/15px 15px}.lg-chev{color:#F3F3F3}
+.lg-row{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12.5px;color:#9A9A9A;margin-top:-4px}
+.lg-link{background:none;border:0;padding:4px 0;font:inherit;font-size:13.5px;font-weight:600;color:#141414;cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#C9C9C9}.lg-link:hover{text-decoration-color:#141414}.lg-link:focus-visible{outline:2px solid #141414;outline-offset:2px;border-radius:4px}
+.login.split .lg-first{border-top:1px solid #F0F0F0;padding-top:16px}
+.lg-modal{position:fixed;inset:0;z-index:80;background:rgba(15,15,15,.42);display:grid;place-items:center;padding:16px;animation:lgFade .18s ease both}
+@keyframes lgFade{from{opacity:0}to{opacity:1}}
+.lg-mc{position:relative;width:min(460px,100%);max-height:calc(100dvh - 32px);overflow:auto;background:#fff;border-radius:20px;padding:30px 28px 24px;display:flex;flex-direction:column;gap:12px;box-shadow:0 24px 60px rgba(0,0,0,.25)}
+.lg-mc h2{margin:0;font-size:22px}.lg-ms{margin:0 0 4px;color:#6B6B6B;font-size:14px;line-height:1.55}
+.lg-x{position:absolute;right:14px;top:12px;width:34px;height:34px;border:0;border-radius:10px;background:#F2F2F2;font-size:20px;line-height:1;cursor:pointer;color:#141414}
+.lg-fl{display:flex;flex-direction:column;gap:6px;font-size:13.5px;font-weight:600;color:#141414}
+.lg-fl input,.lg-fl select,.lg-fl textarea{font:inherit;font-weight:400;font-size:15px;border:1px solid #E1E1E1;border-radius:12px;padding:11px 13px;background:#FAFAFA;color:#141414;width:100%}
+.lg-fl input:focus,.lg-fl select:focus,.lg-fl textarea:focus{outline:none;border-color:#141414;background:#fff;box-shadow:0 0 0 3px rgba(20,20,20,.08)}
+.lg-merr{color:var(--bad);font-size:13.5px}.lg-merr:empty{display:none}
+.lg-send{background:#141414;color:#fff;border:0;height:50px;border-radius:12px;font-weight:600;font-size:15.5px;cursor:pointer;justify-content:center}
+.lg-okc{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:10px 0}.lg-okc .lg-send{align-self:stretch;margin-top:8px}
+.lg-okic{width:56px;height:56px;border-radius:50%;background:#E3F4EA;color:#1A8A4A;display:grid;place-items:center;font-size:28px;font-weight:700}
 @keyframes lgUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}@keyframes lgWave{from{opacity:0;transform:translateY(60px)}to{opacity:1;transform:none}}
 
 .lg-card{position:relative;z-index:1;width:min(960px,100%);background:#fff;border-radius:24px;box-shadow:0 20px 50px rgba(0,0,0,.10);padding:56px 56px 40px;display:flex;flex-direction:column;gap:44px}
@@ -640,14 +657,35 @@ function lgSplit(pub,IC,GOO){
      '<div class="ph-btn">ลงเวลาเข้างาน</div><div class="ph-or"><i></i>หรือ<i></i></div><div class="ph-btn2">ขอลา / ดูตารางงาน</div><span class="ph-home"></span></div></div></div>';
   return '<div class="login one split">'+art+'<div class="lg-side"><main class="lg-card">'+
     '<header class="lg-top"><img src="push-media-logo-black.svg" alt="Push Media · Innovative solutions"></header>'+
-    '<div class="lg-h"><h1><b id="lg-app">'+esc(pub.app||'Push Media Center')+'</b></h1><p>ยินดีต้อนรับ · เข้าสู่ระบบด้วยบัญชีพนักงานของคุณ</p></div>'+
+    '<div class="lg-h"><h1>ยินดีต้อนรับ</h1><p>เข้าสู่ระบบ <b id="lg-app">'+esc(pub.app||'Push Media Center')+'</b><br>ด้วยบัญชีพนักงานของคุณ</p></div>'+
     '<div class="lg-alert" id="lg-noemail" role="alert" hidden></div>'+
     '<button class="lg-btn lg-line" id="lg-line"><span class="ic">'+IC.line+'</span><span class="lb">เข้าสู่ระบบด้วย LINE</span></button>'+
-    (GOO?'<div class="lg-or2" aria-hidden="true"><i></i>หรือ<i></i></div><button class="lg-btn lg-goo" id="lg-goo"><span class="ic">'+IC.goo+'</span><span class="lb">เข้าสู่ระบบด้วย Google</span></button><div class="lg-hint">Google: ใช้อีเมลเดียวกับที่ลงทะเบียนในข้อมูลพนักงาน</div>':'<div class="lg-hint">ใช้บัญชี LINE เดียวกับที่ลงเวลาในแอปพนักงาน</div>')+
+    (GOO?'<div class="lg-or2" aria-hidden="true"><i></i>หรือ<i></i></div><button class="lg-btn lg-goo" id="lg-goo"><span class="ic">'+IC.goo+'</span><span class="lb">เข้าสู่ระบบด้วย Google</span></button>':'')+
+    '<div class="lg-row"><span>'+(GOO?'Google: ใช้อีเมลที่ลงทะเบียนไว้':'ใช้บัญชี LINE เดียวกับแอปพนักงาน')+'</span><button type="button" class="lg-link" data-help="">ลืมรหัสผ่าน / เข้าใช้ไม่ได้?</button></div>'+
     (DEV?'<div class="cb" style="background:var(--warn-s);border-radius:8px;font-size:13px"><b>โหมดทดสอบในเครื่อง</b> · เข้าเป็น <button class="btn sm" data-dev="Uhr1|มิ้นท์">HR</button> <button class="btn sm" data-dev="Umgr1|โอ๊ต">ผู้จัดการ</button> <button class="btn sm" data-dev="Ulead1|ต้น">หัวหน้าทีม</button> <button class="btn sm" data-dev="Uemp1|บอย">พนักงาน</button></div>':'')+
     '<div id="lg-err" class="er" role="alert" style="color:var(--bad);font-size:14px;text-align:center"></div>'+
     '<div class="lg-first">ใช้ครั้งแรก? <b>เปิดแอปพนักงานใน LINE</b> แล้วเชื่อมบัญชี หรือขอลิงก์เชิญจาก HR</div>'+
-    '<div class="lg-foot">เข้าใช้ไม่ได้? ติดต่อ HR · ใช้ได้บน Chrome · Edge · Safari</div></main></div></div>';
+    '<div class="lg-foot">ใช้ได้บน Chrome · Edge · Safari</div></main></div></div>';
+}
+/* ลืมรหัสผ่าน / เข้าใช้ไม่ได้ → กรอกข้อมูลบางส่วน ส่งให้ HR/admin ตรวจในศูนย์อนุมัติ (loginHelp ไม่ต้องเข้าสู่ระบบ) · ไม่ถามรหัสผ่าน */
+function lgHelp(pre){
+  var O=[['line','เข้าด้วย LINE ไม่ได้ / เปลี่ยนบัญชี LINE'],['google','เข้าด้วย Google ไม่ได้ / ลืมอีเมลที่ใช้'],['pass','ลืมรหัสผ่านผู้ดูแลระบบ'],['new','พนักงานใหม่ ยังไม่มีบัญชี'],['other','อื่น ๆ']];
+  var m=document.createElement('div');m.className='lg-modal';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');m.setAttribute('aria-labelledby','lh-t');
+  m.innerHTML='<form class="lg-mc" id="lh-f" novalidate><button type="button" class="lg-x" aria-label="ปิด">×</button><h2 id="lh-t">ลืมรหัสผ่าน / เข้าใช้ไม่ได้</h2><p class="lg-ms">กรอกข้อมูลเพื่อให้ HR หรือผู้ดูแลระบบตรวจสอบและติดต่อกลับ · <b>ไม่ต้องใส่รหัสผ่าน</b></p>'+
+    '<label class="lg-fl">รหัสพนักงาน *<input name="emp_code" maxlength="20" autocomplete="off" placeholder="เช่น 0123"></label>'+
+    '<label class="lg-fl">ชื่อ-นามสกุล *<input name="name" maxlength="80" autocomplete="name" placeholder="ชื่อ นามสกุล"></label>'+
+    '<label class="lg-fl">เบอร์โทรหรืออีเมลที่ติดต่อกลับได้ *<input name="contact" maxlength="80" autocomplete="tel" placeholder="08x-xxx-xxxx หรือ name@company.com"></label>'+
+    '<label class="lg-fl">ปัญหาที่พบ *<select name="issue"><option value="">เลือก…</option>'+O.map(function(o){return '<option value="'+o[0]+'"'+(o[0]===pre?' selected':'')+'>'+o[1]+'</option>'}).join('')+'</select></label>'+
+    '<label class="lg-fl">รายละเอียดเพิ่มเติม<textarea name="detail" rows="3" maxlength="300" placeholder="เช่น เปลี่ยนเครื่อง/เบอร์ใหม่ เข้าแอป LINE ไม่ได้ตั้งแต่วันที่…"></textarea></label>'+
+    '<div class="lg-merr" role="alert"></div><button class="lg-btn lg-send">ส่งให้ HR ตรวจสอบ</button></form>';
+  document.body.appendChild(m);var f=m.querySelector('form'),er=m.querySelector('.lg-merr'),last=document.activeElement;
+  var esc1=function(e){if(e.key==='Escape')close()},close=function(){m.remove();document.removeEventListener('keydown',esc1);if(last&&last.focus)last.focus()};
+  document.addEventListener('keydown',esc1);m.querySelector('.lg-x').onclick=close;m.onclick=function(e){if(e.target===m)close()};
+  setTimeout(function(){f.emp_code.focus()},30);
+  f.onsubmit=function(ev){ev.preventDefault();er.textContent='';var p={emp_code:f.emp_code.value,name:f.name.value,contact:f.contact.value,issue:f.issue.value,detail:f.detail.value},b=f.querySelector('.lg-send');
+    if(!p.emp_code.trim()||!p.name.trim()||!p.contact.trim()||!p.issue){er.textContent='กรอกช่องที่มี * ให้ครบ';return}
+    busy(b,1);call('loginHelp',p).then(function(r){f.innerHTML='<button type="button" class="lg-x" aria-label="ปิด">×</button><div class="lg-okc"><span class="lg-okic">✓</span><h2 id="lh-t">ส่งเรื่องแล้ว</h2><p class="lg-ms">เลขที่ <b>'+esc(r.no||'')+'</b><br>HR หรือผู้ดูแลระบบจะตรวจสอบและติดต่อกลับตามช่องทางที่ให้ไว้</p><button type="button" class="lg-btn lg-send" id="lh-done">ตกลง</button></div>';
+      f.querySelector('.lg-x').onclick=close;$('#lh-done').onclick=close;$('#lh-done').focus()}).catch(function(e){busy(b,0);er.textContent=e.message})};
 }
 function renderLogin(){
   call('publicInfo').then(function(p){store('hr_pub',p);document.title=(p.app||'Push Media Center');var b=$('#lg-app');if(b)b.textContent=p.app||'Push Media Center'}).catch(function(){});
@@ -665,13 +703,14 @@ function renderLogin(){
      '<button class="lg-btn lg-line" id="lg-line"><span class="ic">'+IC.line+'</span><span class="lb">เข้าสู่ระบบด้วย LINE</span></button>'+
      (GOO?'<button class="lg-btn lg-goo" id="lg-goo"><span class="ic">'+IC.goo+'</span><span class="lb">เข้าสู่ระบบด้วย Google</span></button><div class="lg-hint">Google: ใช้อีเมลเดียวกับที่ลงทะเบียนในข้อมูลพนักงาน</div>':'<div class="lg-hint">ใช้บัญชี LINE เดียวกับที่ลงเวลาในแอปพนักงาน</div>')+'</section>'+(ADM?
      '<div class="lg-or" aria-hidden="true">หรือ</div>'+
-     '<form class="lg-col" id="lg-pw"><h2>ผู้ดูแลระบบ</h2><label class="lg-lab" for="pw">รหัสผ่าน</label><div class="lg-in">'+IC.lock+'<input id="pw" type="password" autocomplete="current-password" placeholder="รหัสผ่านผู้ดูแลระบบ"><button type="button" class="lg-eye" id="lg-eye" aria-label="แสดงรหัสผ่าน">'+IC.eye+'</button></div><button class="lg-go">เข้าสู่ระบบ</button></form>':'')+'</div>'+
+     '<form class="lg-col" id="lg-pw"><h2>ผู้ดูแลระบบ</h2><label class="lg-lab" for="pw">รหัสผ่าน</label><div class="lg-in">'+IC.lock+'<input id="pw" type="password" autocomplete="current-password" placeholder="รหัสผ่านผู้ดูแลระบบ"><button type="button" class="lg-eye" id="lg-eye" aria-label="แสดงรหัสผ่าน">'+IC.eye+'</button></div><button class="lg-go">เข้าสู่ระบบ</button><button type="button" class="lg-link" data-help="pass" style="align-self:flex-end">Forgot Password · ลืมรหัสผ่าน?</button></form>':'')+'</div>'+
     (DEV?'<div class="cb" style="background:var(--warn-s);border-radius:8px;font-size:13px"><b>โหมดทดสอบในเครื่อง</b> · เข้าเป็น <button class="btn sm" data-dev="Uhr1|มิ้นท์">HR</button> <button class="btn sm" data-dev="Umgr1|โอ๊ต">ผู้จัดการ</button> <button class="btn sm" data-dev="Ulead1|ต้น">หัวหน้าทีม</button> <button class="btn sm" data-dev="Uemp1|บอย">พนักงาน</button> · รหัส admin: demo1234</div>':'')+
     '<div id="lg-err" class="er" role="alert" style="color:var(--bad);font-size:14px;text-align:center"></div><div class="lg-foot">เข้าใช้ไม่ได้? ติดต่อ HR หรือผู้ดูแลระบบ · ใช้ได้บน Chrome · Edge · Safari</div></main></div>');
   if($('#lg-goo')){if(!DEV)gsiLoad().catch(function(){});$('#lg-goo').onclick=googleLogin}
   if($('#lg-eye'))$('#lg-eye').onclick=function(){var i=$('#pw'),v=i.type==='password';i.type=v?'text':'password';this.setAttribute('aria-label',v?'ซ่อนรหัสผ่าน':'แสดงรหัสผ่าน')};
   lgIntro();
   $('#lg-line').onclick=function(){lineLogin()};
+  $$('[data-help]').forEach(function(b){b.onclick=function(){lgHelp(b.dataset.help)}});
   if($('#lg-pw'))$('#lg-pw').onsubmit=function(ev){ev.preventDefault();var b=ev.submitter;busy(b,1);call('loginAdmin',$('#pw').value).then(function(r){done(r.token)}).catch(function(e){busy(b,0);$('#lg-err').textContent=e.message})};
   $$('[data-dev]').forEach(function(b){b.onclick=function(){var p=b.dataset.dev.split('|');loginWith('dev|'+p[0]+'|'+p[1])}});
 }
@@ -785,7 +824,7 @@ var USQ={n:10e6,rr:25e9,rw:50e6};
 function usPct(v,q){var p=v/q*100;return p<0.01?'< 0.01%':p<1?p.toFixed(2)+'%':p.toFixed(1)+'%'}
 var USG=[['ลงเวลา (แอปพนักงาน)',/^(clock|todayInfo|myAttendance|clockBackup)$/],['แอปพนักงาน (เข้าระบบ · โปรไฟล์ · การลา)',/^(loginLine|refreshLine|my|updateMy|setMy|leaveInfo|previewLeave|submitLeave|leaveDetail|cancelLeave|redeemInvite|requestLink|publicInfo|backupInfo)/],
   ['หลังบ้าน: เปิดหน้า · Dashboard · พนักงาน',/^(adminBootstrap|hrDashboard|listEmployees|getEmployee|empOverview|login|logout|getOrg|getAccess|saveEmployee|saveEmp|deleteEmp|revealBank|createInvites|unlinkLine|saveOrg|setOrg|firstHrSetup)/],
-  ['ลงเวลา (หลังบ้าน) · รายงาน Matrix',/^(attendanceToday|attMatrix|dayRecords|adjustTime|voidRecord|syncNow)$/],['ศูนย์อนุมัติ · การลา',/^(approvalsList|decideLeave|ackLeave|leaveAdminList|approvalCenter|photosFor|decideLink|listLinkRequests|decideDevice)$/],
+  ['ลงเวลา (หลังบ้าน) · รายงาน Matrix',/^(attendanceToday|attMatrix|dayRecords|adjustTime|voidRecord|syncNow)$/],['ศูนย์อนุมัติ · การลา',/^(approvalsList|decideLeave|ackLeave|leaveAdminList|approvalCenter|photosFor|decideLink|listLinkRequests|decideDevice|decideLoginHelp)$/],
   ['ตารางงาน · Confirmed',/^(wtm|schedule|sched|saveJob|deleteJob|saveVehicle|listVehicles|saveSched)/],['เงินเดือน',/^pay/],['ตั้งค่า · Audit Log',/^(getSettings|saveSettings|saveLeaveType|auditList|saveCompanyLogo|perfStats|usage|saveShift|saveEmployeeShifts|saveHoliday|deleteHoliday|saveAccess)/],
   ['สำเนา Google Sheets (อัตโนมัติทุก 15 นาที)',/^_mirror/],['สรุปลงเวลาประจำวัน (อัตโนมัติ 23:30)',/^_cron$/]];
 function usGroup(fn){for(var i=0;i<USG.length;i++)if(USG[i][1].test(fn))return USG[i][0];return 'อื่น ๆ'}
@@ -1177,11 +1216,11 @@ function drawDash(){if(!$('#db-body'))return;var d=A.db,k=d.kpi,dt=new Date(d.da
     kpi('att','clockx','ต้องติดตามวันนี้',two(k.late||0,'มาสาย',k.absent||0,'ยังไม่ลงเวลา','warn','bad'),follow?'กดเพื่อดูรายชื่อ':'ทุกคนลงเวลาแล้ว',follow?'bad':'ok')+
     kpi('lv','leave','ลาวันนี้',two(k.leaveToday||0,'',(k.leaveAhead?'+'+k.leaveAhead:'0'),'ล่วงหน้า 7 วัน','info','mut'),lt||'ไม่มีคนลาวันนี้','info')+
     kpi('set','cal','วันหยุดถัดไป',nh?(+nh.date.slice(8,10))+' '+TM[+nh.date.slice(5,7)-1]:'—',nh?esc(nh.name)+' · '+(nh.days?'อีก '+nh.days+' วัน':'วันนี้'):'ยังไม่มีวันหยุดที่กำหนด')+
-    kpi('appr','check','รออนุมัติ',k.pending,(pk.leave||pk.line||pk.device)?['ลา '+(pk.leave||0),'เชื่อม LINE '+(pk.line||0)].concat(pk.device?['เครื่องใหม่ '+pk.device]:[]).join(' · '):'ไม่มีคำขอค้าง')+'</div>'+
+    kpi('appr','check','รออนุมัติ',k.pending,(pk.leave||pk.line||pk.device||pk.help)?['ลา '+(pk.leave||0),'เชื่อม LINE '+(pk.line||0)].concat(pk.device?['เครื่องใหม่ '+pk.device]:[]).concat(pk.help?['แจ้งปัญหา '+pk.help]:[]).join(' · '):'ไม่มีคำขอค้าง')+'</div>'+
    '<div class="grid '+(mine?'g-side':'')+'" style="margin-top:14px"><section class="card"><div class="ch"><h3>อัตราเข้างาน '+d.trend.length+' วันล่าสุด</h3><span class="sp"></span><button class="btn sm" data-go="att">ลงเวลาวันนี้</button></div><div class="cb">'+tr+'</div></section>'+
     (mine?'<section class="card mine"><div class="ch"><h3>ของฉัน</h3><span class="sp"></span>'+(A.d.me.role!=='exec'?'<button class="btn sm" data-go="profile" data-id="'+esc(A.d.me.id)+'">ข้อมูลพนักงาน</button>':'')+'</div><div class="cb" id="db-mine"><div class="who2"><span class="av" data-av="'+esc(A.d.me.id)+'" style="width:52px;height:52px">'+esc((A.d.me.nickname||A.d.me.name||'?').slice(0,1))+'</span><div><b style="font-size:15px">'+esc(A.d.me.name)+(A.d.me.nickname?' ('+esc(A.d.me.nickname)+')':'')+'</b><div class="muted" style="font-size:12.5px">รหัส '+esc(A.d.me.code||'-')+' · '+esc(ROLE[A.d.me.role]||A.d.me.role)+'</div></div></div><div id="db-quota" class="faint" style="font-size:13px">กำลังโหลดโควตาการลา…</div></div></section>':'')+'</div>'+
    '<div class="grid g-side" style="margin-top:14px"><section class="card"><div class="ch"><h3>คำขอรออนุมัติ'+(d.pending.length?' ('+k.pending+')':'')+'</h3><span class="sp"></span><button class="btn sm" data-go="appr">ศูนย์อนุมัติ</button></div><div class="list">'+
-    (d.pending.length?d.pending.map(function(p){return '<div class="li"><span class="av" style="width:34px;height:34px;font-size:12px;background:#EDEDED;color:#141414">'+esc((p.employee||'?').slice(0,1))+'</span><div style="flex:1;min-width:0"><b style="font-weight:600">'+esc(p.title)+'</b><div class="muted" style="font-size:12.5px">'+esc(p.sub)+'</div></div><span class="badge '+(p.kind==='line'?'b-ok':'b-mute')+'">'+(p.kind==='line'?'เชื่อม LINE':'คำขอลา')+'</span><button class="btn sm" data-go="appr">ดู</button></div>'}).join(''):'<div class="li muted">ไม่มีคำขอรออนุมัติ</div>')+'</div></section>'+
+    (d.pending.length?d.pending.map(function(p){return '<div class="li"><span class="av" style="width:34px;height:34px;font-size:12px;background:#EDEDED;color:#141414">'+esc((p.employee||'?').slice(0,1))+'</span><div style="flex:1;min-width:0"><b style="font-weight:600">'+esc(p.title)+'</b><div class="muted" style="font-size:12.5px">'+esc(p.sub)+'</div></div><span class="badge '+(p.kind==='line'?'b-ok':p.kind==='help'?'b-bad':'b-mute')+'">'+(p.kind==='line'?'เชื่อม LINE':p.kind==='help'?'แจ้งเข้าระบบไม่ได้':p.kind==='device'?'เครื่องใหม่':'คำขอลา')+'</span><button class="btn sm" data-go="appr">ดู</button></div>'}).join(''):'<div class="li muted">ไม่มีคำขอรออนุมัติ</div>')+'</div></section>'+
    '<section class="card"><div class="ch"><h3>รายการผิดปกติวันนี้</h3><span class="sp"></span><button class="btn sm" data-go="att">ดูทั้งหมด'+(d.anomalyCount>8?' ('+d.anomalyCount+')':'')+'</button></div><div class="list">'+
     (d.anomalies.length?d.anomalies.map(function(a){var v=SEV[a.sev]||SEV.warn;return '<button class="li" data-go="att" style="width:100%;border:0;border-bottom:1px solid var(--line);background:none;text-align:left;font:inherit;cursor:pointer"><span class="an-i" style="background:'+v[1]+';color:'+v[2]+'">'+ic(v[0])+'</span><div style="flex:1;min-width:0"><b style="font-weight:600">'+esc(a.title)+'</b><div class="muted" style="font-size:12.5px">'+esc(a.sub)+'</div></div><span class="faint">'+ic('chevR').replace('<svg','<svg width="16" height="16"')+'</span></button>'}).join(''):'<div class="li muted">ไม่มีรายการผิดปกติวันนี้</div>')+'</div></section></div>'+
    '<section class="card" style="margin-top:14px"><div class="ch"><h3>กำลังคนวันนี้ตามแผนก</h3></div><div class="cb" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px 28px">'+
@@ -1220,10 +1259,10 @@ function drawAppr(){if(!$('#ap-body'))return;var d=A.ap,k=d.kpi,T=A.apType;
   var chip=function(v,l,dis){return '<button class="chip" data-aty="'+v+'" aria-pressed="'+(T===v)+'"'+(dis?' disabled title="เร็ว ๆ นี้"':'')+'>'+l+'</button>'};
   $('#ap-body').innerHTML='<div class="grid g4">'+kpi('คำขอทั้งหมด',k.month,esc(rngTxt(A.apa,A.apb)))+kpi('รออนุมัติ',k.pending,'ของคุณ (ทุกช่วงเวลา)',k.pending?'warn':'')+kpi('อนุมัติแล้ว',k.approved,esc(rngTxt(A.apa,A.apb)),'ok')+kpi('ไม่อนุมัติ / ส่งกลับ',k.rejected+' / '+k.back,esc(rngTxt(A.apa,A.apb)))+'</div>'+
    '<div class="toolbar" style="margin-top:14px"><div class="segt"><button data-atab="pending" aria-pressed="'+(A.apTab==='pending')+'">รออนุมัติ'+(k.pending?' ('+k.pending+')':'')+'</button><button data-atab="done" aria-pressed="'+(A.apTab==='done')+'">ดำเนินการแล้ว</button><button data-atab="no" aria-pressed="'+(A.apTab==='no')+'">ไม่อนุมัติ</button></div>'+
-    chip('all','ทุกประเภท')+chip('leave','คำขอลา')+chip('line','เชื่อม LINE')+chip('device','อุปกรณ์ใหม่')+chip('ot','OT',1)+chip('time','แก้ไขเวลา',1)+chip('shift','เปลี่ยนตารางงาน',1)+'</div>'+
+    chip('all','ทุกประเภท')+chip('leave','คำขอลา')+chip('line','เชื่อม LINE')+chip('device','อุปกรณ์ใหม่')+chip('help','แจ้งเข้าระบบไม่ได้')+chip('ot','OT',1)+chip('time','แก้ไขเวลา',1)+chip('shift','เปลี่ยนตารางงาน',1)+'</div>'+
    '<section class="card"><div class="tw"><table style="min-width:900px"><thead><tr><th>เลขที่</th><th>ผู้ขอ</th><th>ประเภท</th><th>รายละเอียด</th><th>ผู้อนุมัติ</th><th>ยื่นเมื่อ</th><th>สถานะ</th></tr></thead><tbody>'+
    (items.length?items.map(function(x,i){return '<tr class="ck" data-api="'+i+'"><td class="mono">'+esc(x.no)+'</td><td><div class="who-c">'+av(emp(x.employee_id)||{id:x.employee_id,first_name:x.employee,last_name:''},28)+'<span>'+esc(x.employee)+'<small>'+esc(x.dept||'')+'</small></span></div></td>'+
-     '<td><span class="badge '+(x.kind==='line'?'b-ok':x.kind==='device'?'b-warn':'b-mute')+'">'+esc(x.type)+'</span></td><td>'+esc(x.title)+(x.edited?' <span class="badge b-info">แก้ไขแล้ว</span>':'')+'<div style="font-size:12.5px;color:'+(x.flags.length?'var(--bad)':'var(--fnt)')+'">'+esc(x.detail)+(x.flags.length?' · '+esc(x.flags[0]):'')+'</div></td>'+
+     '<td><span class="badge '+(x.kind==='line'?'b-ok':x.kind==='device'?'b-warn':x.kind==='help'?'b-bad':'b-mute')+'">'+esc(x.type)+'</span></td><td>'+esc(x.title)+(x.edited?' <span class="badge b-info">แก้ไขแล้ว</span>':'')+'<div style="font-size:12.5px;color:'+(x.flags.length?'var(--bad)':'var(--fnt)')+'">'+esc(x.detail)+(x.flags.length?' · '+esc(x.flags[0]):'')+'</div></td>'+
      '<td style="font-size:12.5px">'+(x.history.length?x.history.map(function(h){return '<div>'+(h.step==='hr'?'HR':h.step==='mgr'?'ขั้นที่ 2':'ขั้นที่ 1')+' · '+esc(h.by||'—')+'</div>'}).join(''):'')+(x.stepText?'<div class="faint">รอ '+esc(x.stepText)+'</div>':x.history.length?'':'—')+'</td><td class="num">'+esc(fdt(x.created_at))+'</td><td><span class="badge '+(SB[x.status]||'b-mute')+'">'+esc(x.statusText)+'</span></td></tr>'}).join(''):'<tr><td colspan="7" class="muted" style="text-align:center;padding:28px">'+(A.apTab==='pending'?'ไม่มีคำขอรอคุณอนุมัติ':'ยังไม่มีรายการ')+'</td></tr>')+'</tbody></table></div></section>';
   loadPhotos();
   $$('[data-atab]').forEach(function(b){b.onclick=function(){A.apTab=b.dataset.atab;$('#ap-body').innerHTML='<div class="loading"><span class="spin"></span>กำลังโหลด…</div>';loadAppr()}});
@@ -1231,19 +1270,21 @@ function drawAppr(){if(!$('#ap-body'))return;var d=A.ap,k=d.kpi,T=A.apType;
   $$('[data-api]').forEach(function(tr){tr.onclick=function(){apDetail(items[+tr.dataset.api])}});
 }
 function fdt(s){if(!s)return '';var d=new Date(s);if(isNaN(d))return s;var TM=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];return d.getDate()+' '+TM[d.getMonth()]+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)}
-function apDetail(x){var PART={full:'เต็มวัน',am:'ครึ่งเช้า',pm:'ครึ่งบ่าย'},ACT={ok:'อนุมัติ',partial:'อนุมัติบางวัน',no:'ไม่อนุมัติ',back:'ส่งกลับแก้ไข',ack:'HR รับทราบ'};
-  var body='<dl class="kv"><dt>เลขที่</dt><dd class="mono">'+esc(x.no)+'</dd><dt>ผู้ขอ</dt><dd>'+esc(x.code)+' '+esc(x.employee)+' · '+esc(x.dept||'')+'</dd><dt>ประเภท</dt><dd>'+esc(x.type)+'</dd><dt>รายละเอียด</dt><dd>'+esc(x.title)+'<br>'+esc(x.detail)+'</dd>'+(x.reason?'<dt>เหตุผล</dt><dd>'+esc(x.reason)+'</dd>':'')+'<dt>สถานะ</dt><dd>'+esc(x.statusText)+'</dd></dl>'+
+function apDetail(x){var PART={full:'เต็มวัน',am:'ครึ่งเช้า',pm:'ครึ่งบ่าย'},ACT={ok:'อนุมัติ',partial:'อนุมัติบางวัน',no:'ไม่อนุมัติ',back:'ส่งกลับแก้ไข',ack:'HR รับทราบ',done:'ดำเนินการแล้ว',closed:'ปิดเรื่อง'};
+  var body='<dl class="kv"><dt>เลขที่</dt><dd class="mono">'+esc(x.no)+'</dd><dt>ผู้ขอ</dt><dd>'+esc(x.code)+' '+esc(x.employee)+' · '+esc(x.dept||'')+'</dd><dt>ประเภท</dt><dd>'+esc(x.type)+'</dd><dt>รายละเอียด</dt><dd>'+esc(x.title)+'<br>'+esc(x.detail)+'</dd>'+(x.reason?'<dt>'+(x.kind==='help'?'ที่แจ้งมา':'เหตุผล')+'</dt><dd>'+esc(x.reason)+'</dd>':'')+'<dt>สถานะ</dt><dd>'+esc(x.statusText)+'</dd></dl>'+
    (x.days.length?'<h4 style="margin:14px 0 6px">วันลา</h4><ul class="tl">'+x.days.map(function(d){return '<li>'+esc(d.date)+' · '+(PART[d.part]||d.part)+(d.status==='no'?' · ไม่อนุมัติ':'')+'</li>'}).join('')+'</ul>':'')+
    (x.flags.length?'<div class="alert" style="margin-top:12px;background:var(--warn-s);color:var(--warn)">'+x.flags.map(esc).join('<br>')+'</div>':'')+
    (x.history.length?'<h4 style="margin:14px 0 6px">ประวัติ</h4><ul class="tl">'+x.history.map(function(h){return '<li>'+(h.step==='hr'?'HR':h.step==='mgr'?'ขั้นที่ 2':'ขั้นที่ 1')+' · '+(ACT[h.action]||h.action)+' · '+esc(h.by)+' · '+esc(fdt(h.at))+(h.note?' · '+esc(h.note):'')+'</li>'}).join('')+'</ul>':'')+
+   (x.kind==='help'?'<div class="alert" style="margin-top:12px;background:#F5F5F5;color:var(--mut);font-size:13px">ตรวจตัวตนก่อนดำเนินการ เช่น โทรกลับตามเบอร์ในข้อมูลพนักงาน (ไม่ใช่เบอร์ที่กรอกมาเท่านั้น) · ห้ามแจ้งรหัสผ่านทางข้อความ</div>'+(x.mine?'<label class="f" style="margin-top:14px">บันทึก (จำเป็นเมื่อปิดเรื่อง)<textarea id="apn" rows="3" style="width:100%;border:1px solid var(--line);border-radius:7px;padding:8px"></textarea></label>':''):'')+
    (x.mine&&x.kind==='leave'?'<label class="f" style="margin-top:14px">หมายเหตุ (จำเป็นเมื่อไม่อนุมัติ/ส่งกลับ · ผู้ขอจะเห็น)<textarea id="apn" rows="3" style="width:100%;border:1px solid var(--line);border-radius:7px;padding:8px"></textarea></label>':'');
-  var foot=!x.mine?'':x.kind==='device'?'<button class="btn ok" id="ap-ok">อนุญาตเครื่องนี้</button><button class="btn bad" id="ap-no">ไม่อนุญาต</button>':x.kind==='line'?'<button class="btn ok" id="ap-ok">ยืนยันว่าเป็นพนักงานคนนี้</button><button class="btn bad" id="ap-no">ไม่ใช่</button>':
+  var foot=!x.mine?'':x.kind==='help'?'<button class="btn ok" id="ap-ok">ดำเนินการแล้ว</button><button class="btn bad" id="ap-no">ปิดเรื่อง</button>':x.kind==='device'?'<button class="btn ok" id="ap-ok">อนุญาตเครื่องนี้</button><button class="btn bad" id="ap-no">ไม่อนุญาต</button>':x.kind==='line'?'<button class="btn ok" id="ap-ok">ยืนยันว่าเป็นพนักงานคนนี้</button><button class="btn bad" id="ap-no">ไม่ใช่</button>':
     '<button class="btn ok" id="ap-ok">'+(x.status==='chg'?'อนุมัติการยกเลิก':'อนุมัติ')+'</button>'+(x.status==='chg'?'':'<button class="btn" id="ap-back">ส่งกลับแก้ไข</button>')+'<button class="btn bad" id="ap-no">ไม่อนุมัติ</button>';
   drawer(x.type+' · '+x.no,body,foot);
   var after=function(m){closeD();toast(m);reload(false).then(function(){render()})};
   var dec=function(a){var n=($('#apn')||{}).value||'';if((a==='no'||a==='back')&&!n.trim()){toast('กรอกหมายเหตุ',1);return}
     aCall('decideLeave',x.id,a,n.trim(),[]).then(function(r){after({ok:'อนุมัติแล้ว',no:'ไม่อนุมัติแล้ว',back:'ส่งกลับแก้ไขแล้ว'}[a]+(r&&r.status==='hr'?' · ส่งต่อ HR':''))}).catch(function(e){toast(e.message,1)})};
   if(!x.mine)return;
+  if(x.kind==='help'){var hd=function(ok){var n=($('#apn')||{}).value||'';if(!ok&&!n.trim()){toast('กรอกเหตุผลที่ปิดเรื่อง',1);return}aCall('decideLoginHelp',x.id,ok,n.trim()).then(function(){after(ok?'บันทึกว่าดำเนินการแล้ว':'ปิดเรื่องแล้ว')}).catch(function(e){toast(e.message,1)})};$('#ap-ok').onclick=function(){hd(true)};$('#ap-no').onclick=function(){hd(false)};return}
   if(x.kind==='device'){$('#ap-ok').onclick=function(){aCall('decideDevice',x.id,true).then(function(){after('อนุญาตอุปกรณ์แล้ว')}).catch(function(e){toast(e.message,1)})};$('#ap-no').onclick=function(){aCall('decideDevice',x.id,false).then(function(){after('ไม่อนุญาตอุปกรณ์')}).catch(function(e){toast(e.message,1)})};return}
   if(x.kind==='line'){$('#ap-ok').onclick=function(){aCall('decideLink',x.id,true).then(function(){after('เชื่อม LINE แล้ว')}).catch(function(e){toast(e.message,1)})};$('#ap-no').onclick=function(){aCall('decideLink',x.id,false).then(function(){after('ปฏิเสธคำขอแล้ว')}).catch(function(e){toast(e.message,1)})};return}
   $('#ap-ok').onclick=function(){dec('ok')};$('#ap-no').onclick=function(){dec('no')};if($('#ap-back'))$('#ap-back').onclick=function(){dec('back')};
