@@ -25,7 +25,6 @@
 /* Layout: an iPhone-sized LINE LIFF screen. Desktop shows it inside a device frame; a phone shows it full screen.
    Visual language follows the HumanSoft LIFF app, recoloured with Push Media brand blue. Light-only on purpose (LINE in-app view). */
 :root{
-  --ic-b:#1F6FEB; --ic-o:#F07B22;   /* สีไอคอนเมนู (29 ต.ค. 2569 ผู้ใช้ขอ · น้ำเงินสลับส้มแบบ HumanSoft) · ปุ่ม/แถบหัวยังโทนดำ */
   --blue:#111111; --blue-2:#3A3A3A; --blue-soft:#EDEDED; --blue-tint:#F6F6F6; --blue-line:#CFCFCF;
   --ink:#000000;
   --bg:#F2F2F2; --bg-home:#F6F6F6; --card:#FFFFFF; --line:#E5E5E5;
@@ -123,7 +122,7 @@ svg.i{width:24px;height:24px;flex:none;fill:none;stroke:currentColor;stroke-widt
 .bell i{position:absolute;top:-1px;right:-3px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--red);color:#fff;font:600 11px/17px var(--font);font-style:normal;text-align:center;border:2px solid #fff;box-sizing:content-box}
 .shorts{display:grid;grid-template-columns:repeat(5,1fr);margin:20px -12px 0}
 .shorts button{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:11px;color:var(--text);text-align:center;line-height:1.2;white-space:nowrap;letter-spacing:-.4px;min-width:0}
-.shorts svg.i{width:30px;height:30px;stroke-width:1.5;color:var(--ic-b)}.shorts button:nth-child(even) svg.i{color:var(--ic-o)}
+.shorts svg.i{width:30px;height:30px;stroke-width:1.5}
 .sec-h{display:flex;align-items:center;gap:8px;margin:2px 0 0}
 .sec-h h2{margin:0;font-size:18px;font-weight:700}
 .sec-h svg.i{width:22px;height:22px;color:var(--blue);stroke-width:1.8}
@@ -314,7 +313,7 @@ input[type=date].inp,input[type=time].inp{min-width:0;display:block}
 .drawer .logo{padding:24px 22px 18px;margin:0 18px;border-bottom:2px solid #A3A3A3}
 .drawer .logo svg{display:block;width:100%;height:auto}
 .drawer nav{flex:1;overflow:auto;padding:10px 18px;scrollbar-width:thin}
-.drawer nav button{display:flex;gap:18px;align-items:center;width:100%;padding:12px 18px;border-radius:12px;font-size:16px;color:#2A313C}.drawer nav button svg.i{color:var(--ic-b)}.drawer nav button:nth-child(even) svg.i{color:var(--ic-o)}
+.drawer nav button{display:flex;gap:18px;align-items:center;width:100%;padding:12px 18px;border-radius:12px;font-size:16px;color:#2A313C}
 .drawer nav svg.i{width:26px;height:26px}
 .drawer nav button[aria-current="page"]{background:#D6D6D6;color:var(--blue)}
 .drawer footer{display:grid;grid-template-columns:1fr 1px 1fr;align-items:center;border-top:1px solid #D5D5D5;padding:14px 0 28px}
@@ -630,7 +629,7 @@ V.sched=()=>{const t=S.today;const jobs=t?t.targets.filter(x=>x.kind==="job"):[]
   ${jobs.length?jobs.map(j=>`<div class="job"><div style="display:flex;align-items:center"><span class="chip c-blue" style="font-size:12px">งานวันนี้</span><span class="tn cap" style="margin-left:auto">${esc(j.job_no)}</span></div><b style="font-size:17px;font-weight:600">${esc(j.title||j.name)}</b><span class="m">${ic("pin")}${esc(j.name)}</span>${S.me&&S.me.lead?`<span class="m">${ic("user")}หัวหน้างาน: ${esc(S.me.lead)}</span>`:""}</div>`).join(""):`<div class="empty">${t&&t.holiday?"วันหยุด":"ไม่มีงานนอกสถานที่ · ทำงานที่สำนักงาน"}</div>`}
   <div class="note c-blue">${ic("info")}<span>ตารางงานรายสัปดาห์จะเปิดใช้เมื่อย้ายตารางงานเข้าระบบใหม่</span></div></div>`;};
 
-V.req=()=>band("เอกสาร")+`<div class="pad" style="gap:12px">${[["ขอลางาน","doc","blue"],["ขอเพิ่ม/แก้ไขเวลา","clock","orange"],["ขอโอที","hour","blue"],["ขอเปลี่ยนกะการทำงาน","calClock","orange"]].map(r=>`<button class="mrow" data-act="soon"><span style="color:var(--ic-${r[2]==="blue"?"b":"o"});display:flex">${ic(r[1])}</span><span>${r[0]}</span><span class="chip c-grey" style="margin-left:auto;font-size:12px">เร็ว ๆ นี้</span></button>`).join("")}</div>`;
+V.req=()=>band("เอกสาร")+`<div class="pad" style="gap:12px">${[["ขอลางาน","doc","blue"],["ขอเพิ่ม/แก้ไขเวลา","clock","orange"],["ขอโอที","hour","blue"],["ขอเปลี่ยนกะการทำงาน","calClock","orange"]].map(r=>`<button class="mrow" data-act="soon"><span style="color:var(--${r[2]});display:flex">${ic(r[1])}</span><span>${r[0]}</span><span class="chip c-grey" style="margin-left:auto;font-size:12px">เร็ว ๆ นี้</span></button>`).join("")}</div>`;
 
 /* ---------- เชื่อมบัญชี LINE (ครั้งแรก) ---------- */
 function linkView(lineName,msg){const inv=!!S.invite;S.lineName=lineName;
@@ -910,8 +909,8 @@ V.lvdetail=id=>{const r=L.det[id];if(!r)return band("คำขอลา")+loadin
 function openDetail(id){L.det[id]=null;go("lvdetail:"+id);api("leaveDetail",id).then(r=>{L.det[id]=r;if(cur()==="lvdetail:"+id)repaint()}).catch(e=>toast(e.message))}
 
 /* ---------- เอกสาร / โควตา / เอกสารของฉัน ---------- */
-V.req=()=>band("เอกสาร")+`<div class="pad" style="gap:12px">${[["ขอลางาน","doc","blue","leave"],["ขอเพิ่ม/แก้ไขเวลา","clock","orange",""],["ขอโอที","hour","blue",""],["ขอเปลี่ยนกะการทำงาน","calClock","orange",""]].map(r=>`<button class="mrow" data-act="${r[3]?"lv:"+r[3]:"soon"}"><span style="color:var(--ic-${r[2]==="blue"?"b":"o"});display:flex">${ic(r[1])}</span><span>${r[0]}</span>${r[3]?`<span class="chev">${ic("chevR")}</span>`:`<span class="chip c-grey" style="margin-left:auto;font-size:12px">เร็ว ๆ นี้</span>`}</button>`).join("")}
-  <button class="mrow" data-act="go:myreqs"><span style="color:var(--ic-b);display:flex">${ic("docOk")}</span><span>เอกสารของฉัน</span><span class="chev">${ic("chevR")}</span></button></div>`;
+V.req=()=>band("เอกสาร")+`<div class="pad" style="gap:12px">${[["ขอลางาน","doc","blue","leave"],["ขอเพิ่ม/แก้ไขเวลา","clock","orange",""],["ขอโอที","hour","blue",""],["ขอเปลี่ยนกะการทำงาน","calClock","orange",""]].map(r=>`<button class="mrow" data-act="${r[3]?"lv:"+r[3]:"soon"}"><span style="color:var(--${r[2]});display:flex">${ic(r[1])}</span><span>${r[0]}</span>${r[3]?`<span class="chev">${ic("chevR")}</span>`:`<span class="chip c-grey" style="margin-left:auto;font-size:12px">เร็ว ๆ นี้</span>`}</button>`).join("")}
+  <button class="mrow" data-act="go:myreqs"><span style="color:var(--blue);display:flex">${ic("docOk")}</span><span>เอกสารของฉัน</span><span class="chev">${ic("chevR")}</span></button></div>`;
 V.quota=()=>{const i=L.info;if(!i)return band("โควตาการลา")+loadingV();return band("โควตาการลา")+`<div class="pad"><span class="muted" style="font-size:16px;margin-top:4px">โควตาปี ${i.year+543} · รออนุมัติถูกจองไว้</span>
   ${i.types.map(q=>`<div class="qcard"><div class="r"><span>${esc(q.name)}</span><span class="tn">${q.quota==null?"ไม่จำกัด":`คงเหลือ <b>${nd(q.left)}</b> / ${q.quota}`}</span></div>${q.quota?`<div class="track" style="display:flex"><i style="width:${q.used/q.quota*100}%;border-radius:99px 0 0 99px"></i><i style="width:${q.reserved/q.quota*100}%;background:var(--orange);opacity:.6;border-radius:0"></i></div>`:""}<div class="cap" style="margin-top:8px;display:flex;gap:14px"><span>ใช้แล้ว ${nd(q.used)}</span>${q.reserved?`<span style="color:var(--orange)">รออนุมัติ ${nd(q.reserved)}</span>`:""}</div></div>`).join("")}
   <button class="btn out" data-act="go:myreqs">ดูคำขอลาของฉัน</button></div>`};
@@ -984,8 +983,8 @@ document.addEventListener("input",e=>{if(e.target.id==="lr"&&L.f)L.f.reason=e.ta
 start();
 
 </script>
-<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610291005 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
-(function(){var B='202610291005';if(!/^\d{12}$/.test(B))return;var shown=0;
+<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610291007 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
+(function(){var B='202610291007';if(!/^\d{12}$/.test(B))return;var shown=0;
   function chk(){if(shown||document.hidden)return;fetch('build.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():''}).then(function(t){t=String(t||'').trim();if(!/^\d{12}$/.test(t)||t<=B)return;shown=1;
     var d=document.createElement('div');d.setAttribute('role','status');d.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:99999;background:#141414;color:#fff;border-radius:999px;padding:8px 8px 8px 18px;display:flex;gap:12px;align-items:center;font:14px "IBM Plex Sans Thai",sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.25)';
     d.innerHTML='<span>มีเวอร์ชันใหม่ของระบบ</span><button type="button" style="border:0;border-radius:999px;background:#fff;color:#141414;padding:6px 14px;font:inherit;font-weight:600;cursor:pointer">โหลดใหม่</button>';
