@@ -19,7 +19,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js" charset="utf-8"></script>
 <script src="config.js"></script>
-<script src="i18n.js?v=202610290942"></script>
+<script src="i18n.js?v=202610290946"></script>
 <style>
 /* สี Push Media ขาว–ดำ ตามโลโก้ (22 ต.ค. 2569) · สีสถานะ ok/warn/bad คงไว้ */
 :root{--nav:#0B0B0B;--nav2:#1F1F1F;--nav-ink:#C8C8C8;--acc:#111111;--acc-soft:#EDEDED;--bg:#F4F4F4;--sf:#FFFFFF;--sf2:#F8F8F8;--line:#E3E3E3;
@@ -154,7 +154,7 @@ td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}tr
 .pa-map{position:relative;height:98px;border-radius:12px;overflow:hidden;background:#EEF1EE;border:1px solid #E5E7E5;flex:none}
 .pa-rd{position:absolute;inset:0;background:linear-gradient(115deg,transparent 46%,#fff 46% 52%,transparent 52%),linear-gradient(20deg,transparent 60%,#fff 60% 64%,transparent 64%),linear-gradient(0deg,transparent 30%,#E3E7E3 30% 31%,transparent 31%),linear-gradient(90deg,transparent 70%,#E3E7E3 70% 71%,transparent 71%)}
 .pa-zone,.pa-pulse{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%}
-.pa-zone{background:rgba(47,154,104,.16);border:1.5px solid rgba(47,154,104,.75)}.pa-pulse{border:1px solid rgba(229,50,45,.45);animation:paPulse 2s ease-out infinite}   /* คลื่นสีแดงบาง ๆ (29 ต.ค. 2569) */
+.pa-zone{background:rgba(229,50,45,.1);border:1.5px solid rgba(229,50,45,.6)}   /* วงพื้นที่สีแดง (29 ต.ค. 2569) */.pa-pulse{border:1px solid rgba(229,50,45,.45);animation:paPulse 2s ease-out infinite}   /* คลื่นสีแดงบาง ๆ (29 ต.ค. 2569) */
 .pa-off{position:absolute;left:50%;top:50%;width:16px;height:20px;margin:-22px 0 0 -8px;animation:paDrop 6s ease infinite}.pa-off svg{display:block;width:100%;height:100%;filter:drop-shadow(0 2px 3px rgba(220,38,38,.35))}.pa-off svg path{fill:#E5322D}   /* หมุดสำนักงานในแผนที่ = สีแดง (29 ต.ค. 2569) */
 .pa-me{position:absolute;left:50%;top:50%;width:10px;height:10px;margin:-5px;border-radius:50%;background:#2563EB;box-shadow:0 0 0 2.5px #fff,0 2px 6px rgba(37,99,235,.45);animation:paWalk 6s cubic-bezier(.4,0,.2,1) infinite}
 .pa-chip{position:absolute;left:6px;bottom:6px;font-size:8.5px;font-weight:600;background:#fff;border-radius:99px;padding:2px 8px;box-shadow:0 2px 6px rgba(0,0,0,.08);display:flex;gap:4px;align-items:center}
@@ -2729,8 +2729,8 @@ function orgForm(r){var t=A.otab,def=OT[t];r=r||{};
 boot();
 })();
 </script>
-<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610290942 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
-(function(){var B='202610290942';if(!/^\d{12}$/.test(B))return;var shown=0;
+<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610290946 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
+(function(){var B='202610290946';if(!/^\d{12}$/.test(B))return;var shown=0;
   function chk(){if(shown||document.hidden)return;fetch('build.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():''}).then(function(t){t=String(t||'').trim();if(!/^\d{12}$/.test(t)||t<=B)return;shown=1;
     var d=document.createElement('div');d.setAttribute('role','status');d.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:99999;background:#141414;color:#fff;border-radius:999px;padding:8px 8px 8px 18px;display:flex;gap:12px;align-items:center;font:14px "IBM Plex Sans Thai",sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.25)';
     d.innerHTML='<span>มีเวอร์ชันใหม่ของระบบ</span><button type="button" style="border:0;border-radius:999px;background:#fff;color:#141414;padding:6px 14px;font:inherit;font-weight:600;cursor:pointer">โหลดใหม่</button>';
