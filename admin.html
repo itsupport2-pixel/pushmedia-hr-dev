@@ -19,7 +19,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js" charset="utf-8"></script>
 <script src="config.js"></script>
-<script src="i18n.js?v=202610291048"></script>
+<script src="i18n.js?v=202610291055"></script>
 <style>
 /* สี Push Media ขาว–ดำ ตามโลโก้ (22 ต.ค. 2569) · สีสถานะ ok/warn/bad คงไว้ */
 :root{--nav:#0B0B0B;--nav2:#1F1F1F;--nav-ink:#C8C8C8;--acc:#111111;--acc-soft:#EDEDED;--bg:#F4F4F4;--sf:#FFFFFF;--sf2:#F8F8F8;--line:#E3E3E3;
@@ -1181,7 +1181,7 @@ function pySalDraw(){var ed=PY.bs.canEdit,T=PY.bs.types,TM=PY.bs.taxModes,ch=PSL
   var n=Object.keys(ch).reduce(function(s,k){return s+Object.keys(ch[k]).length},0),dis=ed?'':' disabled';
   pyBody('<section class="card"><div class="ch" style="gap:8px;flex-wrap:wrap">'+pySearch('ps-q',PSL.q,'ค้นหาชื่อ ชื่อเล่น รหัส ตำแหน่ง')+ofSel('ps',1)+'<label class="chk"><input type="checkbox" id="ps-n"'+(PSL.none?' checked':'')+'> ยังไม่มีฐานเงินเดือน ('+all.filter(function(p){return !p.base_salary}).length+')</label></div>'+
    '<div class="note-b" style="margin:0 16px 12px">ภาษีที่ตั้งไว้หักอัตโนมัติในคอลัมน์ "หัก ณ ที่จ่าย" ของงวด · ภ.ง.ด.1 คงที่ = บาท/เดือน · ภ.ง.ด.1 % = % ของรายได้ที่คิดภาษี · ภ.ง.ด.3 = '+wr+'% (รวม / ไม่รวมเงินเดือน)</div>'+
-   '<div class="ps-w"><table class="ps-t"><thead><tr><th class="ps-n">พนักงาน</th><th>ตำแหน่ง</th><th>ประเภทการจ้าง</th><th class="r">ฐานเงินเดือน (บาท)</th><th class="r" title="รายรับประจำทุกงวด เฉพาะคนที่ได้">ค่าน้ำมันและ<br>ค่าสึกหรอรถยนต์</th><th>ประกันสังคม</th><th>ภาษี</th><th class="r">จำนวนภาษีคงที่ต่อเดือน /<br>% ภาษีของรายได้</th><th>เลขประจำตัวประชาชน</th><th>บัญชีธนาคาร</th></tr></thead><tbody>'+
+   '<div class="ps-w"><table class="ps-t"><thead><tr><th class="ps-n">พนักงาน</th><th>ตำแหน่ง</th><th>ประเภทการจ้าง</th><th class="r">ฐานเงินเดือน (บาท)</th><th class="r" title="รายรับประจำทุกงวด เฉพาะคนที่ได้ · ยอดขึ้นในงวดเงินเดือนคอลัมน์ ค่าครองชีพ / ค่าสวัสดิการอื่น ประจำเดือน (อยู่ใน ภงด 1)">ค่าน้ำมันและ<br>ค่าสึกหรอรถยนต์</th><th>ประกันสังคม</th><th>ภาษี</th><th class="r">จำนวนภาษีคงที่ต่อเดือน /<br>% ภาษีของรายได้</th><th>เลขประจำตัวประชาชน</th><th>บัญชีธนาคาร</th></tr></thead><tbody>'+
    rows.map(function(p){var id=p.employee_id,ty=v(p,'pay_type')||'employee',tm=v(p,'tax_mode'),useV=tm==='p1_fixed'||tm==='p1_pct',sso=ty==='employee';
      return '<tr><td class="ps-n"><b>'+esc(p.name)+'</b><small>'+esc(p.code)+(p.nickname?' · '+esc(p.nickname):'')+'</small></td><td><span class="ps-pos">'+esc(p.position||'—')+'</span><small>'+esc(p.dept||'')+'</small></td>'+
        '<td><select class="ps-in'+dt(p,'pay_type')+'" data-ps="'+id+'|pay_type"'+dis+'>'+Object.keys(T).map(function(k){return '<option value="'+k+'"'+(ty===k?' selected':'')+'>'+esc(T[k])+'</option>'}).join('')+'</select></td>'+
@@ -2732,8 +2732,8 @@ function orgForm(r){var t=A.otab,def=OT[t];r=r||{};
 boot();
 })();
 </script>
-<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610291048 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
-(function(){var B='202610291048';if(!/^\d{12}$/.test(B))return;var shown=0;
+<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610291055 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
+(function(){var B='202610291055';if(!/^\d{12}$/.test(B))return;var shown=0;
   function chk(){if(shown||document.hidden)return;fetch('build.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():''}).then(function(t){t=String(t||'').trim();if(!/^\d{12}$/.test(t)||t<=B)return;shown=1;
     var d=document.createElement('div');d.setAttribute('role','status');d.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:99999;background:#141414;color:#fff;border-radius:999px;padding:8px 8px 8px 18px;display:flex;gap:12px;align-items:center;font:14px "IBM Plex Sans Thai",sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.25)';
     d.innerHTML='<span>มีเวอร์ชันใหม่ของระบบ</span><button type="button" style="border:0;border-radius:999px;background:#fff;color:#141414;padding:6px 14px;font:inherit;font-weight:600;cursor:pointer">โหลดใหม่</button>';
