@@ -19,7 +19,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js" charset="utf-8"></script>
 <script src="config.js"></script>
-<script src="i18n.js?v=202610301706"></script>
+<script src="i18n.js?v=202610301719"></script>
 <style>
 /* สี Push Media ขาว–ดำ ตามโลโก้ (22 ต.ค. 2569) · สีสถานะ ok/warn/bad คงไว้ */
 :root{--nav:#0B0B0B;--nav2:#1F1F1F;--nav-ink:#C8C8C8;--acc:#111111;--acc-soft:#EDEDED;--bg:#F4F4F4;--sf:#FFFFFF;--sf2:#F8F8F8;--line:#E3E3E3;
@@ -253,6 +253,37 @@ td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}tr
 .kv2{display:flex;align-items:baseline;gap:5px;flex-wrap:nowrap;white-space:nowrap;min-width:0}.kv2 b{font-weight:700;font-size:26px}.kv2 b.warn{color:var(--warn)}.kv2 b.bad{color:var(--bad)}.kv2 b.info{color:#2a4fd6}.kv2 b.mut{color:var(--fnt)}.kv2 small{font-size:12.5px;font-weight:600;color:var(--mut)}.kv2 b.warn+small{color:var(--warn)}.kv2 b.bad+small{color:var(--bad)}.kv2 i{width:1px;height:24px;background:var(--line);margin:0 5px;align-self:center;flex:none}.kv2 small{font-size:12px!important}
 .kpi.t-info .kh i{background:#EEF2FD;color:#2a4fd6}.g4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
 .g2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}.g3-1{grid-template-columns:minmax(0,2fr) minmax(0,1fr)}@media(max-width:1000px){.g3-1{grid-template-columns:1fr}}
+.wfe{position:fixed;inset:0;z-index:300;background:var(--bg,#F4F5F7);display:flex;flex-direction:column}
+.wfe-top{height:60px;flex:none;background:var(--sf,#fff);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;padding:0 16px}
+.wfe-top input{height:38px;min-width:280px;border:1px solid transparent;border-radius:9px;padding:0 10px;font:inherit;font-size:16px;font-weight:600;background:transparent;color:inherit}.wfe-top input:hover,.wfe-top input:focus{border-color:var(--line);background:var(--sf2,#F6F7F9)}
+.wfe-on{display:flex;align-items:center;gap:8px;font-size:14px}
+.wfe-b{flex:1;display:flex;min-height:0}
+.wfe-pal{width:220px;flex:none;background:var(--sf,#fff);border-right:1px solid var(--line);padding:14px 12px;display:flex;flex-direction:column;gap:8px;overflow:auto}
+.wfe-pal h4{font-size:12px;color:var(--mut);margin-top:6px}
+.wfe-pi{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--sf,#fff);font:inherit;font-size:13.5px;text-align:left;cursor:pointer;color:inherit}.wfe-pi:hover{border-color:var(--fnt)}
+.wfe-pi span{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;flex:none}
+.wfe-c{flex:1;position:relative;overflow:hidden;background-color:#F7F8FA;background-image:radial-gradient(#D5D9DF 1.2px,transparent 1.2px);background-size:22px 22px;touch-action:none;cursor:grab}
+.wfe-w{position:absolute;left:0;top:0;transform-origin:0 0}
+.wfe-e{position:absolute;left:0;top:0;overflow:visible}.wfe-hit{fill:none;stroke:transparent;stroke-width:14;cursor:pointer;pointer-events:stroke}
+.wfn{position:absolute;background:#fff;border:1.5px solid #E3E5E8;border-radius:14px;box-shadow:0 4px 14px rgba(20,20,20,.06);cursor:move;user-select:none;color:#141414}
+.wfn.trg{border-radius:30px 14px 14px 30px}.wfn.sel{border-color:#141414;box-shadow:0 0 0 4px rgba(20,20,20,.1),0 8px 20px rgba(20,20,20,.1)}
+.wfn-h{height:64px;display:flex;align-items:center;gap:11px;padding:0 14px}
+.wfn-h .ic,.wfe-ih .ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:17px;flex:none}
+.wfn-h .k{font-size:10.5px;font-weight:700;letter-spacing:.04em}.wfn-h b{font-size:13.5px;display:block;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}.wfn-h small{font-size:11.5px;color:#6B7280;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px}
+.wfn-o{height:26px;display:flex;align-items:center;justify-content:flex-end;padding:0 18px 0 14px;font-size:12px;color:#4A5160;border-top:1px dashed #ECEDEF;position:relative}
+.wfn-o span:first-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wfp{position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;border:2.5px solid #9AA0A8}
+.wfp.in{left:-8px;top:25px}.wfp.out{right:-8px;top:50%;margin-top:-7px;cursor:crosshair}.wfp.out.one{top:25px;margin-top:0}.wfp.out:hover{transform:scale(1.3)}
+.wfe-zb{position:absolute;left:14px;bottom:14px;display:flex;gap:6px}.wfe-zb button{width:34px;height:34px;border-radius:9px;background:#fff;border:1px solid #E3E5E8;font-size:15px;cursor:pointer}
+.wfe-i{width:340px;flex:none;background:var(--sf,#fff);border-left:1px solid var(--line);display:flex;flex-direction:column;overflow:auto}
+.wfe-ih{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.wfe-ib{padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.wfe-ib .f{display:flex;flex-direction:column;gap:5px;font-size:12.5px;color:var(--mut)}
+.wfe-ib select,.wfe-ib input:not([type=checkbox]),.wfe-ib textarea{height:36px;border:1px solid var(--line);border-radius:9px;padding:0 10px;font:inherit;font-size:13.5px;background:var(--sf,#fff);color:var(--tx,#141414);width:100%}
+.wfe-ib textarea{height:auto;padding:8px 10px;resize:vertical}
+.wfe-row{display:flex;gap:6px}.wfe-row select:first-child{width:70px;flex:none}
+.wfe-rule{border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:7px}.wfe-rh{display:flex;align-items:center;font-size:13px}
+.wfe-if{padding:12px 16px;border-top:1px solid var(--line);margin-top:auto}
 .fl-r{align-items:flex-start;gap:14px}.fl-r.soon{opacity:.6}.fl-i{width:40px;height:40px;border-radius:11px;background:#FFF1E6;display:grid;place-items:center;font-size:18px;flex:none}.fl-ch{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin-top:7px}.fl-ch span{font-size:12px;padding:3px 9px;border-radius:999px;background:var(--sf2,#F1F2F4);color:var(--mut)}.fl-ch em{font-style:normal;color:var(--fnt);font-size:12px}.fl-st{font-size:12px;color:var(--mut);text-align:right;min-width:150px}.fl-st b{display:block;color:var(--tx,#141414);font-size:13px}.fl-r .tg{align-self:center}.fl-r .btn{align-self:center}
 .fl-c{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5;cursor:pointer}.fl-c input[type=checkbox]{margin-top:4px;width:16px;height:16px;flex:none}.fl-n{width:64px;height:30px;border:1px solid var(--line);border-radius:8px;padding:0 8px;font:inherit;text-align:center}.fl-g{display:flex;flex-direction:column;gap:6px;padding:12px;border:1px solid var(--line);border-radius:12px}.fl-h{font-size:12.5px;font-weight:600;color:var(--mut)}.fl-v{display:flex;flex-direction:column;align-items:flex-start;gap:2px}.fl-v span{font-size:13px;padding:6px 12px;border-radius:10px;background:var(--sf2,#F1F2F4)}.fl-v span.t{background:#FFF1E6;color:#B4470A;font-weight:600}.fl-v i{font-style:normal;color:var(--fnt);padding-left:14px}
 .drg{display:inline-flex;gap:6px;align-items:center}.hist-c{color:#9A5B00;font-weight:600}.hist-c.new{color:#1A7A42}
@@ -2101,43 +2132,146 @@ function lmBind(){var after=function(st){A.cfg.lineMsg=st;A.cfg.notify.lineToken
   $$('[data-lmh]').forEach(function(b){b.onclick=function(){busy(b,1);aCall('saveSettings',{hr_line_group:b.dataset.lmh}).then(function(){return aCall('getSettings')}).then(function(d){A.cfg=d;toast('ตั้งเป็นกลุ่ม HR แล้ว');drawSet()}).catch(er(b))}});
   $$('[data-lmf]').forEach(function(b){b.onclick=function(){if(!confirm('เลิกจำกลุ่มนี้? (บอทยังอยู่ในกลุ่ม · ถ้าส่งข้อความในกลุ่มอีก กลุ่มจะกลับมาในรายการ)'))return;busy(b,1);aCall('lineGroupForget',b.dataset.lmf).then(function(st){toast('ลบแล้ว');after(st)}).catch(er(b))}});
 }
-/* ── Workflow การแจ้งเตือน (แบบ A · แม่แบบสำเร็จรูป ปรับตัวเลขได้ · Figma หน้า 14) · ค่าใน setting notify_flows · หลังบ้าน app/gas/Flows.js ── */
-var FLOWS=[['leave_new','⚡','คำขอลาใหม่ → แจ้งผู้อนุมัติ','ส่งการ์ดคำขอลาให้ผู้อนุมัติ เตือนซ้ำเมื่อค้าง และสำเนาเข้ากลุ่ม HR'],
-  ['leave_result','⚡','ผลอนุมัติลา → แจ้งพนักงาน','ส่งการ์ดสีเขียว (อนุมัติ) / แดง (ไม่อนุมัติ) พร้อมเหตุผลถึงพนักงานที่ลา'],
-  ['miss_clock','🕘','ลืมลงเวลาเข้างาน','เตือนพนักงานที่ยังไม่ลงเวลา แล้วแจ้งหัวหน้าทีมถ้ายังไม่ลง',1],
-  ['daily_sum','🕘','สรุปขาด/สายรายวันเข้ากลุ่ม HR','ทุกเย็นส่งสรุปรายแผนกเข้ากลุ่ม HR',1]];
 function ntTabs(){return '<div class="evs" role="group" aria-label="มุมมอง" style="margin-bottom:14px;align-self:flex-start;display:inline-flex"><button data-ntab="table" aria-pressed="'+(A.ntab!=='flow')+'">ตารางแจ้งเตือน</button><button data-ntab="flow" aria-pressed="'+(A.ntab==='flow')+'">Workflow</button></div>'}
-function flChain(k,c){var g=sv('hr_line_group');
-  if(k==='leave_new')return ['คำขอลาใหม่','LINE ผู้อนุมัติ (การ์ด)'].concat(c.remind_on?['รอ '+(+c.remind_h||24)+' ชม.','เตือนซ้ำ']:[]).concat(g?['กลุ่ม HR'+(+c.grp_days>0?' (ลา ≥ '+(+c.grp_days)+' วัน)':'')]:[]);
-  if(k==='leave_result')return ['อนุมัติ / ไม่อนุมัติ','LINE พนักงาน (การ์ดเขียว / แดง)'].concat(c.reason?['แสดงเหตุผล']:[]);
-  return k==='miss_clock'?['ตามเวลา 09:30','ยังไม่ลงเวลา + ไม่ลา','LINE พนักงาน','รอ 1 ชม.','LINE หัวหน้าทีม']:['ตามเวลา 18:00','สรุปรายแผนก','LINE กลุ่ม HR']}
-function flowsView(d){var F=d.flows||{cfg:{},stats:{}},tok=d.notify&&d.notify.lineToken;
-  return '<section class="card"><div class="ch"><h3>Workflow การแจ้งเตือน</h3><span class="sp"></span><span class="faint" style="font-size:12px">เปิด/ปิดได้ทันที · กดแก้ไขเพื่อปรับตัวเลข</span></div>'+
-   (tok?'':'<div class="note-b" style="margin:12px 16px 0"><div>ยังไม่ได้เชื่อม LINE Messaging API · ตั้งที่ ตั้งค่า › LINE ก่อน ระบบจึงจะส่งการ์ดได้</div></div>')+
-   '<div class="list">'+FLOWS.map(function(f){var c=F.cfg[f[0]]||{},st=F.stats[f[0]]||{},soon=f[4];
-    return '<div class="li fl-r'+(soon?' soon':'')+'"><span class="fl-i">'+f[1]+'</span><div style="flex:1;min-width:0"><b>'+f[2]+'</b>'+(soon?' <span class="badge b-mute">เร็ว ๆ นี้</span>':'')+'<div class="muted" style="font-size:12.5px">'+f[3]+'</div><div class="fl-ch">'+flChain(f[0],c).map(function(x){return '<span>'+esc(x)+'</span>'}).join('<em>→</em>')+'</div></div>'+
-     '<div class="fl-st">'+(soon?'—':'<b>'+(st.n||0)+' ข้อความ</b>30 วัน'+(st.last?' · ล่าสุด '+esc(fdt(st.last)):''))+'</div>'+
-     (soon?'':'<button type="button" class="tg" role="switch" data-flon="'+f[0]+'" aria-checked="'+(!!c.on)+'" aria-label="เปิดใช้ '+esc(f[2])+'"><i></i></button><button class="btn sm" data-fled="'+f[0]+'">แก้ไข</button>')+'</div>'}).join('')+'</div>'+
-   '<div class="faint" style="font-size:12px;padding:10px 16px">ปิด Workflow = ส่งข้อความธรรมดาตามแท็บ “ตารางแจ้งเตือน” เหมือนเดิม · ช่องทาง (LINE / กลุ่ม LINE) ยังเปิด/ปิดได้ที่ตารางแจ้งเตือน · ปุ่มในการ์ดเปิดหน้าในแอปพนักงาน (ไม่ต้องตั้ง Webhook)</div></section>'}
-function flSave(k,patch,ok){var all={};try{all=JSON.parse(sv('notify_flows')||'{}')||{}}catch(e){}all[k]=Object.assign({},(A.cfg.flows.cfg[k]||{}),all[k]||{},patch);
-  return aCall('saveSettings',{notify_flows:JSON.stringify(all)}).then(function(r){if(r&&r.ok===false)throw new Error(Object.values(r.errors||{})[0]||'บันทึกไม่สำเร็จ');return aCall('getSettings')}).then(function(d){A.cfg=d;if(ok)ok();drawSet()})}
-function flEdit(k){var c=A.cfg.flows.cfg[k]||{},f=FLOWS.filter(function(x){return x[0]===k})[0],g=sv('hr_line_group'),grp=g&&((A.cfg.lineMsg||{}).groups||[]).filter(function(x){return x.id===g})[0];
-  var chk=function(id,on,l){return '<label class="fl-c"><input type="checkbox" id="'+id+'"'+(on?' checked':'')+'><span>'+l+'</span></label>'};
-  var body=k==='leave_new'?
-    chk('fl-on',c.on,'<b>เปิดใช้ Workflow นี้</b> · ผู้อนุมัติได้การ์ดคำขอลา (ชื่อ ประเภท วันที่ เหตุผล คนรับงานแทน) พร้อมปุ่มเปิดหน้าอนุมัติ')+
-    '<div class="fl-g"><div class="fl-h">ถ้ายังไม่มีคนอนุมัติ</div>'+chk('fl-rm',c.remind_on,'เตือนผู้อนุมัติซ้ำ เมื่อเกิน <input id="fl-rh" type="number" min="1" max="168" value="'+(+c.remind_h||24)+'" class="fl-n"> ชั่วโมง')+'<div class="faint" style="font-size:12px">เตือนครั้งเดียวต่อขั้น · ระบบตรวจทุกชั่วโมง</div></div>'+
-    '<div class="fl-g"><div class="fl-h">สำเนาเข้ากลุ่ม HR</div><div class="fl-c"><span>ส่งเมื่อลาตั้งแต่ <input id="fl-gd" type="number" min="0" max="30" value="'+(+c.grp_days||0)+'" class="fl-n"> วันขึ้นไป (0 = ทุกคำขอ)</span></div><div class="faint" style="font-size:12px">'+(g?'กลุ่ม: '+esc(grp?grp.name||'(ไม่ทราบชื่อกลุ่ม)':g.slice(0,9)+'…')+' · เปิด/ปิดที่คอลัมน์ “กลุ่ม LINE” แถว คำขอลาใหม่':'ยังไม่ได้เลือกกลุ่ม HR · ตั้งที่ ตั้งค่า › LINE')+'</div></div>'
-   :chk('fl-on',c.on,'<b>เปิดใช้ Workflow นี้</b> · พนักงานได้การ์ดผลอนุมัติ: เขียว = อนุมัติ · แดง = ไม่อนุมัติ · ส้ม = ส่งกลับแก้ไข')+chk('fl-rs',c.reason,'แสดงเหตุผล / หมายเหตุของผู้อนุมัติในการ์ด');
-  var prev='<div class="fl-g"><div class="fl-h">ลำดับการทำงาน</div><div class="fl-v">'+flChain(k,c).map(function(x,i){return '<span class="'+(i?'':'t')+'">'+esc(x)+'</span>'}).join('<i>↓</i>')+'</div></div>';
-  drawer(f[2],'<div style="display:flex;flex-direction:column;gap:14px">'+body+prev+'</div>','<button class="btn" id="fl-test">ทดลองส่งหาฉัน</button><span class="sp"></span><button class="btn" id="fl-x">ปิด</button><button class="btn pri" id="fl-ok">บันทึก</button>');
-  $('#fl-x').onclick=closeD;
-  $('#fl-test').onclick=function(){var b=this;busy(b,1);aCall('flowTest',k).then(function(){busy(b,0);toast('ส่งการ์ดตัวอย่างเข้า LINE ของคุณแล้ว')}).catch(function(e){busy(b,0);toast(e.message,1)})};
-  $('#fl-ok').onclick=function(){var b=this,p={on:$('#fl-on').checked};
-    if(k==='leave_new'){p.remind_on=$('#fl-rm').checked;p.remind_h=Math.max(1,Math.min(168,+$('#fl-rh').value||24));p.grp_days=Math.max(0,Math.min(30,+$('#fl-gd').value||0))}else p.reason=$('#fl-rs').checked;
-    busy(b,1);flSave(k,p,function(){closeD();toast('บันทึกแล้ว')}).catch(function(e){busy(b,0);toast(e.message,1)})}}
+/* ── Workflow การแจ้งเตือนแบบลากต่อกล่อง (แบบ B/C · 30 ต.ค. 2569 · Figma หน้า 14) · หลังบ้าน app/gas/Workflow.js ──
+ * รายการ flow (แท็บ Workflow) → ตัวแก้ไขเต็มจอ: แผงกล่อง (ซ้าย) · Canvas ลากกล่อง/ลากเส้นจากจุดขวาไปกล่องอื่น · แผงตั้งค่า (ขวา)
+ * กราฟ = { nodes:[{id,type,x,y,cfg}], edges:[{from,out,to}] } · ลบกล่อง/เส้นที่เลือก: ปุ่ม Delete หรือปุ่มในแผงขวา */
+var WFT={trigger:['เริ่มเมื่อ','⚡','#FFF1E6','#E8590C'],switch:['Switch · แยกหลายทาง','⑂','#F3EDFF','#6D3FD1'],if:['If · ใช่ / ไม่ใช่','?','#E8F1FD','#1F5FBF'],wait:['รอเวลา','⏱','#FFF6DB','#B07A00'],line_person:['LINE รายคน','💬','#E6F8EC','#06A043'],line_group:['LINE กลุ่ม','👥','#E6F8EC','#06A043']};
+var WF_TO={approver:'ผู้อนุมัติขั้นปัจจุบัน',employee:'พนักงานที่ลา',hr:'HR ทุกคน',dept_head:'หัวหน้าแผนก'},WF_CARD={request:'การ์ดคำขอลา',result:'การ์ดผลอนุมัติ',text:'ข้อความที่พิมพ์เอง'};
+var WF_OPN={gte:'≥',gt:'>',eq:'=',ne:'≠',lte:'≤',lt:'<'};
+function wfFields(trig){var lt=((A.cfg&&A.cfg.leaveTypes)||[]).map(function(t){return [t.name,t.name]}),dp=((A.d&&A.d.org&&A.d.org.departments)||[]).map(function(d){return [d.name,d.name]});
+  var base=[['days','จำนวนวันลา','num'],['type','ประเภทการลา','sel',lt],['dept','แผนก','sel',dp]];
+  if(trig==='leave_new')return base.concat([['step','ขั้นของคำขอ','sel',[['first','ยื่นใหม่'],['next','ขั้นถัดไป (ขั้นก่อนอนุมัติแล้ว)']]],['has_attach','มีไฟล์แนบ','sel',[['yes','มี'],['no','ไม่มี']]]]);
+  if(trig==='leave_decided')return [['action','ผลการตัดสิน','sel',[['ok','อนุมัติ'],['partial','อนุมัติบางวัน'],['no','ไม่อนุมัติ'],['back','ส่งกลับแก้ไข']]],['status','สถานะหลังตัดสิน','sel',[['ok','จบ · อนุมัติ'],['hr','รอ HR'],['mgr','รอหัวหน้าแผนก'],['no','ไม่อนุมัติ'],['back','ส่งกลับ']]]].concat(base);
+  return [['issue','ปัญหาที่แจ้ง','sel',[['line','เข้า LINE ไม่ได้'],['google','เข้า Google ไม่ได้'],['pass','ลืมรหัสผ่าน'],['new','พนักงานใหม่'],['other','อื่น ๆ']]]]}
+function wfFld(trig,k){return wfFields(trig).filter(function(f){return f[0]===k})[0]||[k,k,'sel',[]]}
+function wfVal(f,v){if(f[2]!=='sel')return v;var o=(f[3]||[]).filter(function(x){return x[0]===v})[0];return o?o[1]:v}
+function wfOuts(n){var c=n.cfg||{};if(n.type==='switch')return (c.rules||[]).map(function(r,i){return ['r'+i,r.label||((WF_OPN[r.op]||'=')+' '+r.value)]}).concat([['else','อื่น ๆ']]);if(n.type==='if')return [['yes','ใช่'],['no','ไม่ใช่']];return [['out','']]}
+function wfGroupName(id){if(!id||id==='hr')return 'กลุ่ม HR';var g=(((A.cfg||{}).lineMsg||{}).groups||[]).filter(function(x){return x.id===id})[0];return g?(g.name||'กลุ่มไม่ทราบชื่อ'):'กลุ่มที่ไม่มีแล้ว'}
+function wfTitle(n,trig){var c=n.cfg||{},T=(A.wfd&&A.wfd.trig)||{};
+  if(n.type==='trigger')return [T[c.event]?T[c.event].label:'เลือกเหตุการณ์',T[c.event]?T[c.event].note:''];
+  if(n.type==='switch'){var f=wfFld(trig,c.field);return ['แยกตาม'+(c.field?f[1]:'…'),(c.rules||[]).length+' ทาง + อื่น ๆ']}
+  if(n.type==='if'){var f2=wfFld(trig,c.field);return [c.field?f2[1]+' '+(WF_OPN[c.op]||'=')+' '+wfVal(f2,c.value||''):'ตั้งเงื่อนไข','ใช่ / ไม่ใช่']}
+  if(n.type==='wait')return ['รอ '+(+c.hours||24)+' ชั่วโมง',c.until==='pending'?'ทำต่อเฉพาะเมื่อยังรออนุมัติ':'แล้วทำต่อเสมอ'];
+  if(n.type==='line_person')return ['ส่งถึง'+(WF_TO[c.to]||WF_TO.approver),WF_CARD[c.card]||WF_CARD.text];
+  return ['ส่งเข้า'+wfGroupName(c.group),WF_CARD[c.card]||WF_CARD.text]}
+var NW=236,NH=64,PR=26;
+function wfH(n){var o=wfOuts(n);return o.length>1?NH+o.length*PR+6:NH}
+function wfPort(n,out){var o=wfOuts(n);if(o.length<2)return [n.x+NW,n.y+NH/2];var i=Math.max(0,o.map(function(x){return x[0]}).indexOf(out));return [n.x+NW,n.y+NH+i*PR+PR/2]}
+
+/* ── รายการ flow ── */
+function flowsView(d){var W=A.wfd;if(!W||W.loading)return '<section class="card"><div class="loading"><span class="spin"></span>กำลังโหลด Workflow…</div></section>';
+  var tok=d.notify&&d.notify.lineToken;
+  return '<section class="card"><div class="ch"><h3>Workflow การแจ้งเตือน</h3><span class="sp"></span><button class="btn sm pri" id="wf-new">+ สร้าง Workflow</button></div>'+
+   (tok?'':'<div class="note-b" style="margin:12px 16px 0"><div>ยังไม่ได้เชื่อม LINE Messaging API · ตั้งที่ ตั้งค่า › LINE ก่อน ระบบจึงจะส่งข้อความได้</div></div>')+
+   '<div class="list">'+(W.list.length?W.list.map(function(w){var g=w.graph,acts=g.nodes.filter(function(n){return /^line_/.test(n.type)}).length,T=W.trig[w.trigger]||{};
+    return '<div class="li fl-r"><span class="fl-i">⚡</span><div style="flex:1;min-width:0"><b>'+esc(w.name)+'</b><div class="muted" style="font-size:12.5px">เริ่มเมื่อ: '+esc(T.label||w.trigger)+' · '+g.nodes.length+' กล่อง · ส่งข้อความ '+acts+' จุด</div><div class="fl-ch">'+wfChain(w).map(function(x){return '<span>'+esc(x)+'</span>'}).join('<em>→</em>')+'</div></div>'+
+     '<div class="fl-st"><b>ทำงาน '+w.runs+' ครั้ง</b>'+(w.last_run?'ล่าสุด '+esc(fdt(w.last_run)):'ยังไม่เคยทำงาน')+'</div><button type="button" class="tg" role="switch" data-wfon="'+w.id+'" aria-checked="'+w.on+'" aria-label="เปิดใช้ '+esc(w.name)+'"><i></i></button><button class="btn sm" data-wfed="'+w.id+'">แก้ไข</button></div>'}).join(''):'<div class="li muted">ยังไม่มี Workflow · กด “สร้าง Workflow”</div>')+'</div>'+
+   '<div class="faint" style="font-size:12px;padding:10px 16px">เหตุการณ์ที่มี Workflow เปิดอยู่ จะใช้ Workflow แทนข้อความ LINE ในแท็บ “ตารางแจ้งเตือน” · ปิดทุก flow ของเหตุการณ์นั้น = กลับไปใช้ตารางแจ้งเตือน'+(W.pending?' · งานรอเวลาอยู่ '+W.pending+' งาน (ระบบตรวจทุกชั่วโมง)':'')+'</div></section>'}
+function wfChain(w){var g=w.graph,by={},out=[];g.nodes.forEach(function(n){by[n.id]=n});var t=g.nodes.filter(function(n){return n.type==='trigger'})[0],seen={},q=t?[t.id]:[];
+  while(q.length&&out.length<7){var n=by[q.shift()];if(!n||seen[n.id])continue;seen[n.id]=1;out.push(wfTitle(n,w.trigger)[0]);g.edges.forEach(function(e){if(e.from===n.id)q.push(e.to)})}return out}
 function flBind(){$$('[data-ntab]').forEach(function(b){b.onclick=function(){A.ntab=b.dataset.ntab;drawSet()}});
-  $$('[data-flon]').forEach(function(b){b.onclick=function(){var on=b.getAttribute('aria-checked')!=='true';b.disabled=true;flSave(b.dataset.flon,{on:on}).then(function(){toast(on?'เปิด Workflow แล้ว':'ปิด Workflow แล้ว · ใช้ข้อความธรรมดาแทน')}).catch(function(e){b.disabled=false;toast(e.message,1)})}});
-  $$('[data-fled]').forEach(function(b){b.onclick=function(){flEdit(b.dataset.fled)}})}
+  if(!A.wfd){A.wfd={loading:1};aCall('wfList').then(function(d){A.wfd=d;drawSet()}).catch(function(e){A.wfd={list:[],trig:{}};toast(e.message,1)})}
+  $$('[data-wfon]').forEach(function(b){b.onclick=function(){var on=b.getAttribute('aria-checked')!=='true';b.disabled=true;aCall('wfToggle',b.dataset.wfon,on).then(function(){toast(on?'เปิด Workflow แล้ว':'ปิด Workflow แล้ว');return wfReload()}).catch(function(e){b.disabled=false;toast(e.message,1)})}});
+  $$('[data-wfed]').forEach(function(b){b.onclick=function(){var w=A.wfd.list.filter(function(x){return x.id===b.dataset.wfed})[0];if(w)wfOpen(JSON.parse(JSON.stringify(w)))}});
+  if($('#wf-new'))$('#wf-new').onclick=function(){wfOpen({name:'',on:true,graph:{nodes:[{id:'t',type:'trigger',x:60,y:200,cfg:{event:'leave_new'}}],edges:[]}})}}
+function wfReload(){return aCall('wfList').then(function(d){A.wfd=d;drawSet()})}
+
+/* ── ตัวแก้ไข (Canvas + แผงตั้งค่า) ── */
+var WE=null;
+function wfOpen(wf){WE={wf:wf,g:wf.graph,sel:null,pan:{x:40,y:40},z:1,dirty:false};
+  var el=document.createElement('div');el.id='wfe';el.className='wfe';document.body.appendChild(el);document.body.style.overflow='hidden';
+  el.innerHTML='<div class="wfe-top"><button class="btn sm" id="wfe-x">← กลับ</button><input id="wfe-nm" value="'+esc(wf.name||'')+'" placeholder="ตั้งชื่อ Workflow" aria-label="ชื่อ Workflow"><span class="sp"></span><label class="wfe-on"><button type="button" class="tg" role="switch" id="wfe-on" aria-checked="'+(!!wf.on)+'"><i></i></button>เปิดใช้งาน</label>'+(wf.id?'<button class="btn sm" id="wfe-del">ลบ</button>':'')+'<button class="btn sm" id="wfe-test">▶ ทดลองส่งหาฉัน</button><button class="btn sm pri" id="wfe-save">บันทึก</button></div>'+
+   '<div class="wfe-b"><div class="wfe-pal"><h4>เงื่อนไข</h4>'+['switch','if','wait'].map(wfPalBtn).join('')+'<h4>ส่งแจ้งเตือน</h4>'+['line_person','line_group'].map(wfPalBtn).join('')+'<div class="faint" style="font-size:12px;line-height:1.5;margin-top:6px">กดกล่องเพื่อเพิ่ม · ลากจุดสีด้านขวาของกล่องไปวางบนกล่องอื่นเพื่อต่อเส้น · กดเส้นแล้วกด Delete เพื่อลบ</div></div>'+
+   '<div class="wfe-c" id="wfe-c"><div class="wfe-w" id="wfe-w"><svg class="wfe-e" id="wfe-e" width="6000" height="4000"></svg><div id="wfe-n"></div></div><div class="wfe-zb"><button id="wfe-zi">＋</button><button id="wfe-zo">－</button><button id="wfe-zf" title="จัดให้พอดี">⤢</button></div></div>'+
+   '<div class="wfe-i" id="wfe-i"></div></div>';
+  $('#wfe-x').onclick=function(){if(WE.dirty&&!confirm('ยังไม่ได้บันทึก · ออกโดยไม่บันทึก?'))return;wfClose()};
+  $('#wfe-nm').oninput=function(){WE.dirty=true};
+  $('#wfe-on').onclick=function(){var on=this.getAttribute('aria-checked')!=='true';this.setAttribute('aria-checked',on);WE.wf.on=on;WE.dirty=true};
+  $('#wfe-save').onclick=wfSaveNow;$('#wfe-test').onclick=wfTestNow;
+  if($('#wfe-del'))$('#wfe-del').onclick=function(){if(!confirm('ลบ Workflow “'+(WE.wf.name||'')+'”? ลบแล้วกู้คืนไม่ได้'))return;aCall('wfDelete',WE.wf.id).then(function(){toast('ลบแล้ว');wfClose();wfReload()}).catch(function(e){toast(e.message,1)})};
+  $$('[data-wfadd]').forEach(function(b){b.onclick=function(){wfAdd(b.dataset.wfadd)}});
+  $('#wfe-zi').onclick=function(){wfZoom(1.15)};$('#wfe-zo').onclick=function(){wfZoom(1/1.15)};$('#wfe-zf').onclick=wfFit;
+  wfCanvasEvents();wfDraw();wfFit();document.addEventListener('keydown',wfKey)}
+function wfPalBtn(t){var m=WFT[t];return '<button class="wfe-pi" data-wfadd="'+t+'"><span style="background:'+m[2]+';color:'+m[3]+'">'+m[1]+'</span>'+m[0]+'</button>'}
+function wfClose(){document.removeEventListener('keydown',wfKey);var e=$('#wfe');if(e)e.remove();document.body.style.overflow='';WE=null}
+function wfTrig(){var t=WE.g.nodes.filter(function(n){return n.type==='trigger'})[0];return t?(t.cfg||{}).event:''}
+function wfAdd(t){var c=$('#wfe-c').getBoundingClientRect(),n={id:t.slice(0,2)+Date.now().toString(36).slice(-5),type:t,x:Math.round((c.width/2-WE.pan.x)/WE.z-NW/2),y:Math.round((c.height/2-WE.pan.y)/WE.z-40),
+  cfg:t==='switch'?{field:'days',rules:[{op:'gte',value:'3',label:''}]}:t==='if'?{field:'days',op:'gte',value:'3'}:t==='wait'?{hours:24,until:'pending'}:t==='line_person'?{to:wfTrig()==='leave_decided'?'employee':wfTrig()==='help_new'?'hr':'approver',card:wfTrig()==='leave_decided'?'result':wfTrig()==='help_new'?'text':'request'}:{group:'hr',card:'text',text:'{name} · {type} {days} วัน ({dates})'}};
+  WE.g.nodes.push(n);WE.sel={n:n.id};WE.dirty=true;wfDraw()}
+function wfDraw(noInsp){var trig=wfTrig(),h='';
+  WE.g.nodes.forEach(function(n){var m=WFT[n.type]||WFT.wait,t=wfTitle(n,trig),o=wfOuts(n),sel=WE.sel&&WE.sel.n===n.id;
+    h+='<div class="wfn'+(n.type==='trigger'?' trg':'')+(sel?' sel':'')+'" data-n="'+n.id+'" style="left:'+n.x+'px;top:'+n.y+'px;width:'+NW+'px;height:'+wfH(n)+'px">'+(n.type!=='trigger'?'<span class="wfp in"></span>':'')+
+     '<div class="wfn-h"><span class="ic" style="background:'+m[2]+';color:'+m[3]+'">'+m[1]+'</span><div style="min-width:0"><div class="k" style="color:'+m[3]+'">'+esc(m[0])+'</div><b>'+esc(t[0])+'</b><small>'+esc(t[1])+'</small></div></div>'+
+     (o.length>1?o.map(function(x){return '<div class="wfn-o"><span>'+esc(x[1])+'</span><span class="wfp out" data-out="'+x[0]+'" data-from="'+n.id+'" style="border-color:'+m[3]+'"></span></div>'}).join(''):'<span class="wfp out one" data-out="out" data-from="'+n.id+'" style="border-color:'+m[3]+'"></span>')+'</div>'});
+  $('#wfe-n').innerHTML=h;wfEdges();if(!noInsp)wfInsp()}
+function wfEdges(tmp){var by={},s='';WE.g.nodes.forEach(function(n){by[n.id]=n});
+  var cb=function(a,b){var dx=Math.max(50,Math.abs(b[0]-a[0])/2);return 'M'+a[0]+' '+a[1]+' C'+(a[0]+dx)+' '+a[1]+' '+(b[0]-dx)+' '+b[1]+' '+b[0]+' '+b[1]};
+  WE.g.edges.forEach(function(e,i){var f=by[e.from],t=by[e.to];if(!f||!t)return;var a=wfPort(f,e.out||'out'),b=[t.x,t.y+NH/2],d=cb(a,b),sel=WE.sel&&WE.sel.e===i,col=(WFT[f.type]||WFT.wait)[3];
+    s+='<path class="wfe-hit" data-e="'+i+'" d="'+d+'"/><path d="'+d+'" fill="none" stroke="'+(sel?'#141414':col)+'" stroke-width="'+(sel?3.5:2.2)+'" stroke-opacity="'+(sel?1:.75)+'"/><circle cx="'+b[0]+'" cy="'+b[1]+'" r="4" fill="'+(sel?'#141414':col)+'"/>'});
+  if(tmp)s+='<path d="'+cb(tmp[0],tmp[1])+'" fill="none" stroke="#141414" stroke-width="2" stroke-dasharray="6 5"/>';
+  $('#wfe-e').innerHTML=s;$$('#wfe-e .wfe-hit').forEach(function(p){p.onpointerdown=function(ev){ev.stopPropagation();WE.sel={e:+p.dataset.e};wfDraw()}})}
+function wfXY(ev){var r=$('#wfe-c').getBoundingClientRect();return [(ev.clientX-r.left-WE.pan.x)/WE.z,(ev.clientY-r.top-WE.pan.y)/WE.z]}
+function wfApplyView(){$('#wfe-w').style.transform='translate('+WE.pan.x+'px,'+WE.pan.y+'px) scale('+WE.z+')'}
+function wfZoom(k){var c=$('#wfe-c').getBoundingClientRect(),cx=c.width/2,cy=c.height/2,z=Math.max(.4,Math.min(1.6,WE.z*k));WE.pan.x=cx-(cx-WE.pan.x)*z/WE.z;WE.pan.y=cy-(cy-WE.pan.y)*z/WE.z;WE.z=z;wfApplyView()}
+function wfFit(){var ns=WE.g.nodes;if(!ns.length)return;var c=$('#wfe-c').getBoundingClientRect(),x0=Math.min.apply(null,ns.map(function(n){return n.x})),y0=Math.min.apply(null,ns.map(function(n){return n.y})),x1=Math.max.apply(null,ns.map(function(n){return n.x+NW})),y1=Math.max.apply(null,ns.map(function(n){return n.y+wfH(n)}));
+  var z=Math.max(.4,Math.min(1.1,Math.min((c.width-80)/(x1-x0||1),(c.height-80)/(y1-y0||1))));WE.z=z;WE.pan.x=(c.width-(x1-x0)*z)/2-x0*z;WE.pan.y=(c.height-(y1-y0)*z)/2-y0*z;wfApplyView()}
+function wfCanvasEvents(){var c=$('#wfe-c'),st=null;
+  c.onpointerdown=function(ev){if(ev.button!==0)return;var p=ev.target.closest('.wfp.out'),nd=ev.target.closest('.wfn');
+    if(p){st={k:'link',from:p.dataset.from,out:p.dataset.out};ev.preventDefault();c.setPointerCapture(ev.pointerId);return}
+    if(nd){var n=WE.g.nodes.filter(function(x){return x.id===nd.dataset.n})[0],xy=wfXY(ev);st={k:'move',n:n,dx:xy[0]-n.x,dy:xy[1]-n.y,moved:false,el:nd};c.setPointerCapture(ev.pointerId);return}
+    st={k:'pan',x:ev.clientX,y:ev.clientY,px:WE.pan.x,py:WE.pan.y,moved:false};c.setPointerCapture(ev.pointerId)};
+  c.onpointermove=function(ev){if(!st)return;
+    if(st.k==='pan'){var dx=ev.clientX-st.x,dy=ev.clientY-st.y;if(Math.abs(dx)+Math.abs(dy)>3)st.moved=true;WE.pan.x=st.px+dx;WE.pan.y=st.py+dy;wfApplyView()}
+    else if(st.k==='move'){var xy=wfXY(ev),nx=Math.round((xy[0]-st.dx)/10)*10,ny=Math.round((xy[1]-st.dy)/10)*10;if(nx!==st.n.x||ny!==st.n.y){st.moved=true;st.n.x=nx;st.n.y=ny;st.el.style.left=nx+'px';st.el.style.top=ny+'px';wfEdges()}}
+    else if(st.k==='link'){var f=WE.g.nodes.filter(function(x){return x.id===st.from})[0];wfEdges([wfPort(f,st.out),wfXY(ev)])}};
+  c.onpointerup=function(ev){if(!st)return;var s=st;st=null;
+    if(s.k==='pan'){if(!s.moved){WE.sel=null;wfDraw()}return}
+    if(s.k==='move'){if(s.moved)WE.dirty=true;WE.sel={n:s.n.id};wfDraw();return}
+    var el=document.elementFromPoint(ev.clientX,ev.clientY),nd=el&&el.closest('.wfn'),to=nd&&nd.dataset.n,tn=to&&WE.g.nodes.filter(function(x){return x.id===to})[0];
+    if(!tn||to===s.from){wfEdges();return}
+    if(tn.type==='trigger'){toast('ต่อเส้นเข้ากล่อง “เริ่มเมื่อ” ไม่ได้',1);wfEdges();return}
+    if(WE.g.edges.some(function(e){return e.from===s.from&&(e.out||'out')===s.out&&e.to===to})){wfEdges();return}
+    if(wfReach(to,s.from)){toast('ต่อแล้วจะวนเป็นวง · flow ต้องไปทางเดียว',1);wfEdges();return}
+    WE.g.edges.push({from:s.from,out:s.out,to:to});WE.dirty=true;WE.sel={e:WE.g.edges.length-1};wfDraw()};
+  c.onwheel=function(ev){ev.preventDefault();if(ev.ctrlKey||ev.metaKey)wfZoom(ev.deltaY<0?1.08:1/1.08);else{WE.pan.x-=ev.deltaX;WE.pan.y-=ev.deltaY;wfApplyView()}}}
+function wfReach(a,b){var seen={},q=[a];while(q.length){var x=q.shift();if(x===b)return true;if(seen[x])continue;seen[x]=1;WE.g.edges.forEach(function(e){if(e.from===x)q.push(e.to)})}return false}
+function wfKey(ev){if(!WE||!WE.sel||/INPUT|TEXTAREA|SELECT/.test((document.activeElement||{}).tagName||''))return;if(ev.key==='Delete'||ev.key==='Backspace'){ev.preventDefault();wfDelSel()}}
+function wfDelSel(){var s=WE.sel;if(!s)return;if(s.e!=null)WE.g.edges.splice(s.e,1);
+  else{var n=WE.g.nodes.filter(function(x){return x.id===s.n})[0];if(!n||n.type==='trigger')return toast('ลบกล่อง “เริ่มเมื่อ” ไม่ได้',1);WE.g.nodes=WE.g.nodes.filter(function(x){return x.id!==s.n});WE.g.edges=WE.g.edges.filter(function(e){return e.from!==s.n&&e.to!==s.n})}
+  WE.sel=null;WE.dirty=true;wfDraw()}
+/* แผงตั้งค่า (ขวา) */
+function wfInsp(){var box=$('#wfe-i'),s=WE.sel,trig=wfTrig();
+  if(!s){box.innerHTML='<div class="wfe-ih"><b>ตั้งค่า</b></div><div class="wfe-ib faint" style="font-size:13px;line-height:1.6">กดกล่องหรือเส้นเพื่อตั้งค่า<br><br><b style="color:var(--tx,#141414)">วิธีใช้</b><br>① กล่อง “เริ่มเมื่อ” เลือกเหตุการณ์<br>② เพิ่มกล่องจากแผงซ้าย<br>③ ลากจุดด้านขวาของกล่องไปวางบนกล่องถัดไป<br>④ กดบันทึก แล้วเปิดใช้งาน<br><br>ตัวแปรในข้อความ: {name} {type} {days} {dates} {req_no} {by} {note}</div>';return}
+  if(s.e!=null){var e=WE.g.edges[s.e];box.innerHTML='<div class="wfe-ih"><b>เส้นเชื่อม</b></div><div class="wfe-ib"><div class="faint" style="font-size:13px">จาก “'+esc(wfTitle(WE.g.nodes.filter(function(n){return n.id===e.from})[0]||{},trig)[0])+'” ไป “'+esc(wfTitle(WE.g.nodes.filter(function(n){return n.id===e.to})[0]||{},trig)[0])+'”</div><button class="btn" id="wfi-del">ลบเส้นนี้</button></div>';$('#wfi-del').onclick=wfDelSel;return}
+  var n=WE.g.nodes.filter(function(x){return x.id===s.n})[0];if(!n){WE.sel=null;return wfInsp()}var c=n.cfg=n.cfg||{},m=WFT[n.type],T=(A.wfd&&A.wfd.trig)||{};
+  var opt=function(list,v){return list.map(function(o){return '<option value="'+esc(o[0])+'"'+(String(v)===String(o[0])?' selected':'')+'>'+esc(o[1])+'</option>'}).join('')};
+  var F=wfFields(trig),fsel=function(k,v){return '<select data-c="'+k+'">'+opt(F.map(function(f){return [f[0],f[1]]}),v)+'</select>'};
+  var valIn=function(f,v,attr){return f[2]==='num'?'<input type="number" min="0" '+attr+' value="'+esc(v==null?'':v)+'">':'<select '+attr+'>'+opt([['','— เลือก —']].concat(f[3]||[]),v)+'</select>'};
+  var ops=function(f,v,attr){return '<select '+attr+'>'+opt((f[2]==='num'?['gte','gt','eq','ne','lte','lt']:['eq','ne']).map(function(o){return [o,WF_OPN[o]]}),v)+'</select>'};
+  var h='';
+  if(n.type==='trigger')h='<label class="f">เหตุการณ์<select data-c="event">'+opt(Object.keys(T).map(function(k){return [k,T[k].label]}),c.event)+'</select></label><div class="faint" style="font-size:12.5px">'+esc((T[c.event]||{}).note||'')+'</div>';
+  else if(n.type==='switch'){var f=wfFld(trig,c.field);h='<label class="f">ตรวจจาก'+fsel('field',c.field)+'</label>'+(c.rules||[]).map(function(r,i){return '<div class="wfe-rule"><div class="wfe-rh"><b>ทาง '+(i+1)+'</b><span class="sp"></span><button class="btn sm" data-rdel="'+i+'" aria-label="ลบเงื่อนไข">✕</button></div><div class="wfe-row">'+ops(f,r.op,'data-r="'+i+'" data-rk="op"')+valIn(f,r.value,'data-r="'+i+'" data-rk="value"')+'</div><input data-r="'+i+'" data-rk="label" value="'+esc(r.label||'')+'" placeholder="ชื่อทาง (ไม่บังคับ)"></div>'}).join('')+
+    '<button class="btn sm" id="wfi-radd">+ เพิ่มทาง</button><div class="faint" style="font-size:12px">ตรวจจากบนลงล่าง เข้าทางแรกที่ตรง · ไม่ตรงเลย = ทาง “อื่น ๆ”</div>'}
+  else if(n.type==='if'){var f3=wfFld(trig,c.field);h='<label class="f">ตรวจจาก'+fsel('field',c.field)+'</label><div class="wfe-row">'+ops(f3,c.op,'data-c="op"')+valIn(f3,c.value,'data-c="value"')+'</div>'}
+  else if(n.type==='wait')h='<label class="f">รอ (ชั่วโมง)<input type="number" min="1" max="720" data-c="hours" value="'+(+c.hours||24)+'"></label><label class="fl-c"><input type="checkbox" data-cb="until"'+(c.until==='pending'?' checked':'')+'><span>ทำต่อเฉพาะเมื่อคำขอยังรออนุมัติ (มีคนอนุมัติแล้ว = จบ)</span></label><div class="faint" style="font-size:12px">ระบบตรวจทุกชั่วโมง</div>';
+  else{var isG=n.type==='line_group',cards=trig==='help_new'?['text']:trig==='leave_decided'?['result','request','text']:['request','text'];
+    h=(isG?'<label class="f">กลุ่ม<select data-c="group">'+opt([['hr','กลุ่ม HR (ตามตั้งค่า)']].concat((((A.cfg||{}).lineMsg||{}).groups||[]).filter(function(g){return !g.left_at}).map(function(g){return [g.id,g.name||'(ไม่ทราบชื่อกลุ่ม)']})),c.group||'hr')+'</select></label>':
+      '<label class="f">ส่งถึง<select data-c="to">'+opt((trig==='help_new'?['hr']:['approver','employee','hr','dept_head']).map(function(k){return [k,WF_TO[k]]}),c.to||'approver')+'</select></label>')+
+     '<label class="f">รูปแบบข้อความ<select data-c="card">'+opt(cards.map(function(k){return [k,WF_CARD[k]]}),c.card||cards[0])+'</select></label>'+
+     ((c.card||cards[0])==='text'?'<label class="f">ข้อความ<textarea data-c="text" rows="4" placeholder="{name} · {type} {days} วัน ({dates})">'+esc(c.text||'')+'</textarea></label><div class="faint" style="font-size:12px">ตัวแปร: {name} {type} {days} {dates} {req_no} {code} {by} {note}</div>':'')+
+     (c.card==='result'?'<label class="fl-c"><input type="checkbox" data-cb="no_reason"'+(c.no_reason?'':' checked')+' data-inv="1"><span>แสดงเหตุผล/หมายเหตุของผู้อนุมัติ</span></label>':'')}
+  box.innerHTML='<div class="wfe-ih"><span class="ic" style="background:'+m[2]+';color:'+m[3]+'">'+m[1]+'</span><b>'+esc(m[0])+'</b></div><div class="wfe-ib">'+h+'</div>'+(n.type!=='trigger'?'<div class="wfe-if"><button class="btn" id="wfi-del">ลบกล่องนี้</button></div>':'');
+  var upd=function(){WE.dirty=true;wfDraw(true)};
+  $$('#wfe-i [data-c]').forEach(function(x){x.oninput=x.onchange=function(){var k=x.dataset.c;c[k]=x.type==='number'?+x.value:x.value;if(k==='field'){if(n.type==='switch')(c.rules||[]).forEach(function(r){r.value=''});else c.value=''}upd();if(x.tagName==='SELECT')wfInsp()}});
+  $$('#wfe-i [data-cb]').forEach(function(x){x.onchange=function(){var k=x.dataset.cb;c[k]=x.dataset.inv?!x.checked:(k==='until'?(x.checked?'pending':''):x.checked);upd()}});
+  $$('#wfe-i [data-r]').forEach(function(x){x.oninput=x.onchange=function(){c.rules[+x.dataset.r][x.dataset.rk]=x.value;upd()}});
+  $$('#wfe-i [data-rdel]').forEach(function(x){x.onclick=function(){var i=+x.dataset.rdel;c.rules.splice(i,1);WE.g.edges=WE.g.edges.filter(function(e){return !(e.from===n.id&&e.out==='r'+i)}).map(function(e){var m2=e.from===n.id&&/^r(\d+)$/.exec(e.out||'');if(m2&&+m2[1]>i)e.out='r'+(+m2[1]-1);return e});WE.dirty=true;wfDraw()}});
+  if($('#wfi-radd'))$('#wfi-radd').onclick=function(){(c.rules=c.rules||[]).push({op:'gte',value:'',label:''});WE.dirty=true;wfDraw()};
+  if($('#wfi-del'))$('#wfi-del').onclick=wfDelSel}
+function wfSaveNow(){var b=$('#wfe-save');WE.wf.name=$('#wfe-nm').value.trim();busy(b,1);
+  aCall('wfSave',{id:WE.wf.id,name:WE.wf.name,on:!!WE.wf.on,graph:WE.g}).then(function(r){busy(b,0);WE.wf.id=r.id;WE.dirty=false;toast('บันทึกแล้ว');wfReload()}).catch(function(e){busy(b,0);toast(e.message,1)})}
+function wfTestNow(){var b=$('#wfe-test');busy(b,1);aCall('wfTest',{graph:WE.g}).then(function(r){busy(b,0);toast((r.log||[]).length?'ทดลองด้วยคำขอ '+(r.sample||'')+' · '+r.log.join(' · '):'ไม่มีกล่องส่งข้อความในทางที่เข้า')}).catch(function(e){busy(b,0);toast(e.message,1)})}
 function ntBind(){var h=$('[data-sv="notify_matrix"]');if(!h)return;$$('[data-ntm]').forEach(function(b){b.onclick=function(){var p=b.dataset.ntm.split('|'),mx={};try{mx=JSON.parse(h.value||'{}')}catch(e){}
   var on=b.getAttribute('aria-checked')!=='true';b.setAttribute('aria-checked',on);(mx[p[0]]=mx[p[0]]||{})[p[1]]=on;h.value=JSON.stringify(mx);stMark()}})}
 function drawSet(){if(!$('#st-body'))return;var t=A.stab||'company',d=A.cfg,h='';if(!d)return;
@@ -3260,8 +3394,8 @@ function orgForm(r){var t=A.otab,def=OT[t];r=r||{};
 boot();
 })();
 </script>
-<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610301706 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
-(function(){var B='202610301706';if(!/^\d{12}$/.test(B))return;var shown=0;
+<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610301719 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
+(function(){var B='202610301719';if(!/^\d{12}$/.test(B))return;var shown=0;
   function chk(){if(shown||document.hidden)return;fetch('build.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():''}).then(function(t){t=String(t||'').trim();if(!/^\d{12}$/.test(t)||t<=B)return;shown=1;
     var d=document.createElement('div');d.setAttribute('role','status');d.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:99999;background:#141414;color:#fff;border-radius:999px;padding:8px 8px 8px 18px;display:flex;gap:12px;align-items:center;font:14px "IBM Plex Sans Thai",sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.25)';
     d.innerHTML='<span>มีเวอร์ชันใหม่ของระบบ</span><button type="button" style="border:0;border-radius:999px;background:#fff;color:#141414;padding:6px 14px;font:inherit;font-weight:600;cursor:pointer">โหลดใหม่</button>';
