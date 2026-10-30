@@ -19,7 +19,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js" charset="utf-8"></script>
 <script src="config.js"></script>
-<script src="i18n.js?v=202610301301"></script>
+<script src="i18n.js?v=202610301456"></script>
 <style>
 /* สี Push Media ขาว–ดำ ตามโลโก้ (22 ต.ค. 2569) · สีสถานะ ok/warn/bad คงไว้ */
 :root{--nav:#0B0B0B;--nav2:#1F1F1F;--nav-ink:#C8C8C8;--acc:#111111;--acc-soft:#EDEDED;--bg:#F4F4F4;--sf:#FFFFFF;--sf2:#F8F8F8;--line:#E3E3E3;
@@ -232,13 +232,6 @@ td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}tr
 .lg-line{background:#06C755;border:0;color:#fff;font-weight:600}.lg-line:hover{background:#05B34C}.lg-line svg{width:24px;height:24px}
 .lg-goo{background:#fff;border:1px solid #DADCE0;color:#1F1F1F;font-weight:500}.lg-goo:hover{background:#F8F8F8}.lg-goo svg{width:20px;height:20px}
 .lg-lab{font-size:14px;font-weight:500}
-.login.split .lg-top-sp{justify-content:space-between!important}.lg-tlogo{height:34px;width:auto;display:block}
-.lg-pf{display:flex;flex-direction:column;gap:8px}.lg-pf .lg-in{background:#fff;height:50px;border-radius:12px}.lg-pf .lg-in svg{width:20px;height:20px;color:#8C8C8C;flex:none}
-.lg-pf .lg-lab{font-size:13.5px;font-weight:600;color:#141414;margin-top:4px}
-.lg-row2{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;color:#5C5C5C;margin:4px 0 6px}
-.lg-rem{display:flex;gap:8px;align-items:center;cursor:pointer}.lg-rem input{width:17px;height:17px;margin:0;accent-color:#141414}
-.lg-main{background:#141414;border:0;color:#fff;font-weight:600}.lg-main:hover{background:#000}.lg-main:focus-visible{outline:2px solid #141414;outline-offset:2px}
-.login.split .lg-line,.login.split .lg-goo{height:48px;font-size:15px}
 .lg-in{display:flex;align-items:center;gap:10px;height:48px;border:1px solid #DADADA;border-radius:10px;padding:0 12px;background:#FAFAFA}.lg-in:focus-within{border-color:#141414;background:#fff}
 .lg-in svg{width:20px;height:20px;color:#8C8C8C;flex:none}.lg-in input{flex:1;border:0;outline:0;background:none;font:inherit;font-size:15px;color:#141414;min-width:0}
 .lg-eye{background:none;border:0;padding:4px;cursor:pointer;color:#8C8C8C;display:flex}
@@ -791,8 +784,6 @@ function ask(o){return new Promise(function(res){var prev=document.activeElement
   [].forEach.call(w.querySelectorAll('[data-ask]'),function(b){b.onclick=function(){done(b.dataset.ask)}});var f=w.querySelector('.btn.pri')||w.querySelector('[data-ask="'+cancel+'"]');if(f)f.focus()})}
 var tT;function toast(m,bad){var t=$('.toast');if(t)t.remove();t=document.createElement('div');t.className='toast'+(bad?' bad':'');t.setAttribute('role','status');t.textContent=m;document.body.appendChild(t);clearTimeout(tT);tT=setTimeout(function(){t.remove()},bad?6000:3000)}
 function busy(btn,on){if(btn){btn.disabled=on}}
-/* ไม่ได้ติ๊ก 'จดจำฉันในเครื่องนี้' + ปิดแท็บไปแล้ว → ออกจากระบบ (30 ต.ค. 2569) */
-(function(){try{if(store('hr_forget')&&!sessionStorage.getItem('hr_alive')){store('hr_tok',null);store('hr_forget',null)}}catch(e){}})();
 var A={ev:store('emp_view')==='card'?'card':'table',tok:store('hr_tok'),d:null,view:'dash',id:null,q:'',dept:'all',team:'all',chk:'all',line:'all',st:'cur',sum:'all',sel:[],page:1,f:null,err:{},otab:'departments'};
 var ROLE={employee:'พนักงาน',lead:'หัวหน้าทีม',manager:'หัวหน้าแผนก',hr:'HR',exec:'ผู้บริหาร',admin:'ผู้ดูแลระบบ'};
 var ST={active:['ทำงาน','b-ok'],probation:['ทดลองงาน','b-info'],leave:['ลาระยะยาว','b-warn'],resigned:['ลาออก','b-mute']};
@@ -914,50 +905,22 @@ function lgSplit(pub,IC,GOO){
        '<span class="pa-chip"><i></i><span class="pa-sw"><span class="t1">ห่างสำนักงาน 120 ม.</span><span class="t2">ในพื้นที่ · สำนักงาน</span></span></span></div>'+
       '<div class="pa-loc"><span class="pa-sw"><b class="t1">ยังไม่อยู่ในพื้นที่</b><b class="t2">สามารถลงเวลาได้</b></span><small>สำนักงานใหญ่ · รัศมี 150 ม.</small></div></div>'+
      '<div class="pa-btn"><span class="pa-sw"><span class="t1">ลงเวลาเข้างาน · กะเช้า</span><span class="t2">✓ ลงเวลาสำเร็จ 08:47</span></span></div><span class="pa-tap"></span><span class="ph-home"></span></div></div></div>';
-  return '<div class="login one split">'+art+'<div class="lg-side"><div class="lg-top-sp"><img class="lg-tlogo" src="push-media-logo-black.svg" alt="Push Media"><div class="lang" role="group" aria-label="ภาษา / Language" data-noi18n><button type="button" data-lang="th" aria-pressed="'+(window.hrLang&&hrLang()==='th')+'">TH</button><button type="button" data-lang="en" aria-pressed="'+(window.hrLang&&hrLang()==='en')+'">EN</button></div></div><main class="lg-card">'+
-    /* แบบ B (30 ต.ค. 2569 ผู้ใช้เลือก): ช่องรหัสพนักงาน/อีเมล + รหัสผ่านด้านบน · LINE / Google เป็นทางเลือกด้านล่าง */
-    '<div class="lg-h"><h1>เข้าสู่ระบบ</h1><p><b id="lg-app">'+esc(pub.app||'Push Media Center')+'</b> · <span>ระบบลงเวลา การลา และอนุมัติ</span></p></div>'+
+  return '<div class="login one split">'+art+'<div class="lg-side"><div class="lg-top-sp"><div class="lang" role="group" aria-label="ภาษา / Language" data-noi18n><button type="button" data-lang="th" aria-pressed="'+(window.hrLang&&hrLang()==='th')+'">TH</button><button type="button" data-lang="en" aria-pressed="'+(window.hrLang&&hrLang()==='en')+'">EN</button></div></div><main class="lg-card">'+
+    '<div class="lg-h"><h1>ยินดีต้อนรับ</h1><p><span>เข้าใช้งาน</span> <b id="lg-app">'+esc(pub.app||'Push Media Center')+'</b><br><span>ด้วยบัญชีพนักงานของคุณ</span></p></div>'+
     '<div class="lg-alert" id="lg-noemail" role="alert" hidden></div>'+
-    '<form class="lg-pf" id="lg-pf" novalidate><label class="lg-lab" for="lg-id">รหัสพนักงาน หรือ อีเมล</label><div class="lg-in">'+IC.user+'<input id="lg-id" autocomplete="username" autocapitalize="off" spellcheck="false" placeholder="เช่น 0123 หรือ name@push.co.th"></div>'+
-     '<label class="lg-lab" for="lg-pwd">รหัสผ่าน</label><div class="lg-in">'+IC.lock+'<input id="lg-pwd" type="password" autocomplete="current-password" placeholder="รหัสผ่าน"><button type="button" class="lg-eye" id="lg-eye2" aria-label="แสดงรหัสผ่าน">'+IC.eye+'</button></div>'+
-     '<div class="lg-row2"><label class="lg-rem"><input type="checkbox" id="lg-rem" checked><span>จดจำฉันในเครื่องนี้</span></label><button type="button" class="lg-link" data-help="pass">ลืมรหัสผ่าน?</button></div>'+
-     '<button class="lg-btn lg-main" id="lg-go">เข้าสู่ระบบ</button></form>'+
-    '<div class="lg-or2" aria-hidden="true"><i></i>หรือเข้าสู่ระบบด้วย<i></i></div>'+
     '<button class="lg-btn lg-line" id="lg-line"><span class="ic">'+IC.line+'</span><span class="lb">เข้าสู่ระบบด้วย LINE</span></button>'+
-    (GOO?'<button class="lg-btn lg-goo" id="lg-goo" title="ใช้อีเมลที่ลงทะเบียนกับ HR"><span class="ic">'+IC.goo+'</span><span class="lb">เข้าสู่ระบบด้วย Google</span></button>':'')+
+    (GOO?'<div class="lg-or2" aria-hidden="true"><i></i>หรือ<i></i></div><button class="lg-btn lg-goo" id="lg-goo"><span class="ic">'+IC.goo+'</span><span class="lb">เข้าสู่ระบบด้วย Google</span></button>':'')+
+    '<div class="lg-row"><span>'+(GOO?'Google: ใช้อีเมลที่ลงทะเบียนไว้':'ใช้บัญชี LINE เดียวกับแอปพนักงาน')+'</span><button type="button" class="lg-link" data-help="">Forgot Password?</button></div>'+
     (DEV?'<div class="cb" style="background:var(--warn-s);border-radius:8px;font-size:13px"><b>โหมดทดสอบในเครื่อง</b> · เข้าเป็น <button class="btn sm" data-dev="Uhr1|มิ้นท์">HR</button> <button class="btn sm" data-dev="Umgr1|โอ๊ต">ผู้จัดการ</button> <button class="btn sm" data-dev="Ulead1|ต้น">หัวหน้าทีม</button> <button class="btn sm" data-dev="Uemp1|บอย">พนักงาน</button></div>':'')+
     '<div id="lg-err" class="er" role="alert" style="color:var(--bad);font-size:14px;text-align:center"></div>'+
-    '<div class="lg-first">ใช้ครั้งแรก? <b>เปิดแอปพนักงานใน LINE</b> <span>เพื่อเชื่อมบัญชี</span><br><span>หรือขอรหัสผ่านจาก HR</span></div>'+
+    '<div class="lg-first">ใช้ครั้งแรก? <b>เปิดแอปพนักงานใน LINE</b> <span>เพื่อเชื่อมบัญชี</span><br><span>หรือขอลิงก์เชิญจาก HR</span></div>'+
     '</main><footer class="lg-foot"><span data-noi18n>© '+new Date().getFullYear()+' '+esc(pub.company||'Push Media')+'</span><span>ใช้ได้บน Chrome · Edge · Safari</span></footer></div></div>';
 }
 /* ลืมรหัสผ่าน / เข้าใช้ไม่ได้ → กรอกข้อมูลบางส่วน ส่งให้ HR/admin ตรวจในศูนย์อนุมัติ (loginHelp ไม่ต้องเข้าสู่ระบบ) · ไม่ถามรหัสผ่าน */
-/* ตั้ง / เปลี่ยนรหัสผ่านเข้าเว็บ (30 ต.ค. 2569) · forced = เข้าด้วยรหัสชั่วคราว ต้องเปลี่ยนก่อนใช้งาน (ปิดหน้าต่างไม่ได้) · o.tok = session ที่ยังไม่ได้เก็บ */
-function pwModal(o){o=o||{};var m=document.createElement('div');m.className='lg-modal';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');m.setAttribute('aria-labelledby','pw-t');
-  var need=o.has&&!o.forced;
-  m.innerHTML='<form class="lg-mc" novalidate>'+(o.forced?'':'<button type="button" class="lg-x" aria-label="ปิด">×</button>')+'<h2 id="pw-t">'+(o.forced?'ตั้งรหัสผ่านใหม่':o.has?'เปลี่ยนรหัสผ่าน':'ตั้งรหัสผ่านเข้าเว็บ')+'</h2>'+
-    '<p class="lg-ms">'+(o.forced?'คุณเข้าด้วยรหัสผ่านชั่วคราวจาก HR · ตั้งรหัสผ่านของคุณเองก่อนใช้งาน':'ใช้เข้าเว็บด้วยรหัสพนักงานหรืออีเมล + รหัสผ่าน (LINE / Google ยังใช้ได้เหมือนเดิม)')+'</p>'+
-    (need?'<label class="lg-fl">รหัสผ่านเดิม<input name="cur" type="password" autocomplete="current-password"></label>':'')+
-    '<label class="lg-fl">รหัสผ่านใหม่<input name="next" type="password" autocomplete="new-password" maxlength="64"></label>'+
-    '<label class="lg-fl">ยืนยันรหัสผ่านใหม่<input name="again" type="password" autocomplete="new-password" maxlength="64"></label>'+
-    '<p class="lg-ms" style="font-size:12.5px;margin:-4px 0 0">อย่างน้อย 8 ตัว มีทั้งตัวอักษรภาษาอังกฤษและตัวเลข · ห้ามใช้รหัสพนักงานหรือเบอร์โทร</p>'+
-    '<div class="lg-merr" role="alert"></div><button class="lg-btn lg-main lg-send">บันทึกรหัสผ่าน</button>'+(o.forced?'<button type="button" class="lg-link" id="pw-out" style="align-self:center">ออกจากระบบ</button>':'')+'</form>';
-  document.body.appendChild(m);var f=m.querySelector('form'),er=m.querySelector('.lg-merr'),close=function(){m.remove()};
-  if(!o.forced){m.querySelector('.lg-x').onclick=close;m.onclick=function(e){if(e.target===m)close()}}else $('#pw-out').onclick=function(){call('logout',o.tok);close()};
-  setTimeout(function(){(f.cur||f.next).focus()},30);
-  f.onsubmit=function(ev){ev.preventDefault();er.textContent='';var nx=f.next.value,b=f.querySelector('.lg-send');
-    if(nx.length<8||!/[A-Za-z]/.test(nx)||!/\d/.test(nx)){er.textContent='รหัสผ่านอย่างน้อย 8 ตัว มีทั้งตัวอักษรภาษาอังกฤษและตัวเลข';return}
-    if(nx!==f.again.value){er.textContent='ยืนยันรหัสผ่านไม่ตรงกัน';return}
-    busy(b,1);(o.tok?call('setMyPassword',o.tok,f.cur?f.cur.value:'',nx):aCall('setMyPassword',f.cur?f.cur.value:'',nx)).then(function(r){busy(b,0);
-      if(!r.ok){er.textContent=(r.errors&&(r.errors.cur||r.errors.next))||'บันทึกไม่สำเร็จ';return}close();if(o.done)o.done()}).catch(function(e){busy(b,0);er.textContent=e.message})}}
-/* HR ออกรหัสผ่านชั่วคราวให้พนักงาน (แสดงครั้งเดียว) */
-function pwTemp(id){var e=emp(id)||{};drawer('ออกรหัสผ่านชั่วคราว · '+esc(e.first_name||''),'<p>สร้างรหัสผ่านชั่วคราวให้ <b>'+esc(full(e))+'</b> ('+esc(e.emp_code||'')+')</p><ul style="font-size:13.5px"><li>รหัสจะแสดงครั้งเดียว · ส่งให้พนักงานเองทางที่ปลอดภัย</li><li>พนักงานต้องตั้งรหัสใหม่ตอนเข้าครั้งแรก</li><li>รหัสเดิม (ถ้ามี) ใช้ไม่ได้ทันที · บันทึกใน Audit Log</li></ul><div id="pt-r"></div>','<button class="btn" id="pt-n">ปิด</button><button class="btn pri" id="pt-y">สร้างรหัส</button>');
-  $('#pt-n').onclick=closeD;$('#pt-y').onclick=function(){var b=this;busy(b,1);aCall('hrTempPassword',id).then(function(r){b.remove();PROF=null;
-    $('#pt-r').innerHTML='<div class="note-b" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">รหัสผ่านชั่วคราว <b class="mono" style="font-size:18px;letter-spacing:.06em">'+esc(r.temp)+'</b><button class="btn sm" id="pt-c">คัดลอก</button></div><p class="faint" style="font-size:12.5px">เข้าที่หน้าเข้าสู่ระบบ: รหัสพนักงาน '+esc(e.emp_code||'')+' + รหัสนี้</p>';
-    $('#pt-c').onclick=function(){(navigator.clipboard?navigator.clipboard.writeText(r.temp):Promise.reject()).then(function(){toast('คัดลอกแล้ว')}).catch(function(){toast('คัดลอกไม่ได้ · เลือกข้อความเอง',1)})}}).catch(function(x){busy(b,0);toast(x.message,1)})}}
 function lgHelp(pre){
-  var O=[['line','เข้าด้วย LINE ไม่ได้ / เปลี่ยนบัญชี LINE'],['google','เข้าด้วย Google ไม่ได้ / ลืมอีเมลที่ใช้'],['pass','ลืมรหัสผ่าน / ขอรหัสผ่านใหม่'],['new','พนักงานใหม่ ยังไม่มีบัญชี'],['other','อื่น ๆ']];
+  var O=[['line','เข้าด้วย LINE ไม่ได้ / เปลี่ยนบัญชี LINE'],['google','เข้าด้วย Google ไม่ได้ / ลืมอีเมลที่ใช้'],['pass','ลืมรหัสผ่านผู้ดูแลระบบ'],['new','พนักงานใหม่ ยังไม่มีบัญชี'],['other','อื่น ๆ']];
   var m=document.createElement('div');m.className='lg-modal';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');m.setAttribute('aria-labelledby','lh-t');
-  m.innerHTML='<form class="lg-mc" id="lh-f" novalidate><button type="button" class="lg-x" aria-label="ปิด">×</button><h2 id="lh-t">ลืมรหัสผ่าน / เข้าใช้ไม่ได้</h2><p class="lg-ms"><span>ลืมรหัสผ่านหรือเข้าใช้ไม่ได้ กรอกข้อมูลเพื่อให้ HR / ผู้ดูแลระบบตรวจสอบและติดต่อกลับ</span> · <b>ไม่ต้องใส่รหัสผ่าน</b></p>'+
+  m.innerHTML='<form class="lg-mc" id="lh-f" novalidate><button type="button" class="lg-x" aria-label="ปิด">×</button><h2 id="lh-t">Forgot Password</h2><p class="lg-ms"><span>ลืมรหัสผ่านหรือเข้าใช้ไม่ได้ กรอกข้อมูลเพื่อให้ HR / ผู้ดูแลระบบตรวจสอบและติดต่อกลับ</span> · <b>ไม่ต้องใส่รหัสผ่าน</b></p>'+
     '<label class="lg-fl">รหัสพนักงาน *<input name="emp_code" maxlength="20" autocomplete="off" placeholder="เช่น 0123"></label>'+
     '<label class="lg-fl">ชื่อ-นามสกุล *<input name="name" maxlength="80" autocomplete="name" placeholder="ชื่อ นามสกุล"></label>'+
     '<label class="lg-fl">เบอร์โทรหรืออีเมลที่ติดต่อกลับได้ *<input name="contact" maxlength="80" autocomplete="tel" placeholder="08x-xxx-xxxx หรือ name@company.com"></label>'+
@@ -970,7 +933,7 @@ function lgHelp(pre){
   setTimeout(function(){f.emp_code.focus()},30);
   f.onsubmit=function(ev){ev.preventDefault();er.textContent='';var p={emp_code:f.emp_code.value,name:f.name.value,contact:f.contact.value,issue:f.issue.value,detail:f.detail.value},b=f.querySelector('.lg-send');
     if(!p.emp_code.trim()||!p.name.trim()||!p.contact.trim()||!p.issue){er.textContent='กรอกช่องที่มี * ให้ครบ';return}
-    busy(b,1);call('loginHelp',p).then(function(r){f.innerHTML='<button type="button" class="lg-x" aria-label="ปิด">×</button><div class="lg-okc"><span class="lg-okic">✓</span><h2 id="lh-t">ส่งคำขอแล้ว</h2><p class="lg-ms"><span>เลขที่</span> <b>'+esc(r.no||'')+'</b><br><span>HR หรือผู้ดูแลระบบจะตรวจสอบและติดต่อกลับตามช่องทางที่ให้ไว้</span></p><button type="button" class="lg-btn lg-send" id="lh-done">เสร็จสิ้น</button></div>';
+    busy(b,1);call('loginHelp',p).then(function(r){f.innerHTML='<button type="button" class="lg-x" aria-label="ปิด">×</button><div class="lg-okc"><span class="lg-okic">✓</span><h2 id="lh-t">Request sent</h2><p class="lg-ms"><span>เลขที่</span> <b>'+esc(r.no||'')+'</b><br><span>HR หรือผู้ดูแลระบบจะตรวจสอบและติดต่อกลับตามช่องทางที่ให้ไว้</span></p><button type="button" class="lg-btn lg-send" id="lh-done">เสร็จสิ้น</button></div>';
       f.querySelector('.lg-x').onclick=close;$('#lh-done').onclick=close;$('#lh-done').focus()}).catch(function(e){busy(b,0);er.textContent=e.message})};
 }
 function renderLogin(){
@@ -980,7 +943,6 @@ function renderLogin(){
   var IC={line:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.5s5.9-3.5 8-6c1.5-1.6 2-3.2 2-4.8C22 6.6 17.5 3 12 3Zm-4.6 10.6H5.5a.5.5 0 0 1-.5-.5V9.2a.5.5 0 0 1 1 0v3.4h1.4a.5.5 0 0 1 0 1Zm2-.5a.5.5 0 0 1-1 0V9.2a.5.5 0 0 1 1 0Zm4.7 0a.5.5 0 0 1-.9.3l-2-2.7v2.4a.5.5 0 0 1-1 0V9.2a.5.5 0 0 1 .9-.3l2 2.7V9.2a.5.5 0 0 1 1 0Zm3.1-2.4a.5.5 0 0 1 0 1h-1.4v.9h1.4a.5.5 0 0 1 0 1h-1.9a.5.5 0 0 1-.5-.5V9.2c0-.3.2-.5.5-.5h1.9a.5.5 0 0 1 0 1h-1.4v.9Z"/></svg>',
    goo:'<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>',
    lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>',
-   user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M4.8 20c.8-3.6 3.7-5.6 7.2-5.6s6.4 2 7.2 5.6"/></svg>',
    eye:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>'};
   var GOO=!!CFG.googleClientId||DEV;   // ปุ่ม Google แสดงเมื่อตั้ง OAuth Client ID ใน config.js แล้ว (เครื่องผู้พัฒนาใช้บัญชีจำลอง)
   var ADM=/[?&]admin=1/.test(location.search);   // ช่องรหัสผ่านผู้ดูแลระบบ: ซ่อนจากหน้าเข้าสู่ระบบ (28 ต.ค. 2569 ผู้ใช้ขอ) · เปิดได้ที่ admin.html?admin=1 เท่านั้น (ทางเข้าสำรอง/ฉุกเฉิน)
@@ -999,11 +961,6 @@ function renderLogin(){
   lgIntro();lgPinsIntro();lgPhoneGo();
   $('#lg-line').onclick=function(){lineLogin()};
   $$('[data-help]').forEach(function(b){b.onclick=function(){lgHelp(b.dataset.help)}});
-  if($('#lg-eye2'))$('#lg-eye2').onclick=function(){var i=$('#lg-pwd'),v=i.type==='password';i.type=v?'text':'password';this.setAttribute('aria-label',v?'ซ่อนรหัสผ่าน':'แสดงรหัสผ่าน')};
-  if($('#lg-pf'))$('#lg-pf').onsubmit=function(ev){ev.preventDefault();var b=$('#lg-go'),id=$('#lg-id').value.trim(),pw=$('#lg-pwd').value;$('#lg-err').textContent='';
-    if(!id||!pw){$('#lg-err').textContent='กรอกรหัสพนักงานหรืออีเมล และรหัสผ่าน';(id?$('#lg-pwd'):$('#lg-id')).focus();return}
-    busy(b,1);call('loginPassword',id,pw).then(function(r){busy(b,0);if(!r.ok){$('#lg-err').textContent=r.error+(r.hint?' · ยังไม่มีรหัสผ่าน? เข้าด้วย LINE แล้วตั้งที่เมนูมุมขวาบน หรือขอจาก HR':'');$('#lg-pwd').value='';$('#lg-pwd').focus();return}
-      if(r.mustChange)return pwModal({forced:true,tok:r.token,done:function(){done(r.token)}});done(r.token)}).catch(function(e){busy(b,0);$('#lg-err').textContent=e.message})};
   if($('#lg-pw'))$('#lg-pw').onsubmit=function(ev){ev.preventDefault();var b=ev.submitter;busy(b,1);call('loginAdmin',$('#pw').value).then(function(r){done(r.token)}).catch(function(e){busy(b,0);$('#lg-err').textContent=e.message})};
   $$('[data-dev]').forEach(function(b){b.onclick=function(){var p=b.dataset.dev.split('|');loginWith('dev|'+p[0]+'|'+p[1])}});
 }
@@ -1027,7 +984,7 @@ function lineLogin(){
   liff.init({liffId:CFG.liffId}).then(function(){if(!liff.isLoggedIn())return liff.login({redirectUri:location.href});loginWith(liff.getIDToken())}).catch(function(e){$('#lg-err').textContent=e.message});
 }
 function loginWith(idt){call('loginLine',idt).then(function(r){if(!r.linked){$('#lg-err').textContent='บัญชี LINE นี้ยังไม่ได้เชื่อมกับพนักงาน ให้เปิดลิงก์เชื่อม LINE จาก HR ก่อน';return}done(r.token)}).catch(function(e){$('#lg-err').textContent=e.message})}
-function done(tok){A.tok=tok;store('hr_tok',tok);var rm=$('#lg-rem');if(rm&&!rm.checked){store('hr_forget',1);try{sessionStorage.setItem('hr_alive','1')}catch(e){}}else store('hr_forget',null);boot()}
+function done(tok){A.tok=tok;store('hr_tok',tok);boot()}
 /* เปิดหน้าเร็ว: แสดงข้อมูลชุดล่าสุดของแท็บนี้ทันที (sessionStorage · ปิดแท็บ/ออกจากระบบ = ล้าง) แล้วโหลดของใหม่ทับ
  * หน้าแรกเรียกเซิร์ฟเวอร์ครั้งเดียว (adminBootstrap รวม Dashboard) */
 /* ── View as · ดูในมุมมองของพนักงาน (29 ต.ค. 2569 ผู้ใช้ขอ) · เฉพาะผู้ดูแลระบบ · อ่านอย่างเดียว (เซิร์ฟเวอร์ตรวจ) · 30 นาที · Audit Log
@@ -1225,8 +1182,8 @@ function render(){
   $('#tb-bell').onclick=function(){go('appr')};
   $('#tb-help').onclick=function(){drawer('ช่วยเหลือ','<p>เข้าใช้ไม่ได้ หรือข้อมูลไม่ถูกต้อง ติดต่อ HR หรือผู้ดูแลระบบ</p><p class="faint" style="font-size:13px">ทางลัด: ช่องค้นหาด้านบนพิมพ์ชื่อ ชื่อเล่น หรือรหัสพนักงาน เพื่อเปิดโปรไฟล์ได้ทันที · กดลูกศรที่แถบเมนูซ้ายเพื่อย่อ/ขยาย</p><p class="faint" style="font-size:12.5px">สถานะระบบ: '+(CFG.failover?'Safe Mode':'Online')+'</p>')};
   $('#tb-me').onclick=function(e){e.stopPropagation();var m=$('.um');if(m)return m.remove();m=document.createElement('div');m.className='um';m.setAttribute('role','menu');
-    m.innerHTML='<div>เข้าสู่ระบบเป็น<br><b style="color:#141414">คุณ'+esc(me.name)+'</b> · '+esc(ROLE[me.role]||me.role)+'</div>'+(me.id!=='admin'&&me.role!=='exec'?'<button data-um="me">ข้อมูลของฉัน</button>':'')+(me.id!=='admin'&&!me.viewAs?'<button data-um="pw">'+(me.pw?'เปลี่ยนรหัสผ่าน':'ตั้งรหัสผ่านเข้าเว็บ')+'</button>':'')+(me.role==='admin'&&!me.viewAs?'<button data-um="va">'+VA_IC+'ดูในมุมมองของพนักงาน</button>':'')+(me.viewAs?'<button data-um="vax">ออกจากมุมมอง</button>':'<button id="out">ออกจากระบบ</button>');
-    document.body.appendChild(m);if($('#out'))$('#out').onclick=logout;var vb=m.querySelector('[data-um="va"]');if(vb)vb.onclick=function(){m.remove();vaPick()};var vx=m.querySelector('[data-um="vax"]');if(vx)vx.onclick=function(){vaExit()};var pb=m.querySelector('[data-um="pw"]');if(pb)pb.onclick=function(){m.remove();pwModal({has:me.pw,done:function(){A.d.me.pw=true;toast('บันทึกรหัสผ่านแล้ว · ใช้เข้าเว็บด้วยรหัสพนักงานหรืออีเมลได้')}})};var mb=m.querySelector('[data-um="me"]');if(mb)mb.onclick=function(){m.remove();go('profile',me.id)};
+    m.innerHTML='<div>เข้าสู่ระบบเป็น<br><b style="color:#141414">คุณ'+esc(me.name)+'</b> · '+esc(ROLE[me.role]||me.role)+'</div>'+(me.id!=='admin'&&me.role!=='exec'?'<button data-um="me">ข้อมูลของฉัน</button>':'')+(me.role==='admin'&&!me.viewAs?'<button data-um="va">'+VA_IC+'ดูในมุมมองของพนักงาน</button>':'')+(me.viewAs?'<button data-um="vax">ออกจากมุมมอง</button>':'<button id="out">ออกจากระบบ</button>');
+    document.body.appendChild(m);if($('#out'))$('#out').onclick=logout;var vb=m.querySelector('[data-um="va"]');if(vb)vb.onclick=function(){m.remove();vaPick()};var vx=m.querySelector('[data-um="vax"]');if(vx)vx.onclick=function(){vaExit()};var mb=m.querySelector('[data-um="me"]');if(mb)mb.onclick=function(){m.remove();go('profile',me.id)};
     setTimeout(function(){document.addEventListener('click',function h(){var x=$('.um');if(x)x.remove();document.removeEventListener('click',h)})},0)};
   bSearch(allowed);
   V[1]();
@@ -2776,7 +2733,7 @@ function vProfile(){
    '<div class="g3"><section class="card"><div class="ch"><h3>ข้อมูลส่วนตัว</h3></div><div class="cb"><dl class="kv"><dt>รหัสพนักงาน</dt><dd class="num">'+esc(e.emp_code)+'</dd><dt>ชื่อ–นามสกุล</dt><dd>'+esc(full(e))+'</dd><dt>ชื่อเล่น</dt><dd>'+esc(e.nickname||'—')+'</dd><dt>มือถือ</dt><dd class="num">'+esc(e.phone||'—')+'</dd><dt>อีเมล</dt><dd>'+esc(e.email||'—')+'</dd></dl></div></section>'+
    '<section class="card"><div class="ch"><h3>ตำแหน่งงาน</h3></div><div class="cb"><dl class="kv"><dt>แผนก / ทีม</dt><dd>'+esc(org('departments',e.department_id))+' / '+esc(org('teams',e.team_id)||'—')+'</dd><dt>ตำแหน่ง</dt><dd>'+esc(org('positions',e.position_id)||'—')+'</dd><dt>หัวหน้างาน</dt><dd>'+esc(e.manager_id&&emp(e.manager_id)?full(emp(e.manager_id)):'อัตโนมัติ: หัวหน้าทีม')+'</dd><dt>วันเริ่มงาน</dt><dd>'+thd(e.start_date)+'</dd><dt>ประเภทพนักงาน</dt><dd>'+(e.employment_type==='daily'?'รายวัน':'รายเดือน')+'</dd><dt>บทบาทในระบบ</dt><dd>'+ROLE[e.role||'employee']+'</dd></dl></div></section>'+
    '<section class="card"><div class="ch"><h3>เวลาทำงานและการลงเวลา</h3></div><div class="cb"><dl class="kv"><dt>เวลาทำงาน</dt><dd>'+wt(e)+' · '+days(e.work_days)+'</dd><dt>ประเภทการลงเวลา</dt><dd>'+chkB(e.checkin_type)+'</dd><dt>จุดลงเวลา</dt><dd>'+(e.checkin_sites.length?e.checkin_sites.map(function(s){return esc(org('gps_sites',s))}).join(', '):e.checkin_type==='field'?'ตามตารางงาน (หน้างาน)':'—')+'</dd>'+(isHR()?'<dt>รหัส HumanSoft</dt><dd class="num">'+esc(e.humansoft_id||'—')+'</dd>':'')+'</dl></div></section>'+
-   '<section class="card"><div class="ch"><h3>บัญชี LINE</h3></div><div class="cb">'+line+'</div></section>'+(p&&p.pw?'<section class="card"><div class="ch"><h3>รหัสผ่านเข้าเว็บ</h3><span class="sp"></span><button class="btn sm" id="pwt">ออกรหัสผ่านชั่วคราว</button></div><div class="cb" style="font-size:13.5px">'+(p.pw.set?(p.pw.temp?'<span class="badge b-warn">รหัสชั่วคราว · รอพนักงานเปลี่ยน</span>':'<span class="badge b-ok">ตั้งแล้ว</span>')+(p.pw.locked?' <span class="badge b-bad">ล็อกอยู่ (ใส่ผิดหลายครั้ง)</span>':'')+' <span class="faint">· '+esc(fdt(p.pw.set_at))+'</span>':'<span class="faint">ยังไม่ได้ตั้ง · พนักงานตั้งเองได้หลังเข้าด้วย LINE (เมนูมุมขวาบน) หรือ HR ออกรหัสชั่วคราวให้</span>')+'</div></section>':'')+
+   '<section class="card"><div class="ch"><h3>บัญชี LINE</h3></div><div class="cb">'+line+'</div></section>'+
    (isHR()?'<section class="card"><div class="ch"><h3>อุปกรณ์ลงเวลา</h3></div><div class="cb">'+(!p?'<span class="muted">กำลังโหลด…</span>':!(p.devices||[]).length?'<span class="muted">ยังไม่เคยลงเวลา · เครื่องแรกที่ลงเวลาจะถูกจดจำอัตโนมัติ</span>':'<ul class="tl">'+p.devices.map(function(d){var S={active:['ใช้งาน','b-ok'],pending:['รอ HR อนุมัติ','b-warn'],revoked:['ยกเลิกแล้ว','b-mute']}[d.status]||[d.status,'b-mute'];
      return '<li style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:160px"><b>'+esc(devName(d.label))+'</b> <span class="mono faint" data-tip="รหัสเครื่อง">'+esc(d.short)+'</span><br><span class="faint">ใช้ล่าสุด '+esc(fdt(d.last_seen))+'</span></span><span class="badge '+S[1]+'">'+S[0]+'</span>'+(d.status!=='active'?'<button class="btn sm" data-dva="'+d.id+'">อนุญาต</button>':'')+(d.status!=='revoked'?'<button class="btn sm bad" data-dvr="'+d.id+'">ยกเลิก</button>':'')+'</li>'}).join('')+'</ul>')+'</div></section>':'')+
    (isHR()||canEdit(e)||e.id===A.d.me.id?extCards(p,canEdit(e)):'')+
@@ -2785,7 +2742,7 @@ function vProfile(){
 }
 function bProfile(){
   if($('#bk'))$('#bk').onclick=function(){go('list')};if($('#ed'))$('#ed').onclick=function(){go('form',A.id)};if($('#apv-ed'))$('#apv-ed').onclick=function(){go('form',A.id)};
-  if($('#inv1'))$('#inv1').onclick=function(){invite([A.id])};if($('#unl'))$('#unl').onclick=function(){unlink(A.id)};if($('#pwt'))$('#pwt').onclick=function(){pwTemp(A.id)};
+  if($('#inv1'))$('#inv1').onclick=function(){invite([A.id])};if($('#unl'))$('#unl').onclick=function(){unlink(A.id)};
   $$('[data-nav2]').forEach(function(b){b.onclick=function(){go(b.dataset.nav2)}});
   $$('[data-dva],[data-dvr]').forEach(function(b){b.onclick=function(){var ok=!!b.dataset.dva;busy(b,1);aCall('decideDevice',b.dataset.dva||b.dataset.dvr,ok).then(function(){toast(ok?'อนุญาตอุปกรณ์แล้ว':'ยกเลิกอุปกรณ์แล้ว · ลงเวลาจากเครื่องนี้ไม่ได้อีก');PROF=null;render()}).catch(function(e){busy(b,0);toast(e.message,1)})}});
   bExt();bShiftProfile();
@@ -3194,8 +3151,8 @@ function orgForm(r){var t=A.otab,def=OT[t];r=r||{};
 boot();
 })();
 </script>
-<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610301301 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
-(function(){var B='202610301301';if(!/^\d{12}$/.test(B))return;var shown=0;
+<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610301456 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
+(function(){var B='202610301456';if(!/^\d{12}$/.test(B))return;var shown=0;
   function chk(){if(shown||document.hidden)return;fetch('build.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():''}).then(function(t){t=String(t||'').trim();if(!/^\d{12}$/.test(t)||t<=B)return;shown=1;
     var d=document.createElement('div');d.setAttribute('role','status');d.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:99999;background:#141414;color:#fff;border-radius:999px;padding:8px 8px 8px 18px;display:flex;gap:12px;align-items:center;font:14px "IBM Plex Sans Thai",sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.25)';
     d.innerHTML='<span>มีเวอร์ชันใหม่ของระบบ</span><button type="button" style="border:0;border-radius:999px;background:#fff;color:#141414;padding:6px 14px;font:inherit;font-weight:600;cursor:pointer">โหลดใหม่</button>';
