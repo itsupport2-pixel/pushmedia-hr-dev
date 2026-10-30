@@ -19,7 +19,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js" charset="utf-8"></script>
 <script src="config.js"></script>
-<script src="i18n.js?v=202610301917"></script>
+<script src="i18n.js?v=202610301924"></script>
 <style>
 /* สี Push Media ขาว–ดำ ตามโลโก้ (22 ต.ค. 2569) · สีสถานะ ok/warn/bad คงไว้ */
 :root{--nav:#0B0B0B;--nav2:#1F1F1F;--nav-ink:#C8C8C8;--acc:#111111;--acc-soft:#EDEDED;--bg:#F4F4F4;--sf:#FFFFFF;--sf2:#F8F8F8;--line:#E3E3E3;
@@ -2185,7 +2185,7 @@ var WFT={trigger:['เริ่มเมื่อ','#FFF1E6','#C2410C'],switch:[
 var WF_CAT=[['line_person','ส่ง LINE รายคน','ส่งการ์ดหรือข้อความถึงผู้อนุมัติ พนักงานที่ลา HR หรือหัวหน้าแผนก','ส่งแจ้งเตือน'],['line_group','ส่ง LINE เข้ากลุ่ม','ส่งสำเนาเข้ากลุ่ม LINE เช่น กลุ่ม HR','ส่งแจ้งเตือน'],
   ['wait','รอเวลา','หยุดรอก่อนทำขั้นถัดไป เช่น เตือนซ้ำถ้ายังไม่อนุมัติใน 24 ชม.','เงื่อนไขและเวลา'],['switch','แยกหลายทาง','เลือกทางตามเงื่อนไข เช่น ลาไม่เกิน 2 วัน / 3 วันขึ้นไป / ลาป่วย','เงื่อนไขและเวลา'],['if','ใช่ / ไม่ใช่','ตรวจเงื่อนไขเดียว แล้วแยกเป็น 2 ทาง','เงื่อนไขและเวลา'],
   ['remind','เตือนซ้ำถ้ายังไม่อนุมัติ','สำเร็จรูป: รอ 24 ชม. → ส่งการ์ดเตือนผู้อนุมัติ (เฉพาะคำขอที่ยังค้าง)','สำเร็จรูป']];
-var WF_TO={approver:'ผู้อนุมัติขั้นปัจจุบัน',employee:'พนักงานที่ลา',hr:'HR ทุกคน',dept_head:'หัวหน้าแผนก'},WF_CARD={request:'การ์ดคำขอลา (มีปุ่มอนุมัติ)',result:'การ์ดผลอนุมัติ',summary:'การ์ดสรุป (สำหรับกลุ่ม)',text:'ข้อความที่พิมพ์เอง'};
+var WF_TO={approver:'ผู้อนุมัติขั้นปัจจุบัน',employee:'พนักงานที่ลา',hr:'HR ทุกคน',dept_head:'หัวหน้าแผนก'},WF_CARD={request:'การ์ดคำขอลา (มีปุ่มอนุมัติ)',receipt:'การ์ดส่งคำขอแล้ว (สำหรับพนักงาน)',result:'การ์ดผลอนุมัติ',summary:'การ์ดสรุป (สำหรับกลุ่ม)',text:'ข้อความที่พิมพ์เอง'};
 var WF_OPN={gte:'≥',gt:'>',eq:'=',ne:'≠',lte:'≤',lt:'<'};
 function wfFields(trig){var lt=((A.cfg&&A.cfg.leaveTypes)||[]).map(function(t){return [t.name,t.name]}),dp=((A.d&&A.d.org&&A.d.org.departments)||[]).map(function(d){return [d.name,d.name]});
   var base=[['days','จำนวนวันลา','num'],['type','ประเภทการลา','sel',lt],['dept','แผนก','sel',dp]];
@@ -2366,7 +2366,7 @@ function wfInsp(){if(WE.mode==='runs'){if(WE.runs)wfRunsDraw();return}var box=$(
     '<button class="btn sm" id="wfi-radd">+ เพิ่มทาง</button><div class="faint" style="font-size:12px">ตรวจจากบนลงล่าง เข้าทางแรกที่ตรง · ไม่ตรงเลย = ทาง “อื่น ๆ”</div>'}
   else if(n.type==='if'){var f3=wfFld(trig,c.field);h='<label class="f">ตรวจจาก'+fsel('field',c.field)+'</label><div class="wfe-row">'+ops(f3,c.op,'data-c="op"')+valIn(f3,c.value,'data-c="value"')+'</div><div class="faint" style="font-size:12px">ตรง = ทาง “ใช่” · ไม่ตรง = ทาง “ไม่ใช่”</div>'}
   else if(n.type==='wait')h='<label class="f">รอ (ชั่วโมง)<input type="number" min="1" max="720" data-c="hours" value="'+(+c.hours||24)+'"></label><label class="fl-c"><input type="checkbox" data-cb="until"'+(c.until==='pending'?' checked':'')+'><span>ทำต่อเฉพาะเมื่อคำขอยังรออนุมัติ (มีคนอนุมัติแล้ว = จบ)</span></label><div class="faint" style="font-size:12px">ระบบตรวจทุกชั่วโมง · ทดลองส่งจะหยุดที่กล่องนี้</div>';
-  else{var isG=n.type==='line_group',cards=trig==='help_new'?['text']:isG?['summary','text']:trig==='leave_decided'?['result','request','text']:['request','text'],card=cards.indexOf(c.card)>=0?c.card:cards[0];
+  else{var isG=n.type==='line_group',emp=!isG&&c.to==='employee',cards=trig==='help_new'?['text']:isG?['summary','text']:trig==='leave_decided'?(emp?['result','text']:['result','request','text']):emp?['receipt','text']:['request','text'],card=cards.indexOf(c.card)>=0?c.card:cards[0];if(c.card!==card&&trig!=='help_new'){c.card=card;WE.dirty=true;setTimeout(function(){wfDraw()},0)}   // ส่งถึงพนักงานที่ลา = ไม่มีการ์ดที่มีปุ่มอนุมัติ
     h=(isG?'<label class="f">กลุ่ม<select data-c="group">'+opt([['hr','กลุ่ม HR (ตามตั้งค่า)']].concat((((A.cfg||{}).lineMsg||{}).groups||[]).filter(function(g){return !g.left_at}).map(function(g){return [g.id,g.name||'(ไม่ทราบชื่อกลุ่ม)']})),c.group||'hr')+'</select></label>':
       '<label class="f">ส่งถึง<select data-c="to">'+opt((trig==='help_new'?['hr']:['approver','employee','hr','dept_head']).map(function(k){return [k,WF_TO[k]]}),c.to||'approver')+'</select></label>')+
      '<label class="f">รูปแบบข้อความ<select data-c="card">'+opt(cards.map(function(k){return [k,WF_CARD[k]]}),card)+'</select></label>'+
@@ -2390,11 +2390,11 @@ function wfPv(n){clearTimeout(WE.pvT);WE.pvT=setTimeout(function(){var box=$('#w
 function fxHtml(o){if(!o)return '';var SZ={xxs:10,xs:11,sm:13,md:14,lg:17,xl:19},GAP={none:0,xs:2,sm:4,md:8,lg:12,xl:16},px=function(v){return v==null?'':(/px$/.test(v)?v:(GAP[v]!=null?GAP[v]+'px':v))};
   if(o.type==='bubble')return ['header','body','footer'].map(function(k){return o[k]?fxHtml(o[k]):''}).join('');
   if(o.type==='box'){var row=o.layout!=='vertical',st='display:flex;flex-direction:'+(row?'row':'column')+';'+(o.layout==='baseline'?'align-items:baseline;':row?'align-items:center;':'')+'gap:'+px(o.spacing||'none')+';'+(o.backgroundColor?'background:'+o.backgroundColor.slice(0,7)+';':'')+(o.cornerRadius?'border-radius:'+px(o.cornerRadius)+';':'')+
-    (o.paddingAll?'padding:'+px(o.paddingAll)+';':'')+(o.paddingStart?'padding-left:'+px(o.paddingStart)+';':'')+(o.paddingEnd?'padding-right:'+px(o.paddingEnd)+';':'')+(o.paddingTop?'padding-top:'+px(o.paddingTop)+';':'')+(o.paddingBottom?'padding-bottom:'+px(o.paddingBottom)+';':'')+(o.flex===0?'flex:none;':o.flex?'flex:'+o.flex+';min-width:0;':'');
+    (o.paddingAll?'padding:'+px(o.paddingAll)+';':'')+(o.paddingStart?'padding-left:'+px(o.paddingStart)+';':'')+(o.paddingEnd?'padding-right:'+px(o.paddingEnd)+';':'')+(o.paddingTop?'padding-top:'+px(o.paddingTop)+';':'')+(o.paddingBottom?'padding-bottom:'+px(o.paddingBottom)+';':'')+(o.flex===0?'flex:none;':o.flex?'flex:'+o.flex+';min-width:0;':'')+(o.borderWidth?'border:'+px(o.borderWidth)+' solid '+(o.borderColor||'#ddd')+';':'')+(o.width?'width:'+o.width+';':'')+(o.height?'height:'+o.height+';':'')+(o.justifyContent==='center'?'justify-content:center;':'')+(o.action?'cursor:pointer;':'');
     return '<div style="'+st+'">'+(o.contents||[]).map(fxHtml).join('')+'</div>'}
   if(o.type==='text')return '<div style="font-size:'+(SZ[o.size]||14)+'px;'+(o.weight==='bold'?'font-weight:700;':'')+'color:'+(o.color||'#111').slice(0,7)+';'+(o.color&&o.color.length===9?'opacity:.75;':'')+(o.align?'text-align:'+o.align+';':'')+(o.flex===0?'flex:none;':o.flex?'flex:'+o.flex+';min-width:0;':'')+(o.wrap===false?'white-space:nowrap;':'')+'line-height:1.4">'+esc(o.text)+'</div>';
   if(o.type==='separator')return '<div style="height:1px;background:'+(o.color||'#ECEDEF')+'"></div>';
-  if(o.type==='button')return '<div style="height:38px;border-radius:8px;display:grid;place-items:center;font-size:13.5px;font-weight:600;'+(o.style==='primary'?'background:'+(o.color||'#06C755')+';color:#fff':'background:#F1F2F4;color:#111')+'">'+esc((o.action||{}).label||'')+'</div>';
+  if(o.type==='button')return '<div style="flex:1;height:38px;border-radius:8px;display:grid;place-items:center;font-size:13.5px;font-weight:600;'+(o.style==='primary'?'background:'+(o.color||'#06C755')+';color:#fff':'background:#F1F2F4;color:#111')+'">'+esc((o.action||{}).label||'')+'</div>';
   return ''}
 function wfSaveNow(close){var b=$('#wfe-save');WE.wf.name=$('#wfe-nm').value.trim();busy(b,1);
   aCall('wfSave',{id:WE.wf.id,name:WE.wf.name,on:!!WE.wf.on,graph:WE.g}).then(function(r){busy(b,0);var isNew=!WE.wf.id;WE.wf.id=r.id;WE.dirty=false;var n=Object.keys(wfIssues()).length;toast('บันทึกแล้ว'+(n?' · ยังมี '+n+' กล่องที่ควรตรวจ':''));if(close){wfClose();wfReload();return}if(isNew)$('#wfe-m-runs').disabled=false;wfReload()}).catch(function(e){busy(b,0);toast(e.message,1)})}
@@ -3522,8 +3522,8 @@ function orgForm(r){var t=A.otab,def=OT[t];r=r||{};
 boot();
 })();
 </script>
-<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610301917 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
-(function(){var B='202610301917';if(!/^\d{12}$/.test(B))return;var shown=0;
+<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610301924 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
+(function(){var B='202610301924';if(!/^\d{12}$/.test(B))return;var shown=0;
   function chk(){if(shown||document.hidden)return;fetch('build.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():''}).then(function(t){t=String(t||'').trim();if(!/^\d{12}$/.test(t)||t<=B)return;shown=1;
     var d=document.createElement('div');d.setAttribute('role','status');d.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:99999;background:#141414;color:#fff;border-radius:999px;padding:8px 8px 8px 18px;display:flex;gap:12px;align-items:center;font:14px "IBM Plex Sans Thai",sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.25)';
     d.innerHTML='<span>มีเวอร์ชันใหม่ของระบบ</span><button type="button" style="border:0;border-radius:999px;background:#fff;color:#141414;padding:6px 14px;font:inherit;font-weight:600;cursor:pointer">โหลดใหม่</button>';
