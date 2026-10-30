@@ -19,7 +19,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js" charset="utf-8"></script>
 <script src="config.js"></script>
-<script src="i18n.js?v=202610301913"></script>
+<script src="i18n.js?v=202610301917"></script>
 <style>
 /* สี Push Media ขาว–ดำ ตามโลโก้ (22 ต.ค. 2569) · สีสถานะ ok/warn/bad คงไว้ */
 :root{--nav:#0B0B0B;--nav2:#1F1F1F;--nav-ink:#C8C8C8;--acc:#111111;--acc-soft:#EDEDED;--bg:#F4F4F4;--sf:#FFFFFF;--sf2:#F8F8F8;--line:#E3E3E3;
@@ -434,7 +434,7 @@ button.kpi:hover{border-color:var(--fnt)}.kpi .l{color:var(--mut);font-size:13px
 .sc-pal .cu{height:28px;border:1px dashed #DADADA;border-radius:99px;padding:0 10px;font-size:12px;color:#5A5A5A;display:inline-flex;align-items:center;cursor:pointer;position:relative;overflow:hidden}.sc-pal .cu.on{border:2.5px solid var(--acc);color:var(--acc);font-weight:600}
 .lnk{border:0;background:none;font:inherit;font-size:12.5px;font-weight:600;color:#8C8C8C;cursor:pointer;text-decoration:underline}
 .sc-res{display:flex;align-items:center;gap:8px;padding:12px 20px;background:#FFF8EB;border-top:1px solid #F1D9A6;font-size:12.5px;color:#7A4A00}.sc-res .ob{width:16px;height:16px;border-radius:4px;background:#FEF7ED;border:1.5px solid #F97316;flex:none}
-.ask-w{position:fixed;inset:0;z-index:300;background:rgba(20,20,20,.45);display:flex;align-items:center;justify-content:center;padding:16px;animation:askf .12s ease-out}
+.ask-w{position:fixed;inset:0;z-index:400;background:rgba(20,20,20,.45);display:flex;align-items:center;justify-content:center;padding:16px;animation:askf .12s ease-out}
 .ask{width:min(560px,100%);background:#fff;border-radius:18px;box-shadow:0 20px 50px rgba(0,0,0,.22);overflow:hidden;max-height:calc(100dvh - 32px);display:flex;flex-direction:column}
 .ask-b{padding:26px 28px 22px;overflow:auto}.ask-b h3{margin:14px 0 6px;font-size:19px;font-weight:700;color:#141414}.ask-b p{margin:0;font-size:14px;line-height:1.55;color:#5A5A5A}
 .ask-i{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:#F2F2F2;color:#141414;font-size:20px}.ask-i.warn{background:#FFF4DE;color:#B26A00}.ask-i.bad{background:#FDECEC;color:#C62828}
@@ -2163,14 +2163,14 @@ function lmCard(m){var hook=CFG.backend==='cf'&&/^https:/.test(API)?API.replace(
 function lmBind(){var after=function(st){A.cfg.lineMsg=st;A.cfg.notify.lineToken=st.token;drawSet()},er=function(b){return function(e){busy(b,0);toast(e.message,1)}};
   var sb=$('#lm-save');if(sb)sb.onclick=function(){var tok=$('#lm-tok').value.trim(),sec=$('#lm-sec').value.trim();if(!tok&&!sec)return toast('วาง Channel access token หรือ Channel secret',1);busy(sb,1);
     aCall('lineMsgSave',{tok:tok,secret:sec}).then(function(st){busy(sb,0);toast('บันทึกแล้ว'+(st.bot&&st.bot.name?' · บอท '+st.bot.name:''));after(st)}).catch(er(sb))};
-  var cb=$('#lm-clear');if(cb)cb.onclick=function(){if(!confirm('ยกเลิกการเชื่อม LINE Messaging API? ระบบจะหยุดส่งข้อความ LINE ทั้งหมด'))return;busy(cb,1);aCall('lineMsgSave',{clear:1}).then(function(st){busy(cb,0);toast('ยกเลิกการเชื่อมแล้ว');after(st)}).catch(er(cb))};
+  var cb=$('#lm-clear');if(cb)cb.onclick=function(){ask({title:'ยกเลิกการเชื่อม LINE Messaging API?',desc:'ระบบจะหยุดส่งข้อความ LINE ทั้งหมด (รายคนและกลุ่ม) จนกว่าจะเชื่อมใหม่',tone:'warn',buttons:[{k:'no',label:'ยกเลิก'},{k:'yes',label:'ยกเลิกการเชื่อม',cls:'pri'}]}).then(function(k){if(k!=='yes')return;busy(cb,1);aCall('lineMsgSave',{clear:1}).then(function(st){busy(cb,0);toast('ยกเลิกการเชื่อมแล้ว');after(st)}).catch(er(cb))})};
   var cp=$('#lm-cp');if(cp)cp.onclick=function(){var i=$('#lm-hook');(navigator.clipboard?navigator.clipboard.writeText(i.value):Promise.reject()).then(function(){toast('คัดลอกแล้ว')}).catch(function(){i.select();document.execCommand('copy');toast('คัดลอกแล้ว')})};
   var ga=$('#lm-gadd');if(ga)ga.onclick=function(){var id=$('#lm-gid').value.trim();if(!/^C[0-9a-f]{32}$/.test(id))return toast('Group ID ต้องขึ้นต้นด้วย C ตามด้วย 0-9 a-f 32 ตัว',1);busy(ga,1);
     aCall('lineGroupAdd',id,$('#lm-gnm').value).then(function(st){busy(ga,0);toast(st.found===false?'เพิ่มแล้ว · แต่ LINE ไม่พบบอทในกลุ่มนี้ ลองกด ทดสอบส่ง':'เพิ่มกลุ่มแล้ว',st.found===false);after(st)}).catch(er(ga))};
   var rb=$('#lm-re');if(rb)rb.onclick=function(){busy(rb,1);aCall('getSettings').then(function(d){A.cfg=d;drawSet()}).catch(er(rb))};
   $$('[data-lmt]').forEach(function(b){b.onclick=function(){busy(b,1);aCall('lineMsgTest',b.dataset.lmt).then(function(r){busy(b,0);toast(r.ok?'ส่งข้อความทดสอบแล้ว · ดูในกลุ่ม LINE':'ส่งไม่สำเร็จ: '+r.error,!r.ok)}).catch(er(b))}});
   $$('[data-lmh]').forEach(function(b){b.onclick=function(){busy(b,1);aCall('saveSettings',{hr_line_group:b.dataset.lmh}).then(function(){return aCall('getSettings')}).then(function(d){A.cfg=d;toast('ตั้งเป็นกลุ่ม HR แล้ว');drawSet()}).catch(er(b))}});
-  $$('[data-lmf]').forEach(function(b){b.onclick=function(){if(!confirm('เลิกจำกลุ่มนี้? (บอทยังอยู่ในกลุ่ม · ถ้าส่งข้อความในกลุ่มอีก กลุ่มจะกลับมาในรายการ)'))return;busy(b,1);aCall('lineGroupForget',b.dataset.lmf).then(function(st){toast('ลบแล้ว');after(st)}).catch(er(b))}});
+  $$('[data-lmf]').forEach(function(b){b.onclick=function(){ask({title:'เลิกจำกลุ่มนี้?',desc:'บอทยังอยู่ในกลุ่ม · ถ้าส่งข้อความในกลุ่มอีก กลุ่มจะกลับมาในรายการ',tone:'warn',buttons:[{k:'no',label:'ยกเลิก'},{k:'yes',label:'เลิกจำ',cls:'pri'}]}).then(function(k){if(k!=='yes')return;busy(b,1);aCall('lineGroupForget',b.dataset.lmf).then(function(st){toast('ลบแล้ว');after(st)}).catch(er(b))})}});
 }
 function ntTabs(){return '<div class="evs" role="group" aria-label="มุมมอง" style="margin-bottom:14px;align-self:flex-start;display:inline-flex"><button data-ntab="table" aria-pressed="'+(A.ntab!=='flow')+'">ตารางแจ้งเตือน</button><button data-ntab="flow" aria-pressed="'+(A.ntab==='flow')+'">Workflow</button></div>'}
 /* ── Workflow การแจ้งเตือนแบบลากต่อกล่อง (แบบ B/C · 30 ต.ค. 2569 · Figma หน้า 14) · หลังบ้าน app/gas/Workflow.js ──
@@ -2237,12 +2237,12 @@ function wfOpen(wf){WE={wf:wf,g:wf.graph,sel:null,pan:{x:40,y:40},z:1,dirty:fals
    '<div class="wfe-c" id="wfe-c"><div class="wfe-w" id="wfe-w"><svg class="wfe-e" id="wfe-e" width="8000" height="5000"><defs><marker id="wfa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 9 5 0 9z" fill="context-stroke"/></marker></defs><g id="wfe-eg"></g></svg><div id="wfe-n"></div></div>'+
    '<div class="wfe-zb"><button id="wfe-zi" title="ซูมเข้า">＋</button><button id="wfe-zo" title="ซูมออก">－</button><button id="wfe-zf" title="พอดีจอ">⤢</button><button id="wfe-lay" title="จัดเรียงอัตโนมัติ">จัดเรียง</button></div><div class="wfe-menu" id="wfe-menu" hidden></div></div>'+
    '<div class="wfe-i" id="wfe-i"></div></div>';
-  $('#wfe-x').onclick=function(){if(WE.dirty&&!confirm('ยังไม่ได้บันทึก · ออกโดยไม่บันทึก?'))return;wfClose()};
+  $('#wfe-x').onclick=function(){if(!WE.dirty)return wfClose();ask({title:'ยังไม่ได้บันทึก Workflow',desc:'มีการแก้ไขที่ยังไม่ได้บันทึก · ถ้าออกตอนนี้ การแก้ไขจะหายไป',tone:'warn',buttons:[{k:'drop',label:'ออกโดยไม่บันทึก',left:1},{k:'stay',label:'อยู่หน้านี้'},{k:'save',label:'บันทึกแล้วออก',cls:'pri'}]}).then(function(k){if(k==='drop')wfClose();else if(k==='save')wfSaveNow(true)})};
   $('#wfe-nm').oninput=function(){WE.dirty=true};
   $('#wfe-on').onclick=function(){var on=this.getAttribute('aria-checked')!=='true';this.setAttribute('aria-checked',on);WE.wf.on=on;WE.dirty=true};
   $('#wfe-save').onclick=wfSaveNow;$('#wfe-test').onclick=wfTestNow;
   $('#wfe-m-edit').onclick=function(){wfMode('edit')};$('#wfe-m-runs').onclick=function(){wfMode('runs')};
-  if($('#wfe-del'))$('#wfe-del').onclick=function(){if(!confirm('ลบ Workflow “'+(WE.wf.name||'')+'”? ลบแล้วกู้คืนไม่ได้'))return;aCall('wfDelete',WE.wf.id).then(function(){toast('ลบแล้ว');wfClose();wfReload()}).catch(function(e){toast(e.message,1)})};
+  if($('#wfe-del'))$('#wfe-del').onclick=function(){ask({title:'ลบ Workflow “'+(WE.wf.name||'')+'”?',desc:'ลบแล้วกู้คืนไม่ได้ · งานที่รอเวลาของ flow นี้จะถูกยกเลิก',tone:'warn',icon:'del',buttons:[{k:'no',label:'ยกเลิก'},{k:'yes',label:'ลบ',cls:'pri'}]}).then(function(k){if(k!=='yes')return;aCall('wfDelete',WE.wf.id).then(function(){toast('ลบแล้ว');wfClose();wfReload()}).catch(function(e){toast(e.message,1)})})};
   $('#wfe-q').oninput=wfPal;wfPal();
   $('#wfe-iss').onclick=function(){var k=Object.keys(wfIssues())[0];if(k){WE.sel={n:k};wfDraw()}};
   $('#wfe-zi').onclick=function(){wfZoom(1.15)};$('#wfe-zo').onclick=function(){wfZoom(1/1.15)};$('#wfe-zf').onclick=wfFit;$('#wfe-lay').onclick=function(){wfLayout();WE.dirty=true;wfDraw();wfFit()};
@@ -2396,8 +2396,8 @@ function fxHtml(o){if(!o)return '';var SZ={xxs:10,xs:11,sm:13,md:14,lg:17,xl:19}
   if(o.type==='separator')return '<div style="height:1px;background:'+(o.color||'#ECEDEF')+'"></div>';
   if(o.type==='button')return '<div style="height:38px;border-radius:8px;display:grid;place-items:center;font-size:13.5px;font-weight:600;'+(o.style==='primary'?'background:'+(o.color||'#06C755')+';color:#fff':'background:#F1F2F4;color:#111')+'">'+esc((o.action||{}).label||'')+'</div>';
   return ''}
-function wfSaveNow(){var b=$('#wfe-save');WE.wf.name=$('#wfe-nm').value.trim();busy(b,1);
-  aCall('wfSave',{id:WE.wf.id,name:WE.wf.name,on:!!WE.wf.on,graph:WE.g}).then(function(r){busy(b,0);var isNew=!WE.wf.id;WE.wf.id=r.id;WE.dirty=false;var n=Object.keys(wfIssues()).length;toast('บันทึกแล้ว'+(n?' · ยังมี '+n+' กล่องที่ควรตรวจ':''));if(isNew)$('#wfe-m-runs').disabled=false;wfReload()}).catch(function(e){busy(b,0);toast(e.message,1)})}
+function wfSaveNow(close){var b=$('#wfe-save');WE.wf.name=$('#wfe-nm').value.trim();busy(b,1);
+  aCall('wfSave',{id:WE.wf.id,name:WE.wf.name,on:!!WE.wf.on,graph:WE.g}).then(function(r){busy(b,0);var isNew=!WE.wf.id;WE.wf.id=r.id;WE.dirty=false;var n=Object.keys(wfIssues()).length;toast('บันทึกแล้ว'+(n?' · ยังมี '+n+' กล่องที่ควรตรวจ':''));if(close){wfClose();wfReload();return}if(isNew)$('#wfe-m-runs').disabled=false;wfReload()}).catch(function(e){busy(b,0);toast(e.message,1)})}
 function wfTestNow(){var b=$('#wfe-test');busy(b,1);aCall('wfTest',{graph:WE.g}).then(function(r){busy(b,0);var res={};(r.steps||[]).forEach(function(x){res[x.n]=x.r});WE.hl={id:'test',path:r.path||[],res:res};wfDraw(true);
   toast((r.log||[]).length?'ทดลองด้วยคำขอ '+(r.sample||'')+' · '+r.log.join(' · ')+' · กดพื้นที่ว่างเพื่อกลับ':'ทางที่เข้าไม่มีกล่องส่งข้อความ');WE.hlTemp=1}).catch(function(e){busy(b,0);toast(e.message,1)})}
 function ntBind(){var h=$('[data-sv="notify_matrix"]');if(!h)return;$$('[data-ntm]').forEach(function(b){b.onclick=function(){var p=b.dataset.ntm.split('|'),mx={};try{mx=JSON.parse(h.value||'{}')}catch(e){}
@@ -3522,8 +3522,8 @@ function orgForm(r){var t=A.otab,def=OT[t];r=r||{};
 boot();
 })();
 </script>
-<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610301913 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
-(function(){var B='202610301913';if(!/^\d{12}$/.test(B))return;var shown=0;
+<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610301917 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
+(function(){var B='202610301917';if(!/^\d{12}$/.test(B))return;var shown=0;
   function chk(){if(shown||document.hidden)return;fetch('build.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():''}).then(function(t){t=String(t||'').trim();if(!/^\d{12}$/.test(t)||t<=B)return;shown=1;
     var d=document.createElement('div');d.setAttribute('role','status');d.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:99999;background:#141414;color:#fff;border-radius:999px;padding:8px 8px 8px 18px;display:flex;gap:12px;align-items:center;font:14px "IBM Plex Sans Thai",sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.25)';
     d.innerHTML='<span>มีเวอร์ชันใหม่ของระบบ</span><button type="button" style="border:0;border-radius:999px;background:#fff;color:#141414;padding:6px 14px;font:inherit;font-weight:600;cursor:pointer">โหลดใหม่</button>';
