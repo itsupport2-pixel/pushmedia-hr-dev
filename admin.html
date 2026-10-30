@@ -19,7 +19,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js" charset="utf-8"></script>
 <script src="config.js"></script>
-<script src="i18n.js?v=202610301456"></script>
+<script src="i18n.js?v=202610301500"></script>
 <style>
 /* สี Push Media ขาว–ดำ ตามโลโก้ (22 ต.ค. 2569) · สีสถานะ ok/warn/bad คงไว้ */
 :root{--nav:#0B0B0B;--nav2:#1F1F1F;--nav-ink:#C8C8C8;--acc:#111111;--acc-soft:#EDEDED;--bg:#F4F4F4;--sf:#FFFFFF;--sf2:#F8F8F8;--line:#E3E3E3;
@@ -1175,7 +1175,7 @@ function render(){
   $$('[data-nav]').forEach(function(a){a.onclick=function(){if(A.peek)return peekClose(function(){go(a.dataset.nav)});var w=a.closest('.nsub');if(w&&wide)(A.subOpen||(A.subOpen={}))[w.querySelector('[data-navpar]').dataset.navpar]=true;go(a.dataset.nav)}});
   $$('[data-navpar]').forEach(function(a){a.onclick=function(e){e.stopPropagation();if(!wide){A.peek=a.dataset.navpar;return render()}var w=a.parentNode,o=!w.classList.contains('open');w.classList.toggle('open',o);a.setAttribute('aria-expanded',o);if(navWide()){(A.subOpen||(A.subOpen={}))[a.dataset.navpar]=o;if(a.dataset.navpar==='sched')store('nav_sub',o?'1':'0')}}});
   if(!$('.shell.wide'))document.addEventListener('click',function cl(e){var w=$('.nsub.open');if(w&&!w.contains(e.target)){w.classList.remove('open');w.querySelector('.npar').setAttribute('aria-expanded','false')}if(!document.body.contains(w))document.removeEventListener('click',cl)});
-  var logout=function(){call('logout',A.tok);store('hr_tok',null);A.tok=null;try{sessionStorage.clear()}catch(e){}phClear();renderLogin()};
+  var logout=function(){call('logout',A.tok);store('hr_tok',null);A.tok=null;A.dbFx=0;try{sessionStorage.clear()}catch(e){}phClear();renderLogin()};
   $('#out2').onclick=logout;if($('#cosw'))$('#cosw').onclick=coMenu;logoTrim();
   $('#rl-tg').onclick=function(){try{localStorage.setItem('hr_nav',navWide()?'rail':'wide')}catch(e){}A.peek=null;render()};   // ระหว่างเมนูเลื่อนออก กดลูกศร = ปักเมนูเต็มไว้
   if(A.peek){var pk=function(e){if(!A.peek||!$('.shell.peek')){document.removeEventListener('click',pk,true);document.removeEventListener('keydown',pk,true);return}if(e.type==='keydown'?e.key==='Escape':!e.target.closest('.side')){document.removeEventListener('click',pk,true);document.removeEventListener('keydown',pk,true);peekClose(render)}};setTimeout(function(){document.addEventListener('click',pk,true);document.addEventListener('keydown',pk,true)},0)}
@@ -1932,6 +1932,21 @@ function drawDash(){if(!$('#db-body'))return;var d=A.db,k=d.kpi,dt=new Date(d.da
   if(mine)loadMine();
   loadPhotos();
   $$('#db-body [data-go]').forEach(function(b){b.onclick=function(){go(b.dataset.go,b.dataset.id)}});
+  dbFx();
+}
+/* ภาพเปิด Dashboard (30 ต.ค. 2569 ผู้ใช้ขอ): ครั้งแรกต่อแท็บหลังเข้าระบบ · ตัวเลขนับขึ้น (count-up) + การ์ดเลื่อนขึ้นทีละใบ (staggered slide-up)
+ * กราฟแท่ง/แถบกำลังคนค่อยๆ โต · ปิดเมื่อผู้ใช้ตั้งลดการเคลื่อนไหว · การ์ดวันหยุดถัดไปไม่นับ (เป็นวันที่) */
+function dbFx(){if(A.dbFx||!$('#db-body'))return;A.dbFx=1;try{if(sessionStorage.getItem('hr_dbfx'))return;sessionStorage.setItem('hr_dbfx','1')}catch(e){}
+  if(!Element.prototype.animate||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  var E='cubic-bezier(.2,.8,.2,1)',n=0;
+  $$('#db-body .kpi, #db-body > .grid > section, #db-body > section').forEach(function(e){e.animate([{opacity:0,transform:'translateY(22px)'},{opacity:1,transform:'none'}],{duration:560,delay:70*n++,easing:E,fill:'backwards'})});
+  $$('#db-body .bars2 i').forEach(function(e,i){e.style.transformOrigin='bottom';e.animate([{transform:'scaleY(0)'},{transform:'none'}],{duration:800,delay:420+45*i,easing:E,fill:'backwards'})});
+  $$('#db-body .meter i').forEach(function(e,i){e.style.transformOrigin='left';e.animate([{transform:'scaleX(0)'},{transform:'none'}],{duration:800,delay:600+30*i,easing:E,fill:'backwards'})});
+  var tx=[];$$('#db-body .kpi:not([data-go="set"]) .v, #db-body .bars2 span').forEach(function(v){var w=document.createTreeWalker(v,NodeFilter.SHOW_TEXT),t;while((t=w.nextNode()))if(/\d/.test(t.nodeValue)&&t.parentNode.tagName!=='SMALL')tx.push([t,t.nodeValue])});
+  if(!tx.length)return;var t0=performance.now(),D=1200;
+  (function step(now){var p=Math.min(1,(now-t0)/D),q=1-Math.pow(1-p,3);
+    tx.forEach(function(x){x[0].nodeValue=p<1?x[1].replace(/\d+/g,function(m){return String(Math.round(+m*q))}):x[1]});
+    if(p<1)requestAnimationFrame(step)})(t0);
 }
 /* การ์ด "ของฉัน": โควตาการลาปีนี้ของผู้ใช้ (จำไว้ในหน้า · โหลดใหม่ทุก 5 นาที) */
 function loadMine(){var draw=function(li){var q=$('#db-quota');if(!q)return;var ts=(li.types||[]).filter(function(t){return t.quota!==null});q.className='';q.innerHTML=ts.length?ts.map(function(t){var u=(t.used||0)+(t.reserved||0);return '<div class="q"><div><b style="font-weight:500">'+esc(t.name)+'</b><span class="num">ใช้ '+(+u.toFixed(1))+' / '+t.quota+' วัน</span></div><div class="tr"><i style="width:'+Math.min(100,t.quota?u/t.quota*100:0)+'%"></i></div></div>'}).join('')+'<div class="faint" style="font-size:12px">ปี '+(li.year+543)+' · รวมที่รออนุมัติ</div>':'<span class="faint">ไม่มีโควตาการลา</span>'};
@@ -3151,8 +3166,8 @@ function orgForm(r){var t=A.otab,def=OT[t];r=r||{};
 boot();
 })();
 </script>
-<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610301456 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
-(function(){var B='202610301456';if(!/^\d{12}$/.test(B))return;var shown=0;
+<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610301500 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
+(function(){var B='202610301500';if(!/^\d{12}$/.test(B))return;var shown=0;
   function chk(){if(shown||document.hidden)return;fetch('build.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():''}).then(function(t){t=String(t||'').trim();if(!/^\d{12}$/.test(t)||t<=B)return;shown=1;
     var d=document.createElement('div');d.setAttribute('role','status');d.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:99999;background:#141414;color:#fff;border-radius:999px;padding:8px 8px 8px 18px;display:flex;gap:12px;align-items:center;font:14px "IBM Plex Sans Thai",sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.25)';
     d.innerHTML='<span>มีเวอร์ชันใหม่ของระบบ</span><button type="button" style="border:0;border-radius:999px;background:#fff;color:#141414;padding:6px 14px;font:inherit;font-weight:600;cursor:pointer">โหลดใหม่</button>';
