@@ -19,7 +19,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js" charset="utf-8"></script>
 <script src="config.js"></script>
-<script src="i18n.js?v=202610301538"></script>
+<script src="i18n.js?v=202610301541"></script>
 <style>
 /* สี Push Media ขาว–ดำ ตามโลโก้ (22 ต.ค. 2569) · สีสถานะ ok/warn/bad คงไว้ */
 :root{--nav:#0B0B0B;--nav2:#1F1F1F;--nav-ink:#C8C8C8;--acc:#111111;--acc-soft:#EDEDED;--bg:#F4F4F4;--sf:#FFFFFF;--sf2:#F8F8F8;--line:#E3E3E3;
@@ -2080,16 +2080,18 @@ function lmCard(m){var hook=CFG.backend==='cf'&&/^https:/.test(API)?API.replace(
    '<div class="note-b" style="margin-bottom:14px"><div>ใช้ LINE OA ที่<b>ยังไม่มี Webhook ของระบบอื่น</b> · ถ้า OA บริษัทมี Webhook ของระบบเดิมอยู่ (เช่น LINE Check-in หรือระบบเก็บรูปจากกลุ่ม) ห้ามเปลี่ยน Webhook URL — สร้าง LINE OA ใหม่สำหรับแจ้งเตือนแทน · ส่งหาพนักงานรายคนได้เมื่อ OA อยู่ใต้ Provider เดียวกับแอป (2004436385)</div></div>'+
    row(1,'ใส่ค่าจาก LINE Developers','Messaging API › Channel access token (long-lived) · Basic settings › Channel secret · ระบบเก็บไว้ที่เซิร์ฟเวอร์ ไม่แสดงกลับ',
     '<div class="lm-f"><input id="lm-tok" type="password" autocomplete="off" placeholder="'+(m.token?'ตั้งแล้ว ···'+esc(m.tail)+' · วางใหม่เพื่อเปลี่ยน':'Channel access token')+'"><input id="lm-sec" type="password" autocomplete="off" placeholder="'+(m.secret?'ตั้งแล้ว · วางใหม่เพื่อเปลี่ยน':'Channel secret (32 ตัว)')+'"><button class="btn pri" id="lm-save">บันทึกและตรวจสอบ</button>'+(m.token||m.secret?'<button class="btn" id="lm-clear">ยกเลิกการเชื่อม</button>':'')+'</div>')+
-   row(2,'ตั้ง Webhook ใน LINE Developers','Messaging API › Webhook settings › วาง URL นี้ › Verify › เปิด Use webhook · และเปิด Allow bot to join group chats (LINE Official Account Manager › ตั้งค่า › การตอบกลับ)',
+   row(2,'ตั้ง Webhook (ไม่บังคับ)','ใช้เฉพาะเมื่อยังไม่มี Group ID · แจ้งเตือนรายคนไม่ต้องใช้ · ถ้า OA มี Webhook ของระบบอื่นอยู่ ข้ามขั้นนี้ · Messaging API › Webhook settings › วาง URL นี้ › Verify › เปิด Use webhook · และเปิด Allow bot to join group chats (LINE Official Account Manager › ตั้งค่า › การตอบกลับ)',
     hook?'<div class="lm-f"><input id="lm-hook" readonly value="'+esc(hook)+'"><button class="btn" id="lm-cp">คัดลอก</button></div>':'<div class="faint" style="margin-top:6px">ใช้ได้เฉพาะระบบบน Cloudflare</div>')+
-   row(3,'เชิญบอทเข้ากลุ่ม LINE','เพิ่ม LINE OA เป็นเพื่อน แล้วเชิญเข้ากลุ่ม · บอทจะทักในกลุ่มและกลุ่มจะขึ้นในรายการนี้ · กด “รีเฟรช” ถ้ายังไม่เห็น',
-    '<div class="lm-gs">'+(gs.length?gs.map(function(g){var hr=m.hrGroup===g.id;return '<div class="lm-g"><div style="flex:1;min-width:0"><b>'+esc(g.name||'(ไม่ทราบชื่อกลุ่ม)')+'</b>'+(hr?' <span class="badge b-ok">กลุ่ม HR</span>':'')+(g.left_at?' <span class="badge b-mute">บอทออกแล้ว</span>':'')+'<div class="faint" style="font-size:12px">เข้ากลุ่ม '+esc(fdt(g.joined_at))+' · '+esc(g.id.slice(0,9))+'…</div></div>'+(g.left_at?'':'<button class="btn sm" data-lmt="'+g.id+'">ทดสอบส่ง</button>'+(hr?'':'<button class="btn sm" data-lmh="'+g.id+'">ใช้เป็นกลุ่ม HR</button>'))+'<button class="btn sm" data-lmf="'+g.id+'" title="เลิกจำกลุ่มนี้">ลบ</button></div>'}).join(''):'<div class="faint" style="padding:8px 0">ยังไม่มีกลุ่ม · ทำขั้น 1–2 ให้เสร็จ แล้วเชิญบอทเข้ากลุ่ม</div>')+'</div><button class="btn sm" id="lm-re" style="margin-top:8px">รีเฟรช</button>')+
+   row(3,'กลุ่ม LINE ที่รับแจ้งเตือน','มี Group ID อยู่แล้ว = ใส่ด้านล่างได้เลย (บอทต้องอยู่ในกลุ่มนั้น) · หรือเชิญบอทเข้ากลุ่มเมื่อตั้ง Webhook แล้ว กลุ่มจะขึ้นเอง',
+    '<div class="lm-f"><input id="lm-gid" placeholder="Group ID เช่น C1234…(33 ตัว)" autocomplete="off" spellcheck="false"><input id="lm-gnm" placeholder="ชื่อกลุ่ม (ไม่บังคับ)"><button class="btn" id="lm-gadd">เพิ่มกลุ่ม</button></div><div class="lm-gs">'+(gs.length?gs.map(function(g){var hr=m.hrGroup===g.id;return '<div class="lm-g"><div style="flex:1;min-width:0"><b>'+esc(g.name||'(ไม่ทราบชื่อกลุ่ม)')+'</b>'+(hr?' <span class="badge b-ok">กลุ่ม HR</span>':'')+(g.left_at?' <span class="badge b-mute">บอทออกแล้ว</span>':'')+'<div class="faint" style="font-size:12px">เข้ากลุ่ม '+esc(fdt(g.joined_at))+' · '+esc(g.id.slice(0,9))+'…</div></div>'+(g.left_at?'':'<button class="btn sm" data-lmt="'+g.id+'">ทดสอบส่ง</button>'+(hr?'':'<button class="btn sm" data-lmh="'+g.id+'">ใช้เป็นกลุ่ม HR</button>'))+'<button class="btn sm" data-lmf="'+g.id+'" title="เลิกจำกลุ่มนี้">ลบ</button></div>'}).join(''):'<div class="faint" style="padding:8px 0">ยังไม่มีกลุ่ม · ทำขั้น 1–2 ให้เสร็จ แล้วเชิญบอทเข้ากลุ่ม</div>')+'</div><button class="btn sm" id="lm-re" style="margin-top:8px">รีเฟรช</button>')+
    '</div></section>'}
 function lmBind(){var after=function(st){A.cfg.lineMsg=st;A.cfg.notify.lineToken=st.token;drawSet()},er=function(b){return function(e){busy(b,0);toast(e.message,1)}};
   var sb=$('#lm-save');if(sb)sb.onclick=function(){var tok=$('#lm-tok').value.trim(),sec=$('#lm-sec').value.trim();if(!tok&&!sec)return toast('วาง Channel access token หรือ Channel secret',1);busy(sb,1);
     aCall('lineMsgSave',{tok:tok,secret:sec}).then(function(st){busy(sb,0);toast('บันทึกแล้ว'+(st.bot&&st.bot.name?' · บอท '+st.bot.name:''));after(st)}).catch(er(sb))};
   var cb=$('#lm-clear');if(cb)cb.onclick=function(){if(!confirm('ยกเลิกการเชื่อม LINE Messaging API? ระบบจะหยุดส่งข้อความ LINE ทั้งหมด'))return;busy(cb,1);aCall('lineMsgSave',{clear:1}).then(function(st){busy(cb,0);toast('ยกเลิกการเชื่อมแล้ว');after(st)}).catch(er(cb))};
   var cp=$('#lm-cp');if(cp)cp.onclick=function(){var i=$('#lm-hook');(navigator.clipboard?navigator.clipboard.writeText(i.value):Promise.reject()).then(function(){toast('คัดลอกแล้ว')}).catch(function(){i.select();document.execCommand('copy');toast('คัดลอกแล้ว')})};
+  var ga=$('#lm-gadd');if(ga)ga.onclick=function(){var id=$('#lm-gid').value.trim();if(!/^C[0-9a-f]{32}$/.test(id))return toast('Group ID ต้องขึ้นต้นด้วย C ตามด้วย 0-9 a-f 32 ตัว',1);busy(ga,1);
+    aCall('lineGroupAdd',id,$('#lm-gnm').value).then(function(st){busy(ga,0);toast(st.found===false?'เพิ่มแล้ว · แต่ LINE ไม่พบบอทในกลุ่มนี้ ลองกด ทดสอบส่ง':'เพิ่มกลุ่มแล้ว',st.found===false);after(st)}).catch(er(ga))};
   var rb=$('#lm-re');if(rb)rb.onclick=function(){busy(rb,1);aCall('getSettings').then(function(d){A.cfg=d;drawSet()}).catch(er(rb))};
   $$('[data-lmt]').forEach(function(b){b.onclick=function(){busy(b,1);aCall('lineMsgTest',b.dataset.lmt).then(function(r){busy(b,0);toast(r.ok?'ส่งข้อความทดสอบแล้ว · ดูในกลุ่ม LINE':'ส่งไม่สำเร็จ: '+r.error,!r.ok)}).catch(er(b))}});
   $$('[data-lmh]').forEach(function(b){b.onclick=function(){busy(b,1);aCall('saveSettings',{hr_line_group:b.dataset.lmh}).then(function(){return aCall('getSettings')}).then(function(d){A.cfg=d;toast('ตั้งเป็นกลุ่ม HR แล้ว');drawSet()}).catch(er(b))}});
@@ -3207,8 +3209,8 @@ function orgForm(r){var t=A.otab,def=OT[t];r=r||{};
 boot();
 })();
 </script>
-<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610301538 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
-(function(){var B='202610301538';if(!/^\d{12}$/.test(B))return;var shown=0;
+<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610301541 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
+(function(){var B='202610301541';if(!/^\d{12}$/.test(B))return;var shown=0;
   function chk(){if(shown||document.hidden)return;fetch('build.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():''}).then(function(t){t=String(t||'').trim();if(!/^\d{12}$/.test(t)||t<=B)return;shown=1;
     var d=document.createElement('div');d.setAttribute('role','status');d.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:99999;background:#141414;color:#fff;border-radius:999px;padding:8px 8px 8px 18px;display:flex;gap:12px;align-items:center;font:14px "IBM Plex Sans Thai",sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.25)';
     d.innerHTML='<span>มีเวอร์ชันใหม่ของระบบ</span><button type="button" style="border:0;border-radius:999px;background:#fff;color:#141414;padding:6px 14px;font:inherit;font-weight:600;cursor:pointer">โหลดใหม่</button>';
