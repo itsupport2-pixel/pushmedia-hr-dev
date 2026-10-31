@@ -19,7 +19,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js" charset="utf-8"></script>
 <script src="config.js"></script>
-<script src="i18n.js?v=202610312038"></script>
+<script src="i18n.js?v=202610312042"></script>
 <style>
 /* สี Push Media ขาว–ดำ ตามโลโก้ (22 ต.ค. 2569) · สีสถานะ ok/warn/bad คงไว้ */
 :root{--nav:#0B0B0B;--nav2:#1F1F1F;--nav-ink:#C8C8C8;--acc:#111111;--acc-soft:#EDEDED;--bg:#F4F4F4;--sf:#FFFFFF;--sf2:#F8F8F8;--line:#E3E3E3;
@@ -2148,7 +2148,7 @@ var NTE=[['leave_submitted','คำขอลาใหม่','ผู้อนุ
   ['substitute_assigned','ถูกจัดให้ทำงานแทน','พนักงานที่ทำแทน',{app:1,line:1,mail:0},1],['shift_change','เปลี่ยนกะทำงาน','พนักงาน',{app:1,line:1,mail:0},1],
   ['link_request','คำขอเชื่อม LINE ใหม่','HR / ผู้ดูแลระบบ',{app:1,line:0,mail:0},0],['device_new','เครื่องใหม่รออนุมัติ','HR / ผู้ดูแลระบบ',{app:1,line:0,mail:0},0],
   ['missing_clock','ลืมลงเวลา','พนักงาน + หัวหน้า',{app:1,line:0,mail:0},0],['pay_review','งวดเงินเดือนรออนุมัติ','ผู้อนุมัติงวด',{app:1,line:0,mail:1},0],['backup_alert','ระบบสำรองมีปัญหา','ผู้ดูแลระบบ',{app:1,line:0,mail:1},0]];
-/* เชื่อม LINE OA (Messaging API) + กลุ่มแจ้งเตือน (30 ต.ค. 2569 ผู้ใช้ขอ) · token/secret ส่งไปเก็บที่เซิร์ฟเวอร์ ไม่แสดงกลับ (เห็นแค่ 4 ตัวท้าย) · หลังบ้าน app/gas/LineMsg.js */
+/* เชื่อม LINE OA (Messaging API) + กลุ่มแจ้งเตือน (30 ต.ค. 2569 ผู้ใช้ขอ) · token/secret ส่งไปเก็บที่เซิร์ฟเวอร์ ไม่แสดงกลับ (เห็นแค่ 4 ตัวท้าย) · หลังบ้าน app/gas/notify/LineMsg.js */
 function lmCard(m){var hook=CFG.backend==='cf'&&/^https:/.test(API)?API.replace(/\/$/,'')+'/line/webhook':'',gs=m.groups||[],bot=m.bot||{};
   var row=function(n,t,sub,body){return '<div class="lm-st"><span class="lm-n">'+n+'</span><div style="flex:1;min-width:0"><b>'+t+'</b><div class="muted" style="font-size:12.5px">'+sub+'</div>'+body+'</div></div>'};
   return '<section class="card" style="margin-top:14px"><div class="ch"><h3 style="display:flex;align-items:center;gap:10px"><span class="ln-logo" aria-hidden="true">'+LINE_LOGO+'</span>เชื่อม LINE OA สำหรับแจ้งเตือน (Messaging API)</h3><span class="sp"></span>'+(m.token?'<span class="badge b-ok">เชื่อมแล้ว'+(bot.name?' · '+esc(bot.name):'')+'</span>':'<span class="badge b-warn">ยังไม่เชื่อม</span>')+'</div><div class="cb">'+
@@ -2180,7 +2180,7 @@ function lmBind(){var after=function(st){A.cfg.lineMsg=st;A.cfg.notify.lineToken
   $$('[data-lmf]').forEach(function(b){b.onclick=function(){ask({title:'เลิกจำกลุ่มนี้?',desc:'บอทยังอยู่ในกลุ่ม · ถ้าส่งข้อความในกลุ่มอีก กลุ่มจะกลับมาในรายการ',tone:'warn',buttons:[{k:'no',label:'ยกเลิก'},{k:'yes',label:'เลิกจำ',cls:'pri'}]}).then(function(k){if(k!=='yes')return;busy(b,1);aCall('lineGroupForget',b.dataset.lmf).then(function(st){toast('ลบแล้ว');after(st)}).catch(er(b))})}});
 }
 function ntTabs(){return '<div class="evs" role="group" aria-label="มุมมอง" style="margin-bottom:14px;align-self:flex-start;display:inline-flex"><button data-ntab="table" aria-pressed="'+(A.ntab!=='flow')+'">ตารางแจ้งเตือน</button><button data-ntab="flow" aria-pressed="'+(A.ntab==='flow')+'">Workflow</button></div>'}
-/* ── Workflow การแจ้งเตือนแบบลากต่อกล่อง (แบบ B/C · 30 ต.ค. 2569 · Figma หน้า 14) · หลังบ้าน app/gas/Workflow.js ──
+/* ── Workflow การแจ้งเตือนแบบลากต่อกล่อง (แบบ B/C · 30 ต.ค. 2569 · Figma หน้า 14) · หลังบ้าน app/gas/notify/Workflow.js ──
  * รายการ flow (แท็บ Workflow) → ตัวแก้ไขเต็มจอ: แผงกล่อง (ซ้าย) · Canvas · แผงตั้งค่า/ประวัติ (ขวา)
  * ปุ่ม + ท้ายทางที่ยังไม่ต่อ = เลือกขั้นต่อไปจากเมนู (สร้างกล่อง + ต่อเส้น + จัดเรียงให้) · ลากจุดขวาไปกล่องอื่นก็ต่อเส้นได้
  * ป้ายส้มบนกล่อง = ตั้งค่าไม่ครบ/ไม่ได้ต่อ · แผงขวาของกล่อง LINE แสดงตัวอย่างข้อความจริง (wfPreview) · ประวัติ = เส้นทางที่วิ่งจริง (wfRuns)
@@ -3333,7 +3333,7 @@ function drawLead(d){var k=d.kpi,L=d.lead,dt=new Date(d.date+'T12:00:00'),TD=['�
   $$('#db-body [data-go]').forEach(function(b){b.onclick=function(e){e.stopPropagation();var g=b.dataset.go;if(g==='profile')go('profile',b.dataset.id);else if(g==='sched')go('sched');else go(g)}});loadPhotos()}
 function vMine(){A.id=A.d.me.id;return '<div class="scb"><span class="i">i</span><div><b>คุณเห็นเฉพาะข้อมูลของตัวเอง</b><small>ลงเวลา · การลา · โควตา ของคุณ · ดูอย่างเดียว (สิทธิ์แก้ข้อมูลขึ้นกับที่ HR กำหนด)</small></div></div>'+vProfile()}
 function bMine(){A.id=A.d.me.id;bProfile()}
-/* ───────── ตารางงาน = หน้าเว็บ Workforce Task Manager เดิมทั้งชุด (planner.html · สร้างด้วย app/tools/build-planner.mjs · หลังบ้าน app/gas/Wtm.js) ───────── */
+/* ───────── ตารางงาน = หน้าเว็บ Workforce Task Manager เดิมทั้งชุด (planner.html · สร้างด้วย app/tools/build-planner.mjs · หลังบ้าน app/gas/schedule/Wtm.js) ───────── */
 var PLANNER_V='mvqpxwm4';   // เลขรุ่นหน้า planner.html (build-planner.mjs ตั้งให้ทุกครั้ง · กันเบราว์เซอร์จำหน้าเก่า)
 function vConf(){return '<iframe class="plf" src="planner.html?desktop=1&page=confirmed'+(A.fx==='conf'||A.fx==='*'?'&fx=1':'')+'&v='+PLANNER_V+'" title="Confirmed"></iframe>'}
 function vPlanner(){return '<iframe class="plf" src="planner.html?desktop=1'+(A.fx==='sched'||A.fx==='*'?'&fx=1':'')+'&v='+PLANNER_V+'" title="ตารางงาน" allow="geolocation"></iframe>'}
@@ -3704,8 +3704,8 @@ function orgForm(r){var t=A.otab,def=OT[t];r=r||{};
 boot();
 })();
 </script>
-<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610312038 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
-(function(){var B='202610312038';if(!/^\d{12}$/.test(B))return;var shown=0;
+<script>/* แจ้งเวอร์ชันใหม่ (29 ต.ค. 2569): สคริปต์ deploy ใส่เลข build แทน 202610312042 + เขียน build.txt · เปิดค้างไว้แล้วมีการอัปเดต → แถบให้กดโหลดใหม่ (ไม่ต้อง Cmd+Shift+R) */
+(function(){var B='202610312042';if(!/^\d{12}$/.test(B))return;var shown=0;
   function chk(){if(shown||document.hidden)return;fetch('build.txt?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.text():''}).then(function(t){t=String(t||'').trim();if(!/^\d{12}$/.test(t)||t<=B)return;shown=1;
     var d=document.createElement('div');d.setAttribute('role','status');d.style.cssText='position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:99999;background:#141414;color:#fff;border-radius:999px;padding:8px 8px 8px 18px;display:flex;gap:12px;align-items:center;font:14px "IBM Plex Sans Thai",sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.25)';
     d.innerHTML='<span>มีเวอร์ชันใหม่ของระบบ</span><button type="button" style="border:0;border-radius:999px;background:#fff;color:#141414;padding:6px 14px;font:inherit;font-weight:600;cursor:pointer">โหลดใหม่</button>';
