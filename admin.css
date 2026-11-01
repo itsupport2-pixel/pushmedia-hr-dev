@@ -833,3 +833,21 @@ html.th-sky .co-brand.lgc{box-shadow:0 0 0 1px #D2EEFA}
 .tp-dt{font-size:12.5px}.tp-dt th,.tp-dt td{padding:7px 6px}
 @media(max-width:1200px){.tp-main{grid-template-columns:1fr}}@media(max-width:760px){.tp-k3{grid-template-columns:1fr}.tp-hl p{border-left:0;padding-left:0}}
 .tp-tt{table-layout:fixed;min-width:640px}.tp-tt .tp-pn{min-width:0}.tp-tt .tp-tg .badge{white-space:normal}
+.wfe-em{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;margin-top:6px;font-size:13px}.wfe-er input{flex:1;min-width:0}
+/* สรุปประจำเดือน: แถบสถานะการแจ้งเตือน + ตัวอย่างทุกรูปแบบ (admin-ms.js · 1 พ.ย. 2569) */
+.mx .ms-top{margin-bottom:16px}.mx .ms-top .bd{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.ms-ti{width:36px;height:36px;border-radius:10px;background:#F1F1F1;display:grid;place-items:center;flex:none}
+.mx .ms-off .bd{opacity:.45;pointer-events:none}
+.msg-ov{position:fixed;inset:0;background:#0007;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
+.msg-box{background:var(--sf,#fff);border-radius:16px;width:min(1240px,100%);height:min(860px,100%);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px #0004}
+.msg-hd{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line);font-size:16px}
+.msg-bd{flex:1;display:flex;min-height:0}.msg-bd>.loading,.msg-bd>.alert{flex:1}
+.msg-l{width:300px;flex:none;border-right:1px solid var(--line);overflow:auto;padding:12px}.msg-l h4{margin:14px 6px 6px;font-size:12px;color:var(--fnt);font-weight:600}
+.msg-src{display:flex;flex-direction:column;gap:2px;background:#F6F6F6;border-radius:10px;padding:10px 12px;font-size:12.5px;color:var(--mut)}.msg-src b{color:var(--fg);font-size:14px}
+.msg-it{display:flex;gap:10px;width:100%;text-align:left;border:0;background:none;font:inherit;padding:9px 8px;border-radius:9px;cursor:pointer;color:inherit;align-items:flex-start}
+.msg-it:hover{background:#F6F6F6}.msg-it.on{background:#141414;color:#fff}.msg-it.on small{color:#fffb}.msg-it .ic{width:28px;height:28px;border-radius:8px;background:#EDEDED;color:#141414;display:grid;place-items:center;flex:none}
+.msg-it b{display:block;font-size:13.5px;font-weight:600}.msg-it small{display:block;font-size:11.5px;color:var(--fnt);margin-top:1px}
+.msg-r{flex:1;display:flex;flex-direction:column;min-width:0}.msg-rh{display:flex;gap:12px;align-items:flex-start;padding:14px 18px;border-bottom:1px solid var(--line)}.msg-rh b{font-size:15px}
+.msg-pv{flex:1;overflow:auto;background:#8CABD9;display:flex;justify-content:center;align-items:flex-start;padding:24px}.msg-pv.mail{background:#EDEDED;padding:0}.msg-pv iframe{width:100%;height:100%;border:0;display:block}
+.msg-chat{width:320px;display:flex;flex-direction:column;gap:8px}.msg-chat .fxp{box-shadow:0 1px 3px #0002}.msg-oa{display:flex;align-items:center;gap:8px;font-size:12px;color:#fff}.msg-oa span{width:26px;height:26px;border-radius:50%;background:#141414;color:#fff;display:grid;place-items:center;font-weight:700;font-size:12px}
+.msg-alt{font-size:11.5px;color:#fffd;line-height:1.5}
+@media(max-width:860px){.msg-ov{padding:0}.msg-box{border-radius:0;height:100%}.msg-bd{flex-direction:column}.msg-l{width:auto;max-height:38%;border-right:0;border-bottom:1px solid var(--line)}}
