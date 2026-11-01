@@ -92,14 +92,14 @@
       '<div class="cbups" id="cbups"></div><div class="cbcrow">' + CB.av(o.base, o.me, 34) + '<div class="cbpill"><textarea id="cbct" rows="1" maxlength="2000" placeholder="' + (o.reply ? 'ตอบกลับ ' + E(o.reply) + '…' : 'แสดงความคิดเห็นในชื่อ ' + E(CB.who(o.me))) + '"></textarea>' +
       '<span class="cbpi"><button data-cbemo="cbct" aria-label="อีโมจิ" title="อีโมจิ">' + CB.ic('smile') + '</button><label aria-label="แนบรูป" title="แนบรูป">' + CB.ic('camera') + '<input type="file" accept="image/*" multiple data-cbfile class="cbvh"></label></span></div>' +
       '<button class="cbsend" data-cbsend aria-label="ส่ง" disabled>' + CB.ic('send') + '</button></div></div>'; };
-  /* หน้าต่างสร้างโพสต์ (แบบ Facebook) · o = {base, me, cats(ที่โพสต์ได้), cat, mod, text, pinDef, pinMin} */
+  /* หน้าต่างสร้างโพสต์ (แบบ Facebook) · o = {base, me, cats(ที่โพสต์ได้), cat, text} */
   CB.composer = function (o) { var me = o.me || {};
     return '<div class="cbx-who">' + CB.av(o.base, me, 44) + '<div><b>' + E(me.name || 'ผู้ดูแลระบบ') + '</b><div class="cbx-pills"><span class="cbx-pill">' + CB.ic('users') + 'ทุกคนในบริษัท</span>' +
       '<label class="cbx-pill cbx-sel">' + CB.ic('folder') + '<select id="cbx-cat" aria-label="หมวด">' + o.cats.map(function (c) { return '<option value="' + E(c.id) + '"' + (c.id === o.cat ? ' selected' : '') + '>' + E(c.name) + '</option>'; }).join('') + '</select>' + CB.ic('down') + '</label></div></div></div>' +
       '<textarea id="cbx-txt" class="cbx-txt" maxlength="5000" placeholder="คุณคิดอะไรอยู่ ' + E(CB.who(me)) + '">' + E(o.text || '') + '</textarea><div class="cbups" id="cbups"></div><div id="cbx-pop"></div>' +
       '<div class="cbx-add"><b>เพิ่มลงในโพสต์ของคุณ</b><label class="cbx-ic cbg" title="รูปภาพ (สูงสุด 4)" aria-label="รูปภาพ">' + CB.ic('image') + '<input type="file" accept="image/*" multiple data-cbfile class="cbvh"></label>' +
       '<button class="cbx-ic cbbl" data-cbtag title="แท็กเพื่อนร่วมงาน" aria-label="แท็กเพื่อนร่วมงาน">' + CB.ic('tag') + '</button><button class="cbx-ic cbor" data-cbemo="cbx-txt" title="อีโมจิ" aria-label="อีโมจิ">' + CB.ic('smile') + '</button></div>' +
-      (o.mod ? '<label class="cbx-mod"><input type="checkbox" id="cbx-pin">' + CB.ic('pin') + '<span>ปักหมุดถึง</span><input type="date" id="cbx-pind" value="' + o.pinDef + '" min="' + o.pinMin + '"><small>เฉพาะผู้ดูแล</small></label>' : '') +
+      // ปักหมุด: ไม่อยู่ในหน้าต่างนี้ (ผู้ใช้ให้ตัดออก 1 พ.ย. 2569) · ผู้ดูแลปักหมุดจากเมนู ⋯ ของโพสต์
       '<button class="cbx-go" id="cbx-go"' + (o.text ? '' : ' disabled') + '>โพสต์</button>'; };
   /* แผงอีโมจิ (ใส่ลงในข้อความ) + แผงค้นชื่อสำหรับแท็ก */
   CB.EMO = ['😀', '😂', '😊', '😍', '🥰', '😅', '🤔', '😮', '😢', '😡', '👍', '👏', '🙏', '💪', '👌', '🎉', '❤️', '🔥', '✅', '⚠️', '📌', '📷', '☕', '🍚'];

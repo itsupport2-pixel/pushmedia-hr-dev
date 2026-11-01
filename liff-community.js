@@ -38,8 +38,7 @@ V.cbp=id=>{const d=S.cb.P[id],o=cbO();if(!d)return band("Community")+`<div class
 /* ── สร้างโพสต์ (เต็มจอ) ── */
 V.cbnew=()=>{const b=S.cb.b,o=cbO();if(!b){cbBootLoad().then(()=>{if(cur()==="cbnew")repaint()});return band("สร้างโพสต์")+loadingV()}
   const cats=b.cats.filter(c=>c.post_perm!=="mod"||o.me.mod),cat=S.cb.ncat||(cats.find(c=>c.id===S.cb.f.cat)||cats.find(c=>c.id==="c_talk")||cats[0]||{}).id;S.cb.ncat=cat;
-  const d0=new Date(),iso=n=>{const x=new Date(d0);x.setDate(x.getDate()+n);return ISO(x)};
-  return `<header class="cbl-nh"><button data-back aria-label="ปิด">${CB.ic("x")}</button><h1>สร้างโพสต์</h1><span></span></header><div class="cbl-compose cbx">${CB.composer({base:CB_BASE,me:o.me,cats,cat,mod:o.me.mod,text:S.cb.ntext||"",pinDef:iso(7),pinMin:iso(1)})}<span class="cap">โพสต์ด้วยชื่อจริง · ทุกคนในบริษัทเห็น · ห้ามใส่ข้อมูลส่วนตัว เลขบัญชี เงินเดือน</span></div>`};
+  return `<header class="cbl-nh"><button data-back aria-label="ปิด">${CB.ic("x")}</button><h1>สร้างโพสต์</h1><span></span></header><div class="cbl-compose cbx">${CB.composer({base:CB_BASE,me:o.me,cats,cat,text:S.cb.ntext||""})}</div>`};
 
 /* ── รูปที่แนบ ── */
 function cbPaintUps(){const b=$("#cbups");if(b)b.innerHTML=CB.upsHTML(S.cb.ups);cbSendState()}
@@ -97,7 +96,7 @@ document.addEventListener("click",e=>{const t=e.target.closest("[data-cbo],[data
   if(d.cbtag!==undefined){sheet(`<h3>แท็กเพื่อนร่วมงาน</h3>${CB.tagPanel(null,"")}`);setTimeout(()=>{const i=$("#cbtag-q");if(i)i.focus()},50);return}
   if(d.cbtagp){cbSheetClose();CB.insert($("#cbx-txt"),"@"+d.cbtagp+" ");return}
   if(t.id==="cbx-go"){const ta=$("#cbx-txt"),v=ta?ta.value:"";if(!v.trim())return;if(S.cb.ups.some(u=>!u.id))return toast("รอรูปอัปโหลดเสร็จก่อน");const a={cat:($("#cbx-cat")||{}).value||S.cb.ncat,body:v,imgs:S.cb.ups.map(u=>u.id)};
-    const pin=$("#cbx-pin");if(pin&&pin.checked)a.pin_until=DT($("#cbx-pind").value).getTime()+12*3600e3-1000;t.disabled=true;
+    t.disabled=true;
     api("cbPost",a).then(r=>{S.cb.ntext="";S.cb.ncat="";S.cb.ups=[];S.cb.dirty=true;toast("โพสต์แล้ว");S.stack.pop();go("cbp:"+r.id);cbOpen(r.id);cbBootLoad(true)}).catch(x=>{t.disabled=false;toast(x.message)});return}
 });
 document.addEventListener("change",e=>{const t=e.target;if(t.hasAttribute&&t.hasAttribute("data-cbfile")){cbAddFiles(t);return}if(t.id==="cbx-cat")S.cb.ncat=t.value});
