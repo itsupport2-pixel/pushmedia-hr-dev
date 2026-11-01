@@ -32,6 +32,10 @@
     eyeoff: '<path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/>'
   };
   CB.ic = function (k, cls) { return '<svg class="cbi' + (cls ? ' ' + cls : '') + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[k] || '') + '</svg>'; };
+  /* View as (ผู้ดูแลดูในมุมมองพนักงาน): หน้าตาเหมือนพนักงานเห็นทุกอย่าง แต่กดบันทึกไม่ได้ → แสดงข้อความนี้ */
+  CB.RO = 'โหมดดูในมุมมองของพนักงาน: ดูได้อย่างเดียว';
+  CB.WRITE = /^(cbnew|cbstart|cblike|cbsend|cbrep|cbedc|cbsol|cbdelc|cbemo|cbtag)$/;
+  CB.roHit = function (t) { if (!t || !t.dataset) return false; for (var k in t.dataset) if (CB.WRITE.test(k)) return true; return false; };
   CB.esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
   var E = CB.esc;
   CB.text = function (s) { return E(s).replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>').replace(/(^|\s)(@[^\s@<]{1,30})/g, '$1<b class="cbmen">$2</b>').replace(/\n/g, '<br>'); };
@@ -73,7 +77,7 @@
       '<div class="cbtxt' + (long ? ' clamp' : '') + '">' + CB.text(p.body) + '</div>' + (long ? '<button class="cbseemore" data-cbopen="' + E(p.id) + '">ดูเพิ่มเติม</button>' : '') +
       (o.full ? CB.imgs(base, p.imgs, 1) : (p.imgs && p.imgs.length ? '<div data-cbopen="' + E(p.id) + '" class="cbimgl">' + CB.imgs(base, p.imgs) + '</div>' : '')) +
       '<div class="cbstat">' + (p.likes ? '<span class="cblk">' + CB.ic('like') + '</span>' + p.likes : '') + '<span class="sp"></span>' + (p.replies ? '<button data-cbopen="' + E(p.id) + '">' + p.replies + ' ความคิดเห็น</button>' : '') + '</div>' +
-      '<div class="cbacts"><button data-cblike="' + E(p.id) + '" class="' + (p.liked ? 'on' : '') + '" aria-pressed="' + !!p.liked + '"' + (me.ro ? ' disabled' : '') + '>' + CB.ic('like') + 'ถูกใจ</button>' +
+      '<div class="cbacts"><button data-cblike="' + E(p.id) + '" class="' + (p.liked ? 'on' : '') + '" aria-pressed="' + !!p.liked + '">' + CB.ic('like') + 'ถูกใจ</button>' +
       '<button data-cbcomment="' + E(p.id) + '">' + CB.ic('comment') + 'แสดงความคิดเห็น</button></div></article>'; };
   /* ความคิดเห็น · d = ผลจาก cbGet · o = {base, me} */
   CB.comment = function (c, d, o) { if (c.deleted) return '<div class="cbcm del"><span class="cbdelx">' + CB.ic('eyeoff') + 'ความคิดเห็นนี้ถูก admin ลบ</span></div>';

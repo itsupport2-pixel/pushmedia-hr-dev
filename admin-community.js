@@ -14,7 +14,7 @@ function vCb(){if(A.cbId)return vCbPost();var f=A.cbF||(A.cbF={cat:'',filter:'al
   var chip=function(id,l){return '<button class="cba-chip" data-cbcat="'+id+'" aria-pressed="'+(f.cat===id)+'">'+esc(l)+'</button>'};
   return '<div class="cba-wrap"><div class="cba-head"><div><h1>Community</h1><div class="sub">พูดคุย สอบถาม แจ้งปัญหา · ทุกคนในบริษัทเห็นและช่วยกันตอบได้</div></div>'+
    '<label class="cba-q">'+CB.ic('search')+'<input type="search" id="cb-q" placeholder="ค้นหาโพสต์และความคิดเห็น" value="'+esc(f.q)+'" aria-label="ค้นหา"></label></div>'+
-   (me.ro?'':'<button class="cbcard cba-start" data-cbnew>'+CB.av(CB_BASE,me,40)+'<span>คุณคิดอะไรอยู่ '+esc(CB.who(me))+'</span>'+CB.ic('image','cbg')+'</button>')+
+   '<button class="cbcard cba-start" data-cbnew>'+CB.av(CB_BASE,me,40)+'<span>คุณคิดอะไรอยู่ '+esc(CB.who(me))+'</span>'+CB.ic('image','cbg')+'</button>'+   // View as: แสดงเหมือนพนักงานเห็น (กดแล้วแจ้งว่าดูได้อย่างเดียว)
    '<div class="cba-bar"><div class="cba-chips" role="group" aria-label="หมวด">'+chip('','ทั้งหมด')+cats.map(function(c){return chip(c.id,c.name)}).join('')+'</div>'+
    '<div class="cba-tabs" role="group" aria-label="มุมมอง">'+[['all','ล่าสุด'],['noreply','ยังไม่มีคนตอบ'],['mine','ของฉัน']].map(function(x){return '<button data-cbflt="'+x[0]+'" aria-pressed="'+(f.filter===x[0])+'">'+x[1]+'</button>'}).join('')+'</div></div>'+
    '<div id="cb-feed"><div class="loading"><span class="spin"></span></div></div></div>'}
@@ -36,7 +36,7 @@ function cbOpenPost(id){return aCall('cbGet',{id:id}).then(function(d){A.cbP=d;d
 function drawCbPost(){var d=A.cbP,el=$('#cb-post');if(!el||!d)return;var p=d.post,o=cbOpts(),rep=A.cbReply&&d.comments.filter(function(c){return c.id===A.cbReply})[0];
   $('#cb-h').textContent=p.deleted?'โพสต์ที่ถูกลบ':'โพสต์ของ '+CB.who(p.author);
   var card=CB.card(Object.assign({},p,{solved:!!p.solved_id}),{base:o.base,cats:o.cats,me:o.me,full:1,menuOpen:A.cbMenu===p.id});
-  el.innerHTML=(p.deleted?'<div class="alert">โพสต์นี้ถูก admin ลบแล้ว (admin ยังเห็นหน้านี้)</div>':'')+card.replace(/<\/article>$/,'<div class="cbthread">'+CB.thread(d,o)+'</div>'+(d.can.comment?CB.commentBox({base:o.base,me:o.me,reply:rep?CB.who(rep.author):''}):(p.locked?'<div class="cbnone" style="padding:8px 16px 14px">ปิดการแสดงความคิดเห็นแล้ว</div>':''))+'</article>');
+  el.innerHTML=(p.deleted?'<div class="alert">โพสต์นี้ถูก admin ลบแล้ว (admin ยังเห็นหน้านี้)</div>':'')+card.replace(/<\/article>$/,'<div class="cbthread">'+CB.thread(d,o)+'</div>'+(d.can.comment||(o.me.ro&&!p.deleted&&!p.locked)?CB.commentBox({base:o.base,me:o.me,reply:rep?CB.who(rep.author):''}):(p.locked?'<div class="cbnone" style="padding:8px 16px 14px">ปิดการแสดงความคิดเห็นแล้ว</div>':''))+'</article>');
   cbPaintUps();}
 function cbRedraw(){if(A.cbId)drawCbPost();else drawCbFeed()}
 function cbFind(id){if(A.cbP&&A.cbP.post.id===id)return A.cbP.post;return ((A.cbL&&A.cbL.items)||[]).filter(function(x){return x.id===id})[0]}
@@ -85,6 +85,7 @@ function cbClick(e){if(A.view!=='cb'&&!$('.cba-mw')&&!$('.cba-pop'))return;var t
   if(!e.target.closest('.cba-pop')&&!(t&&(t.dataset.cbemo||t.dataset.cbtag!==undefined)))cbPopClose();
   if(A.cbMenu&&!(t&&(t.dataset.cbmenu||t.dataset.cbmi))&&!e.target.closest('.cbmenu')){A.cbMenu=null;cbRedraw()}
   if(!t)return;var d=t.dataset;
+  if(cbMe().ro&&CB.roHit(t))return toast(CB.RO,1);
   if(d.cbnew!==undefined)return cbCompose();
   if(d.cbxclose!==undefined)return cbComposeClose();
   if(t.id==='cbx-go')return cbComposeGo(t);
@@ -113,7 +114,7 @@ function cbClick(e){if(A.view!=='cb'&&!$('.cba-mw')&&!$('.cba-pop'))return;var t
   if(d.cbtagp){CB.insert($('#cbx-txt'),'@'+d.cbtagp+' ');cbPopClose();return}}
 document.addEventListener('click',cbClick);
 document.addEventListener('input',function(e){var t=e.target;if(t.id==='cbct'||t.id==='cbx-txt'){cbSendState();if(t.id==='cbct'){t.style.height='auto';t.style.height=Math.min(140,t.scrollHeight)+'px'}}if(t.id==='cbtag-q')cbTagSearch(t.value)});
-document.addEventListener('change',function(e){if(e.target.hasAttribute&&e.target.hasAttribute('data-cbfile'))cbAddFiles(e.target)});
+document.addEventListener('change',function(e){if(e.target.hasAttribute&&e.target.hasAttribute('data-cbfile')){if(cbMe().ro){e.target.value='';return toast(CB.RO,1)}cbAddFiles(e.target)}});
 document.addEventListener('keydown',function(e){if(e.key==='Escape'){if($('.cba-pop'))return cbPopClose();if(A.cbMenu){A.cbMenu=null;return cbRedraw()}if($('.cba-mw')&&!$('#cbx-txt').value.trim())cbComposeClose()}
   if(e.key==='Enter'&&!e.shiftKey&&e.target.id==='cbct'&&!e.isComposing){e.preventDefault();var s=$('[data-cbsend]');if(s&&!s.disabled)s.click()}});
 
