@@ -873,3 +873,8 @@ html.th-sky .co-brand.lgc{box-shadow:0 0 0 1px #D2EEFA}
 .lu-bar{display:block;height:8px;border-radius:4px;background:#F1F1F1;overflow:hidden;margin-top:6px}.lu-bar i{display:block;height:100%;background:#06C755}
 .lu-sec{margin-top:18px}.lu-sec h4{margin:0 0 8px;font-size:15px}.lu-ch{width:100%;height:auto;display:block;max-height:220px}
 @media(max-width:760px){.lu-k3{grid-template-columns:1fr}}
+/* แถบเมนูซ้ายเลื่อนได้ (2 พ.ย. 2569 · ซูมเข้าแล้วเมนูยาวเกินจอ) · ส่วนล่าง (บริษัท · ออกจากระบบ · สถานะ) ค้างไว้เสมอ */
+.rl-sc{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:inherit;align-items:inherit;align-self:stretch;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.18) transparent}
+.rl-sc::-webkit-scrollbar{width:6px}.rl-sc::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:3px}
+.side>.rl-logo,.side>.rl-co-sw,.side>#out2,.side>.ver{flex:none}
+html.th-sky .rl-sc{scrollbar-color:rgba(0,0,0,.18) transparent}html.th-sky .rl-sc::-webkit-scrollbar-thumb{background:rgba(0,0,0,.18)}
