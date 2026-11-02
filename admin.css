@@ -862,3 +862,4 @@ html.th-sky .co-brand.lgc{box-shadow:0 0 0 1px #D2EEFA}
 .msr-to{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.msr-to>div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13.5px}.msr-to small{display:block;color:var(--fnt);font-size:12px}.msr-to ul{margin:6px 0 0 16px;padding:0;font-size:12.5px}
 @media(max-width:600px){.msr-to{grid-template-columns:1fr}}
 .ms-av{width:28px;height:28px;border-radius:50%;background:#141414;color:#fff;display:inline-grid;place-items:center;flex:none;vertical-align:middle}
+.msr-sk{border:1px solid #F3C7C2;background:#FDF3F2;border-radius:10px;padding:12px;margin-bottom:12px}

@@ -142,7 +142,7 @@ function msGalDraw(){var d=A.msGal,b=$('#msg-bd');if(!d||!b)return;var cur=d.lis
 
 /* ── ศูนย์อนุมัติ: รอบสรุปประจำเดือนรอ HR อนุมัติส่ง (2 พ.ย. 2569 ผู้ใช้: "HR ตรวจสอบในระบบหลังบ้าน · กดอนุมัติแล้วส่ง mail ให้ผู้บริหาร/หัวหน้าแผนก/ตามที่กำหนด และส่งไลน์หาพนักงานรายคน") ── */
 function msRunDetail(x){
-  drawer('สรุปประจำเดือน · '+x.no,'<div id="msr-b"><div class="loading"><span class="spin"></span>กำลังโหลดรายชื่อ…</div></div>',(x.mine?'<button class="btn" id="msr-gal">ดูตัวอย่างทุกรูปแบบ</button><button class="btn ok" id="msr-ok" disabled>อนุมัติและส่ง</button>':'<button class="btn" id="msr-gal">ดูตัวอย่างทุกรูปแบบ</button>'));
+  drawer('สรุปประจำเดือน · '+x.no,'<div id="msr-b"><div class="loading"><span class="spin"></span>กำลังโหลดรายชื่อ…</div></div>',(x.mine?'<button class="btn" id="msr-skip">ไม่ส่งรอบนี้</button><button class="btn" id="msr-gal">ดูตัวอย่างทุกรูปแบบ</button><button class="btn ok" id="msr-ok" disabled>อนุมัติและส่ง</button>':'<button class="btn" id="msr-gal">ดูตัวอย่างทุกรูปแบบ</button>'));
   $('#msr-gal').onclick=msGal;
   var run=null,load=function(){aCall('msGet',x.ym).then(function(d){run=d.run;draw()}).catch(function(e){var b=$('#msr-b');if(b)b.innerHTML='<div class="alert">'+esc(e.message)+'</div>'})};
   var draw=function(){var b=$('#msr-b');if(!b||!run)return;var it=run.items,go=it.filter(function(i){return !i.excluded}),noLine=go.filter(function(i){return !i.line}).length,mt=run.mail_to||[],sent=run.status==='sent';
@@ -159,6 +159,10 @@ function msRunDetail(x){
       if(!on)return doit('');
       var td=btn.parentNode;td.innerHTML='<div style="display:flex;gap:4px"><input class="inp" id="msr-why" placeholder="เหตุผล" style="width:130px;font:inherit;font-size:12.5px"><button class="btn sm" id="msr-wok">ยืนยัน</button></div>';
       $('#msr-why').focus();$('#msr-wok').onclick=function(){var w=$('#msr-why').value.trim();if(!w){toast('กรอกเหตุผลที่ไม่ส่ง',1);return}doit(w)}}})};
+  if(x.mine)$('#msr-skip').onclick=function(){var b=$('#msr-b');if(!b||$('#msr-sk'))return;var f=document.createElement('div');f.id='msr-sk';f.className='msr-sk';
+    f.innerHTML='<b>ไม่ส่งรอบนี้</b><div class="faint" style="font-size:12.5px;margin:2px 0 8px">ปิดรอบ '+esc(x.ym)+' โดยไม่ส่งอีเมลและ LINE ถึงใคร · หยุดเตือน HR · ถ้าเปลี่ยนใจ กด “เตรียมข้อมูลตอนนี้” ที่ รายงาน › สรุปรายเดือน ได้</div><textarea id="msr-skr" rows="2" style="width:100%;border:1px solid var(--line);border-radius:7px;padding:8px;font:inherit" placeholder="เหตุผล เช่น ระบบเดิมส่งเดือนนี้ไปแล้ว"></textarea><div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px"><button class="btn sm" id="msr-skc">ยกเลิก</button><button class="btn sm bad" id="msr-sko">ยืนยันไม่ส่งรอบนี้</button></div>';
+    b.insertBefore(f,b.firstChild);$('#msr-skr').focus();$('#msr-skc').onclick=function(){f.remove()};
+    $('#msr-sko').onclick=function(){var w=$('#msr-skr').value.trim();if(!w){toast('กรอกเหตุผล',1);return}var k=$('#msr-sko');busy(k,1);aCall('msSkip',x.id,w).then(function(){closeD();toast('ปิดรอบนี้แล้ว · ไม่ได้ส่งถึงใคร');reload(false).then(function(){render()})}).catch(function(e){busy(k,0);toast(e.message,1)})}};
   if(x.mine)$('#msr-ok').onclick=function(){if(!run)return;var go=run.items.filter(function(i){return !i.excluded&&i.line}).length,mt=(run.mail_to||[]).length;
     ask({title:'อนุมัติและส่งสรุปเดือน '+run.label+'?',desc:'ส่งอีเมล '+mt+' ฉบับ · LINE รายคน '+go+' คน · ส่งแล้วแก้ไม่ได้',tone:'warn',buttons:[{k:'no',label:'ยกเลิก'},{k:'yes',label:'อนุมัติและส่ง',cls:'pri'}]}).then(function(k){if(k!=='yes')return;
       var b=$('#msr-ok');busy(b,1);aCall('msSend',run.id).then(function(r){closeD();var n=r.sent||{};toast('ส่งแล้ว · LINE '+(n.line||0)+' คน · อีเมล '+(n.mail||0)+' ฉบับ (ส่งภายใน 15 นาที)');reload(false).then(function(){render()})}).catch(function(e){busy(b,0);toast(e.message,1)})})};
