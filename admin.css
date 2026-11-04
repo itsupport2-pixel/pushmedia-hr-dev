@@ -1035,3 +1035,6 @@ html.th-sky .rl-sc{scrollbar-color:rgba(0,0,0,.18) transparent}html.th-sky .rl-s
 /* 4 พ.ย. 2569 ผู้ใช้: ไอคอนไม่มีกรอบ · แท็บ Odoo แสดงโลโก้อย่างเดียว */
 .ig-ic.ig-gm,.ig-ic.ig-lg{border:0;background:none;border-radius:0}.ig-ic.ig-gm{width:44px}.ig-ic.ig-lg{width:64px}.ig-ic.ig-lg img{width:62px}
 .us-tb[data-ust="odoo"]{gap:0}.us-tb[data-ust="odoo"] .us-ti img{height:14px}
+/* 4 พ.ย. 2569 ผู้ใช้: "81 ยังไม่ลงเวลา" ล้นกรอบการ์ด → ย่อตัวเลขตามความกว้าง + ขึ้นบรรทัดใหม่ได้ */
+.kv2{flex-wrap:wrap;white-space:normal;row-gap:2px;column-gap:5px}.kv2 b{font-size:clamp(20px,1.55vw,26px)}.kv2 small{font-size:clamp(11px,.8vw,12.5px);white-space:nowrap}
+.kv2 .kp{display:inline-flex;align-items:baseline;gap:5px;white-space:nowrap}
