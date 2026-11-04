@@ -979,3 +979,18 @@ html.th-sky .rl-sc{scrollbar-color:rgba(0,0,0,.18) transparent}html.th-sky .rl-s
 .ps-ta{width:170px;display:inline-block}   /* 4 พ.ย. 2569 ผู้ใช้ขอ: ช่องภาษีกว้างเท่ากันทุกแถว */
 /* Odoo (4 พ.ย. 2569) */
 .od-f{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}.od-f label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;color:var(--mut)}
+/* ตั้งค่า › Integration: การ์ดเชื่อมระบบ (4 พ.ย. 2569 ผู้ใช้ขอปรับให้สวยขึ้น) */
+.ig{margin-top:14px;overflow:hidden}.ig-h{display:flex;align-items:center;gap:14px;padding:18px 20px;border-bottom:1px solid var(--line)}
+.ig-ic{width:44px;height:44px;border-radius:12px;background:var(--sf2);border:1px solid var(--line);display:grid;place-items:center;color:var(--fg);flex:none}
+.ig-t h3{margin:0;font-size:16px}.ig-t small{display:block;color:var(--mut);font-size:12.5px;margin-top:2px}
+.ig-b{padding:18px 20px}.ig-d{margin:0 0 14px;color:var(--mut);font-size:13px;line-height:1.6}
+.ig-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.ig-row{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+.ig-f{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--mut);font-weight:500;min-width:0}
+.ig-f input{height:42px;border:1px solid var(--line);border-radius:10px;background:var(--sf);padding:0 12px;font:inherit;font-size:14px;color:var(--fg);width:100%}
+.ig-f input:focus{outline:none;border-color:var(--fg);box-shadow:0 0 0 3px #0000000f}.ig-f input::placeholder{color:var(--fnt)}
+.ig-act{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.ig-act .btn{height:42px}.ig-dz{color:var(--bad)}.ig-dz:hover{border-color:var(--bad)}
+.ig-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:12.5px;font-weight:600;background:#F1F1F1;color:var(--mut)}.ig-pill i{width:7px;height:7px;border-radius:50%;background:#B5B5B5}
+.ig-pill.on{background:var(--ok-s);color:var(--ok)}
+.ig-con .ig-kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.ig-kv div{background:var(--sf);padding:12px 14px;min-width:0}.ig-kv small{display:block;color:var(--fnt);font-size:12px;margin-bottom:3px}.ig-kv b{font-size:14px;font-weight:600;overflow-wrap:anywhere}
+.ig-ro{display:flex;gap:8px;align-items:center;margin-top:16px;padding:10px 12px;border-radius:10px;background:var(--sf2);color:var(--mut);font-size:12.5px}.ig-ro svg{flex:none}
