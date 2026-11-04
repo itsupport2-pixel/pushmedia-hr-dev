@@ -1032,3 +1032,6 @@ html.th-sky .rl-sc{scrollbar-color:rgba(0,0,0,.18) transparent}html.th-sky .rl-s
 @media (max-width:760px){.od-k{border-right:0!important;border-bottom:1px solid var(--line)!important}}
 .us-tb[data-ust="odoo"] .us-ti{width:auto;padding:0 1px}.us-tb[data-ust="odoo"] .us-ti img{height:12px;width:auto;display:block}   /* 4 พ.ย. 2569: โลโก้ Odoo ล้นแท็บ */
 .ig-ic.ig-gm{background:#fff}.ig-ic.ig-gm img{width:44px;height:44px;display:block;margin:-2px}   /* 4 พ.ย. 2569: ไอคอน Google Maps */
+/* 4 พ.ย. 2569 ผู้ใช้: ไอคอนไม่มีกรอบ · แท็บ Odoo แสดงโลโก้อย่างเดียว */
+.ig-ic.ig-gm,.ig-ic.ig-lg{border:0;background:none;border-radius:0}.ig-ic.ig-gm{width:44px}.ig-ic.ig-lg{width:64px}.ig-ic.ig-lg img{width:62px}
+.us-tb[data-ust="odoo"]{gap:0}.us-tb[data-ust="odoo"] .us-ti img{height:14px}
