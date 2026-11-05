@@ -36,7 +36,8 @@ function tpRank(d,ps,f,m){m=m||d.ym;var upto=d.months.slice(0,d.months.indexOf(m
 var TP_C={lv:['#7C3AED','#F5F3FF'],abs:['#DC2626','#FEF2F2'],adj:['#EA580C','#FFF7ED']};   // 2 พ.ย. 2569 ผู้ใช้: ลา = ม่วง · ขาดงาน = แดง · แก้ไขเวลา = ส้ม (การ์ด/แถบ/อันดับ คนละสี)
 
 /* ── Top 10 (5 พ.ย. 2569 ผู้ใช้: "ตอนนี้ดูข้อมูลยากเกินไป") เปลี่ยนจากกดเลือกทีละหมวด → 3 คอลัมน์เทียบกันในหน้าเดียว
- * แถวละ 2 บรรทัด (ชื่อ · แผนก + ประเภทลาเรียงมากไปน้อย) · แถบบางสีเดียวต่อหมวด · ป้าย = ติดหลายหมวด / ต่อเนื่อง · ชี้ที่แถว = ไฮไลต์คนเดียวกันทุกคอลัมน์
+ * แถวละ 2 บรรทัด (รูป + ชื่อ · แผนก + ประเภทลาเรียงมากไปน้อย) · ป้าย = ติดหลายหมวด / ต่อเนื่อง · ชี้ที่แถว = ไฮไลต์คนเดียวกันทุกคอลัมน์
+ * โทนขาว–ดำสำหรับผู้บริหาร (5 พ.ย. 2569 ผู้ใช้: "ไม่เอาแถบสี มันดูเด็กน้อยไป") · สีเหลือเฉพาะ ▲ แดง / ▼ เขียว ที่บอกทิศทาง
  * ด้านล่าง: ตารางแผนกรวม 3 หมวด (กดเพื่อกรอง) + ข้อสังเกตรวมทุกหมวด ── */
 function tpLvShort(t){return String(t).replace(/^ลา(?=\S)/,'')}
 function drawTop(){var d=A.tp;if(!d||!$('#tp-body'))return;var ym=d.ym,i=d.months.indexOf(ym),pm=i>0?d.months[i-1]:null,ps=tpPs(),h=tpChips(),R={},H={},in10={};
@@ -48,24 +49,23 @@ function drawTop(){var d=A.tp;if(!d||!$('#tp-body'))return;var ym=d.ym,i=d.month
   var lvT={};d.leave_month.forEach(function(z){var o=lvT[z[0]]=lvT[z[0]]||{};o[z[1]]=(o[z[1]]||0)+z[2]});
   var lvTx=function(id){var o=lvT[id];return o?Object.keys(o).sort(function(a,b){return o[b]-o[a]||(a<b?-1:1)}).map(function(t){return tpLvShort(t)+' '+tpN(o[t])}).join(' · '):''};
   // ① 3 คอลัมน์: หัว = ยอดรวม · ใต้หัว = อันดับ
-  var col=function(k){var f=k[0],c=TP_C[f][0],t=tpSum(ps,ym,f),pt=pm?tpSum(ps,pm,f):null,r=R[f],all=A['tpAll_'+f],show=all?r:r.slice(0,10),t10=sumV(r.slice(0,10)),mx=Math.max.apply(0,show.map(function(x){return x.v}).concat([1]));
+  var col=function(k){var f=k[0],t=tpSum(ps,ym,f),pt=pm?tpSum(ps,pm,f):null,r=R[f],all=A['tpAll_'+f],show=all?r:r.slice(0,10),t10=sumV(r.slice(0,10));
     var row=function(x,j){var id=x.p.id,pv=pm?tpMo(x.p,pm)[f]:null,df=pv==null?null:x.v-pv,oth=(in10[id]||[]).filter(function(l){return l!==k[1]}),s=streak(f,id),lt=f==='lv'?lvTx(id):'',dep=org('departments',x.p.dept)||'—';
-      var pills=(oth.length?'<span class="badge b-bad tp-p">'+(oth.length+1)+' หมวด</span>':'')+(s>=3?'<span class="badge b-warn tp-p">ต่อเนื่อง '+s+' เดือน</span>':'');
+      var pills=(oth.length?'<span class="tp-p">'+(oth.length+1)+' หมวด</span>':'')+(s>=3?'<span class="tp-p">ต่อเนื่อง '+s+' เดือน</span>':'');
       var tip=(pv==null?'':'เดือนก่อน '+tpN(pv)+' วัน')+(oth.length?' · ติด Top 10 '+oth.join(' + ')+' ด้วย':'')+(s>=3?' · ติด Top 10 ต่อเนื่อง '+s+' เดือน':'');
       var dl=df==null?'<span class="faint">—</span>':df===0?'<span class="faint">=</span>':'<span class="'+(df>0?'xd-dn':'xd-up')+'">'+(df>0?'▲':'▼')+tpN(Math.abs(df))+'</span>';
-      return '<button type="button" class="tp-r" data-tpp="'+esc(id)+'" title="'+esc(tip)+'"><span class="xd-n'+(j<3?' top':'')+'"'+(j<3?' style="background:'+c+'"':'')+'>'+(j+1)+'</span>'+
+      return '<button type="button" class="tp-r" data-tpp="'+esc(id)+'" title="'+esc(tip)+'"><span class="tp-rk">'+(j+1)+'</span><span class="av" data-av="'+esc(id)+'" style="width:34px;height:34px;font-size:13px">'+esc((x.p.nickname||x.p.name).slice(0,1))+'</span>'+
        '<span class="tp-rn"><span class="tp-rl"><span class="tp-rt"><b>'+esc(x.p.name)+'</b>'+(x.p.nickname?' ('+esc(x.p.nickname)+')':'')+'</span>'+pills+'</span><small>'+esc(dep)+(lt?' · '+esc(lt):'')+'</small></span>'+
-       '<b class="tp-rv">'+tpN(x.v)+'</b><span class="tp-rd">'+dl+'</span><span class="tp-rb"><i style="width:'+x.v/mx*100+'%;background:'+c+'"></i></span></button>'};
-    return '<section class="card tp-col" style="--c:'+c+'"><div class="tp-ch"><span class="tp-kl"><i class="tp-kd"></i>'+k[1]+'รวม</span><span class="tp-kv">'+tpN(t)+' <small>วัน</small></span>'+
+       '<b class="tp-rv">'+tpN(x.v)+'</b><span class="tp-rd">'+dl+'</span></button>'};
+    return '<section class="card tp-col"><div class="tp-ch"><span class="tp-kl">'+k[1]+'รวม</span><span class="tp-kv">'+tpN(t)+' <small>วัน</small></span>'+
       '<span class="tp-ks">'+(pt==null?'':xdDelta(t,pt,' วัน',1,0)+' <span class="faint">จากเดือนก่อน ('+tpN(pt)+')</span>')+'</span><span class="tp-ks faint">'+r.length+' คน · Top 10 รวม '+tpN(t10)+' วัน'+(t?' = '+Math.round(t10/t*100)+'% ของทั้งหมด':'')+'</span></div>'+
       (show.length?'<div class="tp-rh"><span>พนักงาน</span><span>วัน</span><span>เปลี่ยน</span></div>'+show.map(row).join(''):'<div class="rp-empty">ไม่มีพนักงาน'+k[1]+'ในเดือนนี้</div>')+
       (r.length>10?'<button type="button" class="lnk tp-all" data-tpa="'+f+'">'+(all?'ย่อเหลือ 10 อันดับ':'ดูทั้งหมด '+r.length+' คน')+'</button>':'')+'</section>'};
   h+='<div class="tp-cols">'+TP_K.map(col).join('')+'</div>';
   // ② ตารางแผนกรวม 3 หมวด
   var deps=d.depts.map(function(x){var pp=ps.filter(function(p){return p.dept===x.id}),o={x:x,n:pp.length,all:0};TP_K.forEach(function(k){o[k[0]]=tpSum(pp,ym,k[0]);o.all+=o[k[0]]});return o}).filter(function(o){return o.all>0}).sort(function(a,b){return b.all-a.all});
-  var dmx={};TP_K.forEach(function(k){dmx[k[0]]=Math.max.apply(0,deps.map(function(o){return o[k[0]]}).concat([1]))});
   var dep='<section class="card xd-c tp-dep"><h3>แยกตามแผนก</h3><div class="faint xd-cs">'+xdYmTxt(ym)+' · วันรวม (เฉลี่ยต่อคน) · กดแผนกเพื่อกรอง</div>'+(deps.length?'<div class="tw"><table class="xd-t tp-dt2"><thead><tr><th>แผนก</th><th class="num">คน</th>'+TP_K.map(function(k){return '<th class="num">'+k[1]+'</th>'}).join('')+'</tr></thead><tbody>'+
-    deps.map(function(o){return '<tr class="ck" data-tpd="'+esc(o.x.id)+'"><td>'+esc(o.x.name)+'</td><td class="num">'+o.n+'</td>'+TP_K.map(function(k){var f=k[0],v=o[f];return '<td class="num"><b>'+tpN(v)+'</b> <small class="faint">'+(o.n?(v/o.n).toFixed(1):'0')+'/คน</small><span class="tp-rb"><i style="width:'+v/dmx[f]*100+'%;background:'+TP_C[f][0]+'"></i></span></td>'}).join('')+'</tr>'}).join('')+'</tbody></table></div>':'<div class="faint">ไม่มี</div>')+'</section>';
+    deps.map(function(o){return '<tr class="ck" data-tpd="'+esc(o.x.id)+'"><td>'+esc(o.x.name)+'</td><td class="num">'+o.n+'</td>'+TP_K.map(function(k){var f=k[0],v=o[f];return '<td class="num"><b>'+tpN(v)+'</b> <small class="faint">'+(o.n?(v/o.n).toFixed(1):'0')+'/คน</small></td>'}).join('')+'</tr>'}).join('')+'</tbody></table></div>':'<div class="faint">ไม่มี</div>')+'</section>';
   // ③ ข้อสังเกตรวมทุกหมวด (สำคัญก่อน · ไม่เกิน 6 ข้อ)
   var ins=[],multi=ps.filter(function(p){return (in10[p.id]||[]).length>1});
   if(multi.length)ins.push(['!','bad',multi.length+' คนติด Top 10 มากกว่า 1 หมวด: '+multi.slice(0,4).map(function(p){return p.nickname||p.name}).join(', ')+(multi.length>4?' …':'')]);
@@ -77,7 +77,7 @@ function drawTop(){var d=A.tp;if(!d||!$('#tp-body'))return;var ym=d.ym,i=d.month
   var insH='<section class="card xd-c"><h3>ข้อสังเกต</h3><div class="faint xd-cs">สรุปอัตโนมัติจากตัวเลข</div>'+(ins.length?'<div class="xd-ins">'+ins.slice(0,6).map(function(x){return '<div><span class="xd-ii '+x[1]+'">'+x[0]+'</span><span>'+esc(x[2])+'</span></div>'}).join('')+'</div>':'<div class="faint">ไม่มี</div>')+'</section>';
   h+='<div class="tp-low">'+dep+insH+'</div>';
   h+='<div class="faint" style="font-size:12.5px;line-height:1.6">เท่ากันเรียงตามยอด 6 เดือน · กดแถวเพื่อดูรายละเอียด · ป้าย “2 หมวด” = ติด Top 10 หลายหมวด<br>ลา = วันที่ระบบสรุปว่าลา (ครึ่งวันนับ 1 วัน) · ขาดงาน = วันทำงานที่ไม่มีบันทึกเวลาและไม่ได้ลา · แก้ไขเวลา = วันที่มี HR ลงเวลาแทน/แก้เวลา</div>';
-  $('#tp-body').innerHTML=h;tpBindCommon(drawTop);
+  $('#tp-body').innerHTML='<div class="tp-mono">'+h+'</div>';tpBindCommon(drawTop);loadPhotos();
   $$('#tp-body .tp-r').forEach(function(b){var same=function(on){$$('#tp-body .tp-r').forEach(function(o){if(o.dataset.tpp===b.dataset.tpp)o.classList.toggle('hl',on)})};b.onmouseenter=function(){same(true)};b.onmouseleave=function(){same(false)}});
   $$('[data-tpa]').forEach(function(b){b.onclick=function(){var k='tpAll_'+b.dataset.tpa;A[k]=!A[k];drawTop()}})}
 
