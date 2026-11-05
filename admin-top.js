@@ -81,7 +81,7 @@ function drawTop(){var d=A.tp;if(!d||!$('#tp-body'))return;var ym=d.ym,i=d.month
   $$('#tp-body .tp-r').forEach(function(b){var same=function(on){$$('#tp-body .tp-r').forEach(function(o){if(o.dataset.tpp===b.dataset.tpp)o.classList.toggle('hl',on)})};b.onmouseenter=function(){same(true)};b.onmouseleave=function(){same(false)}});
   $$('[data-tpa]').forEach(function(b){b.onclick=function(){var k='tpAll_'+b.dataset.tpa;A[k]=!A[k];drawTop()}})}
 
-/* ── แถบสถานะการส่งสรุปประจำเดือนบนหน้า Top 10 (5 พ.ย. 2569 ผู้ใช้: "เพิ่มปุ่มกดส่ง หรือแสดงสถานะการส่ง ว่าของแต่ละเดือนถูกส่งยัง")
+/* ── แถบสถานะการส่งสรุปประจำเดือนบนหน้า Top 10 (5 พ.ย. 2569 ผู้ใช้: "เพิ่มปุ่มกดส่ง หรือแสดงสถานะการส่ง ว่าของแต่ละเดือนถูกส่งยัง" + "แสดงสถานะเฉพาะเดือนที่เลือก ไม่ต้องแสดงทั้งหมด")
  * เฉพาะ HR/admin/ผู้บริหาร (msGet ต้องระดับ HR) · ปุ่มส่ง = เปิดหน้าต่างอนุมัติเดิม msRunDetail (ตรวจรายชื่อ · ยืนยันก่อนส่ง) ไม่มีทางลัดส่งทันที */
 var TP_MS_ST={sent:['ok','ส่งแล้ว'],prepared:['warn','รอ HR อนุมัติส่ง'],skipped:['','ไม่ส่งรอบนี้']};
 function tpMsLoad(){if(!isHR())return;var ym=A.tpYm;if(A.tpMs&&A.tpMs.ym===ym){tpMsDraw();return}
@@ -94,11 +94,8 @@ function tpMsDraw(){var b=$('#tp-ms'),d=A.tpMs;if(!b||!d||d.ym!==A.tpYm)return;v
   else if(run.status==='skipped'){st=TP_MS_ST.skipped;txt='ปิดรอบนี้โดยไม่ส่งถึงใคร · เปลี่ยนใจได้โดยเตรียมรายชื่อใหม่';btn='<button class="btn" data-tpms="prep">เตรียมส่งใหม่</button>'}
   else{st=TP_MS_ST.sent;var sentN=it.filter(function(x){return x.line_status==='sent'||x.line_status==='skipped_dev'}).length,ml=(run.mails||[]).filter(function(m){return !m.test}),exp=it.filter(function(x){return !x.excluded});
     txt=fdt(run.sent_at)+(run.sent_by?' โดย '+run.sent_by:'')+' · LINE '+sentN+' คน · อีเมล '+ml.length+' ฉบับ · ชี้แจงแล้ว '+exp.filter(function(x){return x.exp_status}).length+' จาก '+exp.length;btn='<button class="btn" data-tpms="view">ดูการติดตาม</button>'}
-  var H={};(d.history||[]).forEach(function(r){H[r.ym]=r.status});
-  var chip=function(m){var s=TP_MS_ST[H[m]]||['',m>=cur?'ยังไม่จบ':'ยังไม่ส่ง'],l=H[m]==='prepared'?'รออนุมัติ':s[1]==='ไม่ส่งรอบนี้'?'ไม่ส่ง':s[1];return '<button type="button" class="tp-msc" data-tpmm="'+m+'" aria-pressed="'+(m===ym)+'"><b>'+xdYmTxt(m)+'</b><small class="tp-mss '+s[0]+'">'+l+'</small></button>'};
-  b.innerHTML='<div class="tp-msr"><div class="tp-msm"><div class="tp-mst"><b>สรุปประจำเดือน · '+xdYmTxt(ym)+'</b><span class="tp-mss '+st[0]+'">'+st[1]+'</span></div><div class="faint tp-msd">'+esc(txt)+'</div></div>'+btn+'</div><div class="tp-msh">'+A.tp.months.slice().reverse().map(chip).join('')+'</div>';
+  b.innerHTML='<div class="tp-msr"><div class="tp-msm"><div class="tp-mst"><b>สรุปประจำเดือน · '+xdYmTxt(ym)+'</b><span class="tp-mss '+st[0]+'">'+st[1]+'</span></div><div class="faint tp-msd">'+esc(txt)+'</div></div>'+btn+'</div>';
   var detail=function(r){msRunDetail({kind:'ms_run',id:r.id,ym:r.ym,no:'MS-'+r.ym.replace('-',''),test:false,mine:true})};
-  $$('#tp-ms [data-tpmm]').forEach(function(x){x.onclick=function(){var s=$('#tp-ym');if(x.dataset.tpmm===A.tpYm||!s)return;s.value=x.dataset.tpmm;s.onchange()}});
   $$('#tp-ms [data-tpms]').forEach(function(x){x.onclick=function(){var k=x.dataset.tpms;
     if(k==='open')return detail(run);
     if(k==='view'){A.rpTab='ms';A.msYm=ym;A.ms=null;fxArm('rep');render();return}
