@@ -165,7 +165,8 @@ function pyTaxAuto(m){var c=PY.bs.cfg,N=function(x){return Number(String(x==null
   var bon=N(Y.bonus)>0?0:N(m.bonus),inc=pyR2(N(Y.inc)+mon*gap+mon*rem+bon),exp=Math.min(pyR2(inc*0.5),N(c.pay_tax_exp_max||100000)),per=N(c.pay_tax_personal||60000),sso=pyR2(N(Y.sso)+mS*gap+mS*rem);
   var allow=N(m.allow),net=Math.max(0,pyR2(inc-exp-per-sso-allow)),t=0,lo=0,st=[],paid=pyR2(N(Y.tax));
   PY_TAX_STEPS.forEach(function(s){if(net<=lo)return;var part=Math.min(net,s[0])-lo,x=pyR2(part*s[1]/100);st.push({to:s[0],from:lo,rate:s[1],part:part,tax:x});t+=x;lo=s[0]});t=pyR2(t);
-  var gt=gap?pyR2((t-paid)*gap/(gap+rem)):0;
+  var ga=gap+N(Y.months)+rem,gi=pyR2(mon*ga+bon),gn=Math.max(0,pyR2(gi-Math.min(pyR2(gi*0.5),N(c.pay_tax_exp_max||100000))-per-mS*ga-allow)),gy=0,gl=0;PY_TAX_STEPS.forEach(function(s){if(gn<=gl)return;gy+=pyR2((Math.min(gn,s[0])-gl)*s[1]/100);gl=s[0]});var gt=gap?pyR2(pyR2(gy)*gap/ga):0;   // ตรงกับ payTaxAuto_: เดือนที่ขาดคิดจากรายได้หลัก
+ 
   return {monthly:mon,ytdInc:pyR2(N(Y.inc)),gap:gap,gapInc:pyR2(mon*gap),gapTax:gt,future:pyR2(mon*rem),bonusEst:bon,income:inc,exp:exp,personal:per,sso:sso,allow:allow,net:net,year:t,paid:paid,rem:rem,month:Math.max(0,Math.round((t-paid-gt)/rem+1e-9)),pct:inc>0?Math.round(t/inc*10000)/100:0,steps:st,ym:m.ym}}
 function pyTaxOf(p,o){o=o||{};var tr=(p.tax_rec||{tax:0,sso:0}),fu=o.fuel!=null?(Number(String(o.fuel).replace(/,/g,''))||0)-(p.fuel_amt||0):0;
   return pyTaxAuto({base:o.base!=null?o.base:p.base_salary,taxRec:tr.tax+fu,ssoRec:tr.sso+fu,bonus:o.bonus!=null?o.bonus:p.tax_bonus,allow:o.allow!=null?o.allow:p.tax_allow,sso:(o.type||p.pay_type||'employee')==='employee',ym:p.tax_ym,ytd:p.tax_ytd,start:p.start_date})}
