@@ -8,7 +8,7 @@
   var MQ=window.matchMedia('(max-width:640px)');
   var CARD={att:1,appr:1,lv:1,list:1,asset:1,msg:1,ot:1,audit:1,errlog:1,org:1};
   var DESK={set:1,pay:1,rep:1,usage:1,sched:1,srep:1,conf:1};
-  var FSEL='select,.drg,[id^=ofs-],#ap-rg,#lv-rg,.dpt';
+  var FSEL='select,.drg,[id^=ofs-],#ap-rg,#lv-rg,.dpt,.xd-l';
   var busy=false,tm=0,sh=null;
   var T=function(s){return window.hrLang&&hrLang()==='en'&&window.hrT?hrT(s):s};
   function view(){return (window.A&&A.view)||''}
@@ -42,7 +42,11 @@
     if(kind==='more')body.addEventListener('click',function(e){var b=e.target.closest('button,a');if(b&&!b.closest('.m-sh-h'))setTimeout(closeSheet,0)});
     document.body.appendChild(ov);sh={kind:kind,ov:ov,items:items}}
   function filterEls(){var c=document.querySelector('.content');if(!c)return [];var out=[];
-    c.querySelectorAll('.ph,.tools,.ast-ctl,.toolbar').forEach(function(box){box.querySelectorAll(':scope > '+FSEL.split(',').join(',:scope > ')+',:scope > .att-dt ~ select').forEach(function(e){if(out.indexOf(e)<0&&vis(e))out.push(e)})});return out}
+    c.querySelectorAll('.ph,.tools,.ast-ctl,.toolbar').forEach(function(box){box.querySelectorAll(':scope > '+FSEL.split(',').join(',:scope > ')+',:scope > .att-dt ~ select').forEach(function(e){if(out.indexOf(e)<0&&vis(e))out.push(e)})});
+    if(view()==='rep'){var ph=c.querySelector(':scope > .ph');if(ph)ph.querySelectorAll(':scope > .segt').forEach(function(e){if(out.indexOf(e)<0&&vis(e))out.push(e)})}
+    c.querySelectorAll('.xd-chips').forEach(function(e){if(out.indexOf(e)<0&&vis(e))out.push(e)});
+    // กลุ่มตัวกรองแบบป้าย (Matrix / รายงานตารางงาน ฯลฯ): กล่องที่มี label ครอบ select/ช่วงวันที่ ≥ 2 ช่อง
+    c.querySelectorAll('.content .card > div, .content > div, .content .card').forEach(function(e){if(e.closest('.m-sh,.m-bar')||out.indexOf(e)>=0)return;var n=e.querySelectorAll(':scope > label > select, :scope > label > .dpt, :scope > label > input:not([type=checkbox])').length;if(n>=2&&vis(e))out.push(e)});return out}
   function moreEls(){var c=document.querySelector('.content');if(!c)return [];var out=[];
     c.querySelectorAll('.ph,.ast-hd,.ast-ctl,.tools').forEach(function(box){box.querySelectorAll(':scope > .btn:not(.pri):not(.m-ft):not(.m-mr):not([aria-pressed]):not([data-asv]):not([data-astt]), :scope > a.btn:not(.pri)').forEach(function(e){if(vis(e))out.push(e)})});return out}
   function active(){return filterEls().filter(function(e){return e.tagName==='SELECT'&&e.selectedIndex>0}).length+[].filter.call(document.querySelectorAll('.content select.m-csel'),function(s){return s.selectedIndex>0}).length}
@@ -50,7 +54,8 @@
   function bar(){
     var c=document.querySelector('.content');if(!c)return;var ph=c.querySelector(':scope > .ph');
     var f=filterEls(),m=moreEls(),b=c.querySelector(':scope > .m-bar');
-    var q=c.querySelector('.tools input#q,#ast-q,#ms-q,#cb-q,.cba-q input')||c.querySelector('.ph > .att-dt');
+    var q=c.querySelector('.tools input#q,#ast-q,#ms-q,#cb-q,.cba-q input,.content > .tools > input:not([type=checkbox])')||c.querySelector('.ph > .att-dt')||c.querySelector('.m-bar .m-q > .m-tabrow')||c.querySelector(':scope > .rp-tabs,:scope > .otab,.toolbar > .segt,:scope > [role=tablist]');
+    if(q&&/rp-tabs|otab|segt/.test(q.className)||q&&q.getAttribute&&q.getAttribute('role')==='tablist')q.classList.add('m-tabrow');
     var post=view()==='cb'&&c.querySelector('.cba-start');
     var pri0=ph&&ph.querySelector(':scope > .btn.pri');if(pri0)pri0.classList.add('m-fab');
     if(!f.length&&!m.length&&!q&&!post&&!(sh&&sh.items.length)){if(b)b.remove();return}
@@ -59,13 +64,14 @@
       b.querySelector('.m-mr').onclick=function(){openSheet('more',T('เพิ่มเติม'),moreEls())};
       var hd=ph||c.querySelector(':scope > .ast-hd,:scope > .cba-wrap > .cba-head');if(hd&&hd.parentNode===c&&hd.nextSibling)c.insertBefore(b,hd.nextSibling);else c.insertBefore(b,c.firstChild)}
     var slot=b.querySelector('.m-q');
-    if(q&&q.parentNode!==slot&&!slot.contains(q)){var w=q.closest('.cba-q')||q;slot.innerHTML='';slot.appendChild(w)}
-    b.classList.toggle('m-dt',!!slot.querySelector('.att-dt'));
+    if(q&&!slot.firstChild&&!slot.contains(q)){var w=q.closest('.cba-q')||q,ph0=document.createComment('mq');w.parentNode.replaceChild(ph0,w);w._mph=ph0;slot.appendChild(w)}   // ช่องเดียว · ไม่ลบของเดิมทิ้ง
+    b.classList.toggle('m-dt',!!slot.querySelector('.att-dt'));b.classList.toggle('m-solo',!slot.firstChild&&!f.length);
     slot.hidden=!slot.firstChild||!slot.firstChild.isConnected;b.classList.toggle('m-wq',true);
     var n=active(),ft=b.querySelector('.m-ft'),lab=ft.querySelector('span'),s2=n?String(n):'';
     if(lab.textContent!==s2)lab.textContent=s2;ft.classList.toggle('on',n>0);
     ft.hidden=!f.length&&!(sh&&sh.kind==='filter');b.querySelector('.m-mr').hidden=!m.length&&!(sh&&sh.kind==='more');
     f.concat(m).forEach(function(e){e.classList.add('m-hid')});
+    document.querySelectorAll('.content .card').forEach(function(cd){cd.classList.toggle('m-empty',!cd.textContent.trim()&&!cd.querySelector('img,svg,canvas,input,select,button,iframe,table'))});
     document.querySelectorAll('.content .tools,.content .ast-ctl').forEach(function(t){t.classList.toggle('m-empty',![].some.call(t.children,function(x){return !x.classList.contains('m-hid')&&x.getClientRects().length&&!(x.tagName==='SPAN'&&!x.textContent.trim()&&!x.children.length)}))});
     var pri=ph&&ph.querySelector(':scope > .btn.pri'),fab=document.querySelector('.m-fab');
     if(pri){if(fab&&fab!==pri&&fab.classList.contains('m-post'))fab.remove();pri.classList.add('m-fab')}
@@ -81,11 +87,14 @@
   function dup(){var tt=document.querySelector('.tb .tt b'),h=document.querySelector('.content .ph h1');if(tt&&h)h.classList.toggle('m-dup',h.textContent.trim()===tt.textContent.trim())}
   function note(){var c=document.querySelector('.content');if(!c)return;var d=c.querySelector(':scope > .m-dn');
     if(!DESK[view()]){if(d)d.remove();return}
-    if(!d){d=document.createElement('div');d.className='m-dn';d.textContent=T('เหมาะกับจอคอม · บางตารางต้องปัดซ้าย–ขวา');c.insertBefore(d,c.firstChild)}}
+    if(d)d.remove()}
   function refill(){if(!sh)return;var kind=sh.kind,live=sh.items.some(function(it){return it.ph.isConnected});if(live)return;
     // หน้าวาดใหม่ระหว่างเปิดแผ่น: ทิ้งตัวเก่า ย้ายตัวใหม่เข้าแผ่นเดิม
     var els=kind==='filter'?filterEls():moreEls(),title=sh.ov.querySelector('.m-sh-h b').textContent;sh.ov.remove();sh=null;if(els.length)openSheet(kind,title,els)}
-  function run(){if(busy)return;busy=true;try{var fb=document.querySelector('.m-post');if(fb&&(!MQ.matches||view()!=='cb'))fb.remove();if(!MQ.matches){closeSheet()}else{dup();note();cards();kstrip();chips();refill();bar()}}catch(e){if(window.console)console.warn('m',e)}ob.takeRecords();busy=false}
+  function unbar(){document.querySelectorAll('.m-bar').forEach(function(b){var w=b.querySelector('.m-q').firstChild;if(w&&w._mph&&w._mph.parentNode){w._mph.parentNode.replaceChild(w,w._mph)}b.remove()});
+    document.querySelectorAll('.m-hid').forEach(function(e){e.classList.remove('m-hid')});document.querySelectorAll('.m-fab').forEach(function(e){if(e.classList.contains('m-post'))e.remove();else e.classList.remove('m-fab')});document.querySelectorAll('.m-tabrow').forEach(function(e){e.classList.remove('m-tabrow')})}
+  var lastV='';
+  function run(){if(busy)return;busy=true;try{if(view()!==lastV){lastV=view();if(sh){sh.ov.remove();sh=null}}var fb=document.querySelector('.m-post');if(fb&&(!MQ.matches||view()!=='cb'))fb.remove();if(!MQ.matches){closeSheet();if(document.querySelector('.m-bar,.m-hid,.m-fab'))unbar()}else{dup();note();cards();kstrip();chips();refill();bar()}}catch(e){if(window.console)console.warn('m',e)}ob.takeRecords();busy=false}
   var ob=new MutationObserver(function(){clearTimeout(tm);tm=setTimeout(run,30)});
   function start(){ob.observe(document.body,{childList:true,subtree:true});run()}
   if(document.body)start();else document.addEventListener('DOMContentLoaded',start);

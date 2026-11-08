@@ -1144,6 +1144,12 @@ a.btn.mj-act{display:flex;align-items:center;justify-content:center;gap:9px;min-
  .m-bar .m-ft{gap:6px}.m-bar.m-wq .m-ft{width:38px;padding:0;justify-content:center;position:relative}.m-bar.m-wq .m-ft span:empty{display:none}
  .m-bar.m-wq .m-ft span{position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;border-radius:9px;background:var(--fg);color:#fff;font-size:10.5px;line-height:17px;text-align:center;padding:0 4px}
  .m-bar .m-ft.on{border-color:var(--fg)}
+ .m-bar .m-q>.m-tabrow{margin:0!important;border-bottom:0!important;flex-wrap:nowrap!important;overflow-x:auto}.m-bar .m-q:has(>.m-tabrow){overflow:hidden}
+ .m-sh-b .xd-chips{display:flex;flex-wrap:wrap;gap:6px}.m-sh-b .xd-l{display:flex;align-items:center;gap:8px}.m-sh-b .xd-l select{flex:1}
+ .xd-g6{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}.xd-k{padding:10px 12px!important}.xd-kv{font-size:20px!important}
+ .content{position:relative}.m-bar.m-solo{position:absolute;top:10px;right:12px;margin:0;z-index:2}.content:has(>.m-bar.m-solo)>.ph{padding-right:50px}
+ .m-sh-b label{display:flex;flex-direction:column;gap:4px;width:100%;font-size:12px;color:var(--mut)}.m-sh-b label>select,.m-sh-b label>input,.m-sh-b label>.dpt{width:100%!important;max-width:none!important}.m-sh-b>div{display:flex;flex-direction:column;gap:10px;width:100%}
+ .li.fl-r{flex-wrap:wrap;row-gap:6px}.li.fl-r>div:has(>.muted),.li.fl-r>div:not(:has(button,input,label,select)){flex:1 1 180px!important;min-width:160px!important}
  .m-bar>.m-ft{margin-left:auto}.m-bar .m-q:not([hidden])+.m-ft{margin-left:0}.m-bar.m-dt .m-q{flex:0 1 64%;margin-right:auto}.m-bar.m-dt .m-q .att-dt{display:flex;gap:4px;flex:1}.m-bar.m-dt .att-dt input{height:38px;min-width:0;flex:1;font-size:16px;padding:0 6px}.m-bar.m-dt .att-dt .btn{width:30px;height:38px;padding:0;justify-content:center}
  .ast-ctl{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none}.ast-ctl::-webkit-scrollbar{display:none}.ast-ctl>*{flex:none}.ast-ctl>span[style*=flex]{display:none}
  .content .m-empty{display:none!important}.ph .evs{display:none!important}
