@@ -1144,6 +1144,7 @@ a.btn.mj-act{display:flex;align-items:center;justify-content:center;gap:9px;min-
  .m-bar .m-ft{gap:6px}.m-bar.m-wq .m-ft{width:38px;padding:0;justify-content:center;position:relative}.m-bar.m-wq .m-ft span:empty{display:none}
  .m-bar.m-wq .m-ft span{position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;border-radius:9px;background:var(--fg);color:#fff;font-size:10.5px;line-height:17px;text-align:center;padding:0 4px}
  .m-bar .m-ft.on{border-color:var(--fg)}
+ .m-bar>.m-ft{margin-left:auto}.m-bar .m-q:not([hidden])+.m-ft{margin-left:0}.m-bar.m-dt .m-q{flex:0 1 64%;margin-right:auto}.m-bar.m-dt .m-q .att-dt{display:flex;gap:4px;flex:1}.m-bar.m-dt .att-dt input{height:38px;min-width:0;flex:1;font-size:16px;padding:0 6px}.m-bar.m-dt .att-dt .btn{width:30px;height:38px;padding:0;justify-content:center}
  .ast-ctl{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none}.ast-ctl::-webkit-scrollbar{display:none}.ast-ctl>*{flex:none}.ast-ctl>span[style*=flex]{display:none}
  .content .m-empty{display:none!important}.ph .evs{display:none!important}
  .m-fab{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:60;height:44px!important;padding:0 18px!important;border-radius:22px!important;font-size:14px!important;box-shadow:0 6px 18px rgba(0,0,0,.22)}
