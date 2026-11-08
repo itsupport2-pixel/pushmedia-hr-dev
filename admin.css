@@ -1139,7 +1139,15 @@ a.btn.mj-act{display:flex;align-items:center;justify-content:center;gap:9px;min-
  .ph>div:first-child{flex:1 1 100%;min-width:0}.m-dup{display:none}
  .m-dn{display:block;font-size:11.5px;color:var(--fnt);margin:0 0 8px}
  /* แถบเครื่องมือ: ตัวกรอง · ⋯ · ปุ่มหลัก */
- .m-bar{display:flex;gap:8px;align-items:center;margin:0 0 10px}.m-bar .btn{height:32px}.m-bar .m-mr{width:36px;padding:0;justify-content:center;font-size:18px;line-height:1}.m-bar .btn.pri{margin-left:auto}
+ .m-bar{display:flex;gap:8px;align-items:center;margin:0 0 10px}.m-bar .btn{height:38px;border-radius:10px}.m-bar .m-mr{width:38px;padding:0;justify-content:center;font-size:18px;line-height:1}
+ .m-bar .m-q{flex:1;min-width:0;display:flex}.m-bar .m-q[hidden]{display:none}.m-bar .m-q>*{flex:1;min-width:0;width:100%!important;max-width:none!important;margin:0!important}.m-bar .m-q input{height:38px;border-radius:10px;width:100%}
+ .m-bar .m-ft{gap:6px}.m-bar.m-wq .m-ft{width:38px;padding:0;justify-content:center;position:relative}.m-bar.m-wq .m-ft span:empty{display:none}
+ .m-bar.m-wq .m-ft span{position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;border-radius:9px;background:var(--fg);color:#fff;font-size:10.5px;line-height:17px;text-align:center;padding:0 4px}
+ .m-bar .m-ft.on{border-color:var(--fg)}
+ .ast-ctl{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none}.ast-ctl::-webkit-scrollbar{display:none}.ast-ctl>*{flex:none}.ast-ctl>span[style*=flex]{display:none}
+ .content .m-empty{display:none!important}.ph .evs{display:none!important}
+ .m-fab{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:60;height:44px!important;padding:0 18px!important;border-radius:22px!important;font-size:14px!important;box-shadow:0 6px 18px rgba(0,0,0,.22)}
+ .cba-head,.cba-start{display:none!important}
  .m-bar [hidden]{display:none!important}
  .content .m-hid{display:none!important}
  .att-dt{display:flex;gap:6px;flex:1 1 100%}.att-dt input{flex:1;min-width:0}.att-dt .btn{width:38px;padding:0;justify-content:center}
@@ -1164,13 +1172,14 @@ a.btn.mj-act{display:flex;align-items:center;justify-content:center;gap:9px;min-
  [role=tablist] button,.rp-tabs button,.otab button,.segt button,.sum button{flex:none;white-space:nowrap}
  .rp-tabs button,.otab button{padding:8px 12px;font-size:13.5px}.segt button{padding:5px 10px;font-size:12.5px}
  .sum{gap:6px;margin-bottom:10px}.sum button{padding:4px 10px;border-radius:99px;gap:5px}.sum b{font-size:14px}.sum span{font-size:12px}
- .m-chipbox{flex-wrap:nowrap}.m-chipbox>button.chip{display:none}.m-csel{display:block;width:100%}
+ .m-chipbox{flex-wrap:nowrap}.m-chipbox>button.chip,.m-chipbox>button.cba-chip{display:none}.m-csel{display:block;width:100%}
  /* ตาราง → แถวรายการ */
  .tw:has(>table.m-card){overflow:visible}
  table.m-card{min-width:0!important;width:100%;display:block}table.m-card thead{display:none}table.m-card tbody{display:block}
  table.m-card tr{display:flex;flex-wrap:wrap;align-items:center;gap:3px 10px;padding:10px 12px;border-bottom:1px solid var(--line);position:relative}table.m-card tr:last-child{border-bottom:0}
  table.m-card td{display:inline-flex;align-items:center;gap:4px;padding:0;border:0;font-size:12.5px;color:var(--fg);white-space:normal;text-align:left;min-height:0;max-width:100%}
- table.m-card td::before{content:attr(data-l);color:var(--fnt);font-size:11.5px}table.m-card td[data-l=""]::before{display:none}
+ table.m-card td{background:transparent!important}table.m-card td:not(.m-h):not(.m-act):not(.m-bdg){color:var(--mut)}
+ table.m-card td::before{content:attr(data-l);color:var(--fnt);font-size:11.5px;display:none}table.m-card td.m-lbl::before{display:inline}table.m-card td[data-l=""]::before{display:none}
  table.m-card td.m-h{display:flex;flex:1 1 100%;align-items:center;gap:8px;font-size:14px;font-weight:600;margin-bottom:1px}table.m-card td.m-h>*{margin-left:0!important}
  table.m-card tr.m-has-act td.m-h{padding-right:84px}
  table.m-card td.m-act{position:absolute;top:8px;right:12px}table.m-card td.m-act::before{display:none}
