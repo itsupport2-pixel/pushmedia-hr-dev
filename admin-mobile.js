@@ -52,6 +52,7 @@
     var f=filterEls(),m=moreEls(),b=c.querySelector(':scope > .m-bar');
     var q=c.querySelector('.tools input#q,#ast-q,#ms-q,#cb-q,.cba-q input');
     var post=view()==='cb'&&c.querySelector('.cba-start');
+    var pri0=ph&&ph.querySelector(':scope > .btn.pri');if(pri0)pri0.classList.add('m-fab');
     if(!f.length&&!m.length&&!q&&!post&&!(sh&&sh.items.length)){if(b)b.remove();return}
     if(!b){b=document.createElement('div');b.className='m-bar';b.innerHTML='<span class="m-q"></span><button type="button" class="btn m-ft" aria-label="'+T('ตัวกรอง')+'">'+FIC+'<span></span></button><button type="button" class="btn m-mr" aria-label="'+T('เพิ่มเติม')+'">⋯</button>';
       b.querySelector('.m-ft').onclick=function(){openSheet('filter',T('ตัวกรอง'),filterEls())};
