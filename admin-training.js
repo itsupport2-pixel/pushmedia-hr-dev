@@ -1,6 +1,6 @@
 /* เมนูการอบรม (9 พ.ย. 2569 ผู้ใช้ขอ · แบบใน Figma หน้า 23): ภาพรวม · หลักสูตร · รายคน · ใกล้หมดอายุ · บันทึกหลายคนพร้อมกัน
  * ข้อมูล = employee_training (trainData) · คำนวณทุกอย่างฝั่งหน้าเว็บ · ขาว–ดำแบบหน้าผู้บริหาร · ใกล้หมดอายุ = ภายใน 60 วัน */
-var TR={tab:'ov',yr:'',q:'',dept:'all',none:false,d:null};
+var TR={tab:'ov',yr:'',q:'',none:false,d:null};
 var TR_SOON=60;
 function trK(s){return String(s||'').replace(/\s+/g,' ').trim().toLowerCase()}
 function trNm(e){return (e.first_name||'')+' '+(e.last_name||'')}
@@ -9,7 +9,7 @@ function trYr(d){return d?String(+d.slice(0,4)+543):''}
 function trActive(e){return e.status!=='resigned'}
 /* สรุปจากข้อมูลดิบ · Y = พ.ศ. ('' = ทุกปี) */
 function trCalc(){var D=TR.d,E={},Y=TR.yr,today=D.today;D.emps.forEach(function(e){E[e.id]=e});
-  var depOk=function(e){return TR.dept==='all'||e.department_id===TR.dept};
+  var depOk=function(e){return ofOk('tr',e.dept,e.team)};
   var rows=D.rows.filter(function(r){var e=E[r.employee_id];return e&&depOk(e)}),yr=rows.filter(function(r){return !Y||trYr(r.date_from)===Y});
   var C={};rows.forEach(function(r){var k=trK(r.course),c=C[k]||(C[k]={k:k,name:r.course,prov:{},ppl:{},yppl:{},ses:{},hrs:0,n:0,last:'',exp:0});c.ppl[r.employee_id]=r;if(!Y||trYr(r.date_from)===Y){c.yppl[r.employee_id]=1;c.ses[r.date_from]=1;c.hrs+=r.hours||0;c.n++}
     if(r.provider)c.prov[r.provider]=(c.prov[r.provider]||0)+1;if(r.date_from>c.last)c.last=r.date_from;if(r.expiry_date)c.exp++});
@@ -28,21 +28,20 @@ function trCalc(){var D=TR.d,E={},Y=TR.yr,today=D.today;D.emps.forEach(function(
   var hrs=yr.reduce(function(s,r){return s+(r.hours||0)},0),ses={};yr.forEach(function(r){ses[trK(r.course)+'|'+r.date_from]=1});
   return {E:E,rows:rows,courses:courses,exp:exp,people:people,act:act,trained:Object.keys(trained).length,mon:mon,dep:Object.keys(dep).map(function(k){return dep[k]}).sort(function(a,b){return b.all-a.all}),hrs:Math.round(hrs*10)/10,ses:Object.keys(ses).length}}
 function vTrain(){return '<div class="ph"><div><h1>การอบรม</h1><div class="sub">ดูว่าบริษัทจัดอบรมอะไร ใครอบรมแล้ว และใบรับรองใดใกล้หมดอายุ</div></div><span class="sp"></span><div style="display:flex;gap:8px;flex-wrap:wrap">'+
-  '<button class="btn" id="tr-xl">Export Excel</button>'+(TR.d&&TR.d.canEdit?'<button class="btn pri" id="tr-add">+ บันทึกการอบรม</button>':'')+'</div></div><div id="tr-body"><div class="loading"><span class="spin"></span>กำลังโหลด…</div></div>'}
+  exBtn('xls','tr-xl','Export Excel')+(TR.d&&TR.d.canEdit?'<button class="btn pri" id="tr-add">+ บันทึกการอบรม</button>':'')+'</div></div><div id="tr-body"><div class="loading"><span class="spin"></span>กำลังโหลด…</div></div>'}
 function bTrain(){if(!TR.d||Date.now()-(TR.at||0)>60000){aCall('trainData').then(function(d){TR.d=d;TR.at=Date.now();if(!TR.yr)TR.yr=trYr(d.today);if(A.view==='train')render()}).catch(function(e){var b=$('#tr-body');if(b)b.innerHTML='<div class="er">'+esc(e.message)+'</div>'});if(!TR.d)return}trDraw()}
 function trDraw(){var b=$('#tr-body');if(!b||!TR.d)return;var R=trCalc(),D=TR.d,Y=TR.yr;
   var yrs={};D.rows.forEach(function(r){if(r.date_from)yrs[trYr(r.date_from)]=1});yrs[trYr(D.today)]=1;
-  var deps=(A.d.org&&A.d.org.departments)||[];
   var tabs=[['ov','ภาพรวม'],['co','หลักสูตร',R.courses.length],['pe','รายคน',R.people.length],['ex','ใกล้หมดอายุ',R.exp.length]];
-  var h='<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px"><div class="segt" role="tablist">'+tabs.map(function(t){return '<button type="button" data-trt="'+t[0]+'" aria-pressed="'+(TR.tab===t[0])+'">'+t[1]+(t[2]!=null?' <span class="badge '+(t[0]==='ex'&&t[2]?'b-bad':'b-mute')+'">'+t[2]+'</span>':'')+'</button>'}).join('')+'</div><span class="sp"></span>'+
-   (TR.tab==='co'||TR.tab==='pe'?'<input class="inp" id="tr-q" placeholder="'+(TR.tab==='co'?'ค้นหาชื่อหลักสูตร หรือผู้จัด':'ค้นหาชื่อ ชื่อเล่น รหัส')+'" value="'+esc(TR.q)+'" style="width:240px">':'')+
-   '<select id="tr-yr" class="inp" style="width:auto"><option value="">ทุกปี</option>'+Object.keys(yrs).sort().reverse().map(function(y){return '<option value="'+y+'"'+(y===Y?' selected':'')+'>ปี '+y+'</option>'}).join('')+'</select>'+
-   '<select id="tr-dep" class="inp" style="width:auto"><option value="all">ทุกแผนก</option>'+deps.map(function(d){return '<option value="'+d.id+'"'+(TR.dept===d.id?' selected':'')+'>'+esc(d.name)+'</option>'}).join('')+'</select>'+
+  var h='<div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px"><div class="segt" role="tablist">'+tabs.map(function(t){return '<button type="button" data-trt="'+t[0]+'" aria-pressed="'+(TR.tab===t[0])+'">'+t[1]+(t[2]!=null?'<span class="trc'+(t[0]==='ex'&&t[2]?' hot':'')+'">'+t[2]+'</span>':'')+'</button>'}).join('')+'</div><span class="sp"></span>'+
+   (TR.tab==='co'||TR.tab==='pe'?pySearch('tr-q',TR.q,TR.tab==='co'?'ค้นหาชื่อหลักสูตร หรือผู้จัด':'ค้นหาชื่อ ชื่อเล่น รหัส'):'')+
+   '<select id="tr-yr" class="fsel" aria-label="ปี"><option value="">ทุกปี</option>'+Object.keys(yrs).sort().reverse().map(function(y){return '<option value="'+y+'"'+(y===Y?' selected':'')+'>ปี '+y+'</option>'}).join('')+'</select>'+
+   ofSel('tr')+
    (TR.tab==='pe'?'<label class="chk"><input type="checkbox" id="tr-none"'+(TR.none?' checked':'')+'> ยังไม่เคยอบรม ('+R.people.filter(function(p){return !p.n}).length+')</label>':'')+'</div>';
   h+=TR.tab==='ov'?trOv(R):TR.tab==='co'?trCo(R):TR.tab==='pe'?trPe(R):trEx(R);
   b.innerHTML=h;
   $$('[data-trt]').forEach(function(x){x.onclick=function(){TR.tab=x.dataset.trt;TR.q='';trDraw()}});
-  $('#tr-yr').onchange=function(){TR.yr=this.value;trDraw()};$('#tr-dep').onchange=function(){TR.dept=this.value;trDraw()};
+  $('#tr-yr').onchange=function(){TR.yr=this.value;trDraw()};ofBind('tr',trDraw);
   if($('#tr-q')){var q=$('#tr-q');q.oninput=function(){TR.q=q.value;var p=q.selectionStart;trDraw();var n=$('#tr-q');if(n){n.focus();n.setSelectionRange(p,p)}}}
   if($('#tr-none'))$('#tr-none').onchange=function(){TR.none=this.checked;trDraw()};
   $$('[data-trc]').forEach(function(x){x.onclick=function(){trCourse(x.dataset.trc)}});
@@ -79,13 +78,13 @@ function trCourse(k,tab){var R=trCalc(),c=R.courses.filter(function(x){return x.
   var rs=R.rows.filter(function(r){return trK(r.course)===k}).sort(function(a,b){return a.date_from<b.date_from?1:-1}),last={};rs.forEach(function(r){if(!last[r.employee_id])last[r.employee_id]=r});
   var done=Object.keys(last).map(function(id){return last[id]}),not=R.act.filter(function(e){return !last[e.id]}),t=tab||'done',today=TR.d.today;
   var ses={};rs.forEach(function(r){ses[r.date_from]=1});var hrs=rs.reduce(function(s,r){return s+(r.hours||0)},0);
-  var body='<div class="py-ks" style="grid-template-columns:repeat(4,1fr)">'+trKpi('อบรมแล้ว',done.length+' คน','')+trKpi('รุ่น',Object.keys(ses).length,'')+trKpi('ชั่วโมงรวม',nfmt(Math.round(hrs*10)/10),'')+trKpi('ยังไม่อบรม',not.length+' คน',TR.dept==='all'?'พนักงานที่ยังทำงาน':'ในแผนกที่เลือก')+'</div>'+
+  var body='<div class="py-ks" style="grid-template-columns:repeat(4,1fr)">'+trKpi('อบรมแล้ว',done.length+' คน','')+trKpi('รุ่น',Object.keys(ses).length,'')+trKpi('ชั่วโมงรวม',nfmt(Math.round(hrs*10)/10),'')+trKpi('ยังไม่อบรม',not.length+' คน',ofSt('tr').d==='all'&&ofSt('tr').t==='all'?'พนักงานที่ยังทำงาน':'ในแผนก/ทีมที่เลือก')+'</div>'+
    (c.provider?'<div class="muted" style="font-size:13px;margin:-4px 0 12px">ผู้จัด: '+esc(c.provider)+'</div>':'')+
    '<div class="segt" style="margin-bottom:12px"><button type="button" data-trct="done" aria-pressed="'+(t==='done')+'">อบรมแล้ว '+done.length+'</button><button type="button" data-trct="not" aria-pressed="'+(t==='not')+'">ยังไม่อบรม '+not.length+'</button></div>'+
    (t==='done'?'<div class="tw"><table class="xd-t tr-t"><thead><tr><th>พนักงาน</th><th class="num">วันที่อบรม</th><th class="num">ชม.</th><th class="num">หมดอายุ</th><th></th></tr></thead><tbody>'+done.map(function(r){var e=M[r.employee_id]||{},left=r.expiry_date?trDays(today,r.expiry_date):null;
      return '<tr><td><div style="display:flex;align-items:center;gap:10px">'+av(e,30)+'<div><b>'+esc(trNm(e))+'</b><div class="faint" style="font-size:12px">'+esc(e.emp_code||'')+' · '+esc(e.dept||'—')+'</div></div></div></td><td class="num">'+esc(dTxt(r.date_from))+'</td><td class="num">'+(r.hours||'—')+'</td><td class="num">'+(r.expiry_date?(left<=TR_SOON?'<span class="badge b-bad">'+(left<0?'หมดแล้ว':'หมด ')+esc(dTxt(r.expiry_date))+'</span>':esc(dTxt(r.expiry_date))):'—')+'</td><td class="num">'+(r.file_id?'<button class="btn sm" data-trf="'+esc(r.file_id)+'">ใบรับรอง</button>':'')+'</td></tr>'}).join('')+'</tbody></table></div>':
     (not.length?'<div class="tw"><table class="xd-t tr-t"><thead><tr><th>พนักงาน</th><th>แผนก / ตำแหน่ง</th></tr></thead><tbody>'+not.map(function(e){return '<tr><td><div style="display:flex;align-items:center;gap:10px">'+av(e,30)+'<b>'+esc(trNm(e))+'</b></div></td><td class="faint">'+esc(e.dept||'—')+(e.position?' · '+esc(e.position):'')+'</td></tr>'}).join('')+'</tbody></table></div>':'<div class="faint">ทุกคนอบรมหลักสูตรนี้แล้ว</div>'));
-  drawer(c.name,body,(TR.d.canEdit?'<button class="btn pri" id="trc-add">+ เพิ่มผู้เข้าอบรม</button>':'')+'<button class="btn" id="trc-xl">Export รายชื่อ</button>');
+  drawer(c.name,body,(TR.d.canEdit?'<button class="btn pri" id="trc-add">+ เพิ่มผู้เข้าอบรม</button>':'')+exBtn('xls','trc-xl','Export รายชื่อ'));
   $$('[data-trct]').forEach(function(b){b.onclick=function(){trCourse(k,b.dataset.trct)}});trFileBind();
   if($('#trc-add'))$('#trc-add').onclick=function(){trAdd({course:c.name,ids:t==='not'?[]:[]})};
   $('#trc-xl').onclick=function(){var b=this;trXlsRows(b,'อบรม-'+c.name,done.map(function(r){var e=M[r.employee_id]||{};return {'หลักสูตร':c.name,'รหัส':e.emp_code||'','ชื่อ-นามสกุล':trNm(e),'แผนก':e.dept||'','วันที่อบรม':r.date_from,'ถึง':r.date_to||'','ชั่วโมง':r.hours||'','ผู้จัด':r.provider||'','หมดอายุ':r.expiry_date||''}}).concat(not.map(function(e){return {'หลักสูตร':c.name,'รหัส':e.emp_code||'','ชื่อ-นามสกุล':trNm(e),'แผนก':e.dept||'','วันที่อบรม':'ยังไม่อบรม','ถึง':'','ชั่วโมง':'','ผู้จัด':'','หมดอายุ':''}})))}}
