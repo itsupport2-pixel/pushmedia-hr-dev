@@ -1,6 +1,8 @@
 /* แอปพนักงาน · ดีไซน์ใหม่ (Figma หน้า 22 · 10 พ.ย. 2569) · โหลดหลัง liff-leave.js
  * แทนที่เฉพาะหน้าที่โครงสร้างเปลี่ยน: โควตาการลา (ตัดการ์ดสรุปดำตามที่ผู้ใช้สั่ง) · รายละเอียดทรัพย์สิน (รูปใหญ่แบบเดิม) · การแจ้งเตือนว่าง
  * หน้าอื่นเปลี่ยนแค่หน้าตา (liff-v2.css) · ถอยกลับ: เอา <script liff-v2.js> + <link liff-v2.css> ออกจาก liff.html */
+/* เปิดในแอป LINE → ซ่อนแถบชื่อหน้า (ใช้หัวของ LINE) */
+if(/\bLine\//i.test(navigator.userAgent)||(window.liff&&liff.isInClient&&liff.isInClient()))document.documentElement.classList.add('in-line');
 Object.assign(P,{
   beach:'<path d="M12 4a8 8 0 0 1 8 8H4a8 8 0 0 1 8-8zM12 12v8M8.5 20h7"/>',
   plus:'<path d="M12 6v12M6 12h12"/><rect x="3.5" y="3.5" width="17" height="17" rx="4"/>',

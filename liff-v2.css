@@ -1,15 +1,13 @@
 /* แอปพนักงาน · ดีไซน์ใหม่ (Figma หน้า 22 · 10 พ.ย. 2569 ผู้ใช้เลือก)
  * ใช้สีเดิมทั้งหมด (liff.css) · เพิ่มความลึก: การ์ดขอบ 1px + เงา 2 ชั้น · มุมโค้ง 20–22 การ์ด / 14–16 ปุ่ม · ปุ่มย้อนกลับวงกลม
- * ผู้ใช้ขอแบบเดิม: ลงเวลางาน (v-clock/done/devwait) · Community (v-cb*) · แถบล่าง (แบบเดิม · แท็บที่อยู่เป็นสีดำ) · เมนูอยู่ขวา + โลโก้ (แบบเดิม)
+ * ผู้ใช้ขอแบบเดิม: หน้าหลัก · ลงเวลางาน (v-clock/done/devwait) · Community (v-cb*) · แถบล่าง (แบบเดิม · แท็บที่อยู่เป็นสีดำ) · เมนูอยู่ขวา + โลโก้ (แบบเดิม)
  * ถอยกลับ: เอา <link liff-v2.css> และ <script liff-v2.js> ออกจาก liff.html */
 :root{--e1:0 0 0 1px rgba(17,17,17,.045),0 1px 2px rgba(17,17,17,.04),0 6px 18px rgba(17,17,17,.05);--e2:0 0 0 1px rgba(17,17,17,.04),0 2px 4px rgba(17,17,17,.05),0 14px 30px rgba(17,17,17,.09);--r-card:20px;--r-btn:14px}
 
-/* ── หัวหน้าย่อย: พื้นตามหน้า · ปุ่มย้อนกลับวงกลม ── */
-.view:not(.v-clock):not(.v-done):not(.v-devwait):not([class*=" v-cb"]) .band{background:transparent;border-bottom:0;height:60px;padding:0 12px}
-.view:not(.v-clock):not(.v-done):not(.v-devwait):not([class*=" v-cb"]) .band>button{width:40px;height:40px;border-radius:50%;background:#fff;box-shadow:var(--e1)}
-.view:not(.v-clock):not(.v-done):not(.v-devwait):not([class*=" v-cb"]) .band svg.i{width:22px;height:22px;stroke-width:2.4}
-.view:not(.v-clock):not(.v-done):not(.v-devwait):not([class*=" v-cb"]) .band h1{font-size:18px;font-weight:600}
-
+/* ── หัวหน้า (10 พ.ย. 2569 ผู้ใช้: ไม่ต้องแสดงชื่อเมนูซ้ำ เปลืองพื้นที่) · ในแอป LINE ใช้หัวของ LINE (ชื่อหน้า + ปุ่มย้อนกลับ · ประวัติหน้าซิงก์กับ history แล้ว)
+ * นอก LINE (โหมดทดสอบในเครื่อง) ยังแสดงแถบเดิม · หน้าหลักใช้แบบเดิม */
+html.in-line .band,html.in-line .phead .top,html.in-line :is(.v-clock,.v-done,.v-devwait) .wbar{display:none!important}
+html.in-line .phead{padding-top:14px}
 /* ── การ์ด · รายการ · ปุ่ม (ยกเว้นหน้าที่ใช้แบบเดิม) ── */
 .view:not(.v-clock):not(.v-done):not(.v-devwait):not([class*=" v-cb"]) :is(.card,.qcard,.fcard,.doc,.empty,.mrow,.as-it,.nf){border-radius:var(--r-card);box-shadow:var(--e1)}
 .view:not(.v-clock):not(.v-done):not(.v-devwait):not([class*=" v-cb"]) .mrow{border-radius:18px}
@@ -18,15 +16,6 @@
 .view:not(.v-clock):not(.v-done):not(.v-devwait):not([class*=" v-cb"]) .btn.out{border-width:1.5px;background:#fff}
 .view .card,.view .qcard,.view .doc,.view .mrow{transition:transform .12s ease}
 .view :is(.card,.qcard,.doc,.mrow,.as-it,.nf,.btn):active{transform:scale(.97)}
-
-/* ── หน้าหลัก: ส่วนหัวดำไล่เฉด + ทางลัดเป็นการ์ดลอย ── */
-.view.home .htop{background:linear-gradient(165deg,#111 0%,#2A2A2A 100%);color:#fff;padding:14px 16px 0;border-radius:0 0 26px 26px;margin-bottom:46px}
-.view.home .htop .prof,.view.home .htop .prof *{color:#fff}
-.view.home .htop .prof span,.view.home .htop .prof small{color:rgba(255,255,255,.62)}
-.view.home .htop .bell,.view.home .htop [data-act="go:notif"]{background:rgba(255,255,255,.1);border-radius:50%;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
-.view.home .shorts{margin:18px 0 -46px;padding:14px 4px 12px;background:#fff;border-radius:var(--r-card);box-shadow:var(--e2);position:relative;z-index:1}
-.view.home .shorts button{color:var(--text)}
-.view.home .shorts svg.i{width:22px;height:22px;padding:9px;box-sizing:content-box;border-radius:12px;background:#F4F4F5;stroke-width:1.7}
 
 /* ── โควตาการลา (ใหม่) ── */
 .qv2{display:flex;flex-direction:column;gap:10px;padding:16px 16px 14px;background:#fff;border-radius:var(--r-card);box-shadow:var(--e1)}
