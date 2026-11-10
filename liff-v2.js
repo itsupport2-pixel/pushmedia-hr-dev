@@ -4,6 +4,7 @@
 /* เปิดในแอป LINE → ซ่อนแถบชื่อหน้า (ใช้หัวของ LINE) */
 if(/\bLine\//i.test(navigator.userAgent)||(window.liff&&liff.isInClient&&liff.isInClient()))document.documentElement.classList.add('in-line');
 Object.assign(P,{
+  cam:'<path d="M4 8.5A1.5 1.5 0 0 1 5.5 7H8l1.5-2h5L16 7h2.5A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5z"/><circle cx="12" cy="12.5" r="3.2"/>',
   beach:'<path d="M12 4a8 8 0 0 1 8 8H4a8 8 0 0 1 8-8zM12 12v8M8.5 20h7"/>',
   plus:'<path d="M12 6v12M6 12h12"/><rect x="3.5" y="3.5" width="17" height="17" rx="4"/>',
   bag:'<rect x="3.5" y="7.5" width="17" height="12" rx="2.5"/><path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5M3.5 12.5h17"/>',
