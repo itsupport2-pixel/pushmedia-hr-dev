@@ -32,7 +32,7 @@ function wfnCards(trig,br,to){var b=wfnBase(trig);if(wfnSimple(trig))return ['au
   if(b==='help_new')return ['text'];
   var dec=['ok','no','back'].indexOf(br)>=0||trig==='leave_decided',onlyEmp=to.length===1&&to[0]==='employee';
   return dec?(onlyEmp?['result','text']:['result','request','text']):onlyEmp?['receipt','text']:['request','text']}
-function wfnGCards(trig,br){var b=wfnBase(trig);if(wfnSimple(trig))return ['auto','text'];if(b==='monthsum')return ['ms_ready','text'];if(b==='messenger')return {'new':['msg_job','text'],cancel:['msg_cancel','msg_status','text'],late:['msg_overdue','text']}[br]||['msg_status','text'];if(b==='help_new')return ['text'];return ['summary','text']}
+function wfnGCards(trig,br){var b=wfnBase(trig);if(wfnSimple(trig))return ['auto','text'];if(b==='monthsum')return ['ms_ready','text'];if(b==='messenger')return {'new':['msg_job','text'],cancel:['msg_cancel','msg_status','text'],late:['msg_overdue','text']}[br]||['msg_status','text'];if(b==='help_new')return ['help','text'];return ['summary','text']}
 function wfnFields(trig,br){var b=wfnBase(trig),dp=((A.d&&A.d.org&&A.d.org.departments)||[]).map(function(d){return [d.name,d.name]});
   var F=b==='monthsum'||wfnSimple(trig)?[]:wfFields(b==='leave'?(['ok','no','back'].indexOf(br)>=0?'leave_decided':'leave_new'):trig);return F.concat([['rdept','แผนกของผู้รับ','sel',dp]])}
 function wfnInsp(n,c,trig){var b=wfnBase(trig),br=(b==='leave'||b==='messenger'||b==='monthsum')?wfBranch(n.id):'',ch=c.ch=c.ch||{},to=c.to=c.to||[];c.people=c.people||[];c.mails=c.mails||[];c.conds=c.conds||[];
