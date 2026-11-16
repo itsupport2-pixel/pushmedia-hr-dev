@@ -211,8 +211,25 @@ V.slipd=id=>{const x=SL.det[id];if(!slPinOk()){SL.pin="";return V.slip()}
     <div class="sl-kv"><span>รหัส</span><b>${esc(x.code)}</b><span>ชื่อ</span><b>${esc(x.name)}</b><span>แผนก</span><b>${esc(x.dept||"—")}</b><span>วันทำงาน</span><b>${x.days} วัน${x.absent?" · ขาด "+x.absent+" วัน":""}</b><span>โอนเข้า</span><b>${esc(x.bank||"—")}</b></div>
     <h4 class="sl-t">รายได้</h4>${li(inc)}<div class="sl-l sl-s"><span>รวมรายได้</span><span>${slM(x.inc)}</span></div>
     <h4 class="sl-t">รายการหัก</h4>${ded.length?li(ded):'<span class="cap">ไม่มี</span>'}<div class="sl-l sl-s"><span>รวมรายการหัก</span><span>${slM(x.ded)}</span></div>
-    <div class="sl-netbox"><span>เงินได้สุทธิ</span><b>${slM(x.net)}</b></div><span class="cap" style="text-align:center">เอกสารนี้เป็นความลับเฉพาะผู้รับ</span></div></div>`};
-document.addEventListener("click",e=>{const t=e.target.closest("[data-slipset],[data-slipgo],[data-slipd],[data-slipout]");if(!t)return;
+    <div class="sl-netbox"><span>เงินได้สุทธิ</span><b>${slM(x.net)}</b></div><button class="btn" data-slipimg="${esc(id)}" style="margin-top:6px">บันทึกสลิปเป็นรูป</button><span class="cap" style="text-align:center">เอกสารนี้เป็นความลับเฉพาะผู้รับ</span></div></div>`};
+/* บันทึกสลิปเป็นรูป (17 พ.ย. 2569 ผู้ใช้ขอ: พนักงานโหลดสลิปของตัวเองได้) · วาดบน canvas ในเครื่อง ไม่ส่งไปที่ไหน · ในแอป LINE กดค้างที่รูปเพื่อบันทึก / บนคอมกดดาวน์โหลด */
+function slImg(x){const W=900,F=getComputedStyle(document.body).fontFamily||"sans-serif",inc=x.lines.filter(l=>l.kind==="inc"),ded=x.lines.filter(l=>l.kind==="ded");
+  const H=2400,c=document.createElement("canvas");c.width=W*2;c.height=H*2;const g=c.getContext("2d");g.scale(2,2);
+  g.fillStyle="#fff";g.fillRect(0,0,W,H);let y=56;const L=48,R=W-48,t=(s,xx,yy,sz,w,al,col)=>{g.font=(w||400)+" "+sz+"px "+F;g.fillStyle=col||"#111";g.textAlign=al||"left";g.fillText(s,xx,yy)},hr=yy=>{g.fillStyle="#E5E7EB";g.fillRect(L,yy,R-L,1)};
+  t(x.co.name_th+(x.co.branch?" ("+x.co.branch+")":""),L,y,26,700);y+=30;if(x.co.tax_id){t("เลขประจำตัวผู้เสียภาษี "+x.co.tax_id,L,y,17,400,"left","#6B7280");y+=10}y+=22;hr(y);y+=40;
+  t((x.run.kind==="bonus"?"ใบแจ้งโบนัส":"ใบแจ้งเงินเดือน · งวด")+" "+slYm(x.run.ym),L,y,24,700);y+=30;t(fD(x.run.from)+" – "+fD(x.run.to)+" · จ่าย "+(x.run.pay_date?fD(x.run.pay_date):"—"),L,y,17,400,"left","#6B7280");y+=26;hr(y);y+=38;
+  [["รหัส",x.code],["ชื่อ",x.name],["แผนก",x.dept||"—"],["วันทำงาน",x.days+" วัน"+(x.absent?" · ขาด "+x.absent+" วัน":"")],["โอนเข้า",x.bank||"—"]].forEach(k=>{t(k[0],L,y,18,400,"left","#6B7280");t(String(k[1]),L+160,y,18,600);y+=32});y+=8;
+  const sec=(ti,arr,tl,tv)=>{t(ti,L,y,20,700);y+=36;if(!arr.length){t("ไม่มี",L,y,17,400,"left","#6B7280");y+=44}arr.forEach(l=>{t(l.name,L,y,18);t(slM(l.amount),R,y,18,500,"right");y+=32});y+=8;hr(y-22);t(tl,L,y,18,700);t(slM(tv),R,y,18,700,"right");y+=46};
+  sec("รายได้",inc,"รวมรายได้",x.inc);sec("รายการหัก",ded,"รวมรายการหัก",x.ded);
+  g.fillStyle="#111";g.beginPath();if(g.roundRect)g.roundRect(L,y-8,R-L,64,14);else g.rect(L,y-8,R-L,64);g.fill();t("เงินได้สุทธิ",L+22,y+33,20,600,"left","#fff");t(slM(x.net),R-22,y+35,26,700,"right","#fff");y+=96;
+  t("เอกสารนี้เป็นความลับเฉพาะผู้รับ",W/2,y,15,400,"center","#9CA3AF");
+  y+=36;const out=document.createElement("canvas");out.width=W*2;out.height=Math.ceil(y)*2;out.getContext("2d").drawImage(c,0,0);   // วาดบนผืนสูงก่อน แล้วตัดตามความยาวจริง
+  const url=out.toDataURL("image/png"),fn="สลิป-"+x.run.ym+(x.run.kind==="bonus"?"-โบนัส":"")+".png",ov=document.createElement("div");
+  ov.style.cssText="position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.82);display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px;overflow:auto";
+  ov.innerHTML=`<span style="color:#fff;font-size:15px;text-align:center">กดค้างที่รูปแล้วเลือก "บันทึกรูป" · บนคอมกดปุ่มดาวน์โหลด</span><img src="${url}" alt="สลิปเงินเดือน" style="width:100%;max-width:520px;border-radius:12px;background:#fff"><div style="display:flex;gap:8px"><a class="btn pri" href="${url}" download="${esc(fn)}">ดาวน์โหลด</a><button class="btn" data-slimgx style="background:#fff;color:#111">ปิด</button></div>`;
+  ov.addEventListener("click",e=>{if(e.target===ov||e.target.closest("[data-slimgx]"))ov.remove()});document.body.appendChild(ov)}
+document.addEventListener("click",e=>{const t=e.target.closest("[data-slipset],[data-slipgo],[data-slipd],[data-slipout],[data-slipimg]");if(!t)return;
+  if(t.dataset.slipimg!==undefined){const d=SL.det[t.dataset.slipimg];if(d)try{slImg(d)}catch(er){toast("สร้างรูปไม่ได้ · ลองใหม่")}return}
   if(t.dataset.slipout!==undefined){SL.pin="";SL.list=null;SL.det={};repaint();return}
   if(t.dataset.slipd){go("slipd:"+t.dataset.slipd);return}
   if(t.dataset.slipgo!==undefined){const p=($("#spin")||{}).value||"";if(!/^\d{6}$/.test(p))return toast("ใส่ PIN 6 หลัก");t.disabled=true;api("mySlips",p).then(l=>{SL.pin=p;SL.at=Date.now();SL.list=l;repaint()}).catch(er=>{t.disabled=false;api("mySlipInfo").then(i=>{SL.info=i}).catch(()=>{}).finally(()=>slErr(er))});return}
