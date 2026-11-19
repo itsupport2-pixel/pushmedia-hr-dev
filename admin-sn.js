@@ -1,6 +1,6 @@
 /* ───────── ตารางงานแบบใหม่ (ไม่ใช้ iframe) · 19 พ.ย. 2569 ผู้ใช้เลือก "เขียนใหม่ทั้งหมด" ─────────
  * หน้าตา + ขั้นตอนเหมือนหน้าเดิม (planner.html) · ไม่มีมุมมอง "ตาราง" · ใช้คำสั่งหลังบ้านชุดเดิม wtm(bootstrap · tasks · attendance · leaves …)
- * ช่วง 1: มุมมอง "รายการ" ดูอย่างเดียว · เพิ่ม/แก้งาน · รายชื่อทีม · ตามช่าง · Export · รถ · ตั้งค่า = เปิดหน้าเดิม (snOld)
+ * ช่วง 1: มุมมอง "รายการ" · ช่วง 2: เพิ่ม/แก้/ลบงาน (admin-sn-form.js) · รายชื่อทีม · ตามช่าง · Export · รถ · ตั้งค่า = เปิดหน้าเดิม (snOld)
  * ข้อมูลเก็บในหน่วยความจำ → กดเมนูซ้ำขึ้นทันที แล้วเช็กเลขรุ่นข้อมูล (wtm version) เบื้องหลัง · คลาส CSS ใช้ prefix sn- เท่านั้น */
 var SN = { d: null, off: 0, dept: 'all', pm: 'all', att: true, ver: '', att2: {}, busy: 0, old: false, oldTasks: false };
 function snOn() { try { return localStorage.getItem('sn_on') !== '0'; } catch (e) { return true; } }   /* 19 พ.ย. 2569: หน้าใหม่เป็นค่าเริ่มต้น · กลับหน้าเดิมได้ด้วยปุ่ม (sn_on = 0) */
@@ -82,7 +82,7 @@ function snDraw() {
   var cnt = function (dn) { return wk.filter(function (t) { return dn === 'all' || t.deptName === dn; }).length; };
   var sum = function (k, n, l, w) { return '<button class="sn-sum' + (SN.pm === k ? ' on' : '') + '"' + (k ? ' data-snp="' + k + '"' : '') + '><b class="' + (w && n ? 'w' : '') + '">' + n + '</b><span>' + l + '</span></button>'; };
   var html = '<div class="sn-top"><div class="sn-sub">' + fmtR(dates[0], dates[6]) + ' · ' + wkShow.length + ' งาน · เวลาเข้างานจากระบบลงเวลา' + (SN.oldTasks === 'loading' ? ' · กำลังโหลดงานเก่า…' : '') + '</div><span class="sp"></span>' +
-    '<button class="btn" data-sno="export">' + ic('dl') + ' Export Excel</button><button class="btn" data-sno="export">' + ic('dl') + ' Export PDF</button><button class="btn" data-sno="car">รถบริษัท</button>' + (cu.admin ? '<button class="btn" data-sno="set">ตั้งค่าตารางงาน</button>' : '') + (cu.hr || cu.admin ? '<button class="btn" id="sn-back" title="กลับไปใช้ตารางงานหน้าเดิม">หน้าเดิม</button>' : '') + (canAdd ? '<button class="btn pri" data-sno="add">' + ic('plus') + ' เพิ่มงาน</button>' : '') + '</div>' +
+    '<button class="btn" data-sno="export">' + ic('dl') + ' Export Excel</button><button class="btn" data-sno="export">' + ic('dl') + ' Export PDF</button><button class="btn" data-sno="car">รถบริษัท</button>' + (cu.admin ? '<button class="btn" data-sno="set">ตั้งค่าตารางงาน</button>' : '') + (cu.hr || cu.admin ? '<button class="btn" id="sn-back" title="กลับไปใช้ตารางงานหน้าเดิม">หน้าเดิม</button>' : '') + (canAdd ? '<button class="btn pri" id="sn-add">+ เพิ่มงาน</button>' : '') + '</div>' +
     '<div class="sn-bar"><div class="sn-chips"><span class="sn-lb">แผนก</span>' + chip('all', 'ทุกแผนก', cnt('all')) + depts.map(function (x) { return chip(x.name, x.name, cnt(x.name)); }).join('') + '</div>' +
     '<div class="sn-wk"><button class="sn-ib" data-snw="-1" aria-label="สัปดาห์ก่อน">‹</button><b>' + fmtR(dates[0], dates[6]) + '</b><button class="sn-ib" data-snw="1" aria-label="สัปดาห์ถัดไป">›</button></div><button class="btn" data-snw="0">สัปดาห์นี้</button>' +
     '<div class="sn-views"><button class="on">รายการ</button><button data-sno="view">รายชื่อทีม</button><button data-sno="view">ตามช่าง</button></div>' +
@@ -113,7 +113,7 @@ function snDay(dt, ds, show, AT, g, td) {
     if (i === 0) h += '<td rowspan="' + R.length + '" class="sn-day" style="background:' + (today ? '#F2F2F2' : '#fff') + ';border-right:3px solid ' + dc + '"><div class="sn-dn" style="background:' + dc + '"><b>' + dt.getDate() + '</b><span>' + SN_DOW[dow] + '</span></div><div class="sn-dm" style="color:' + dc + '">' + dt.toLocaleDateString('th-TH', { month: 'short', year: '2-digit' }) + '</div>' + (hol ? '<div class="sn-hol">' + esc(String(hol.name).slice(0, 10)) + '</div>' : '') + '</td>';
     if (!seen[r.dept.name]) { seen[r.dept.name] = 1; }
     if (r.first) h += '<td rowspan="' + r.n + '" class="sn-team" style="color:' + ac + ';border-left:4px solid ' + ac + '"><span>' + esc(r.tn) + '</span><em style="background:' + ac + '20;color:' + ac + '">' + r.n + '</em></td>';
-    if (!t) return h + '<td colspan="8" class="sn-empty"><div>ไม่มีงาน' + (snCanAdd(r.dept.name, r.tn) ? '<button type="button" data-sno="add">+ เพิ่มงาน</button>' : '') + '</div></td></tr>';
+    if (!t) return h + '<td colspan="8" class="sn-empty"><div>ไม่มีงาน' + (snCanAdd(r.dept.name, r.tn) ? '<button type="button" data-sna="' + esc(r.dept.name) + '" data-snat="' + esc(r.tn) + '" data-snad="' + ds + '">+ เพิ่มงาน</button>' : '') + '</div></td></tr>';
     var mems = snMembersOn(t, ds).map(snEmp).filter(Boolean), roster = mems.concat((t.dailyWorkers || []).map(function (w) { return { __d: 1, w: w }; })), sl = roster.slice(r.sub * SN_CAP, r.sub * SN_CAP + SN_CAP);
     if (r.sub === 0) {
       var rs = r.subN > 1 ? ' rowspan="' + r.subN + '"' : '', pm = String(t.pmCode || '').trim();
@@ -142,7 +142,9 @@ function snBind() {
   $$('[data-snw]').forEach(function (b) { b.onclick = function () { var k = +b.dataset.snw; SN.off = k ? SN.off + k : 0; snDraw(); }; });
   var bk = $('#sn-back'); if (bk) bk.onclick = function () { snSet(0); };
   var a = $('#sn-att'); if (a) a.onchange = function () { SN.att = a.checked; snDraw(); };
-  var W = { add: 'เพิ่มงานในหน้าเดิม (หน้าใหม่ยังดูอย่างเดียว)', view: 'มุมมองนี้ยังอยู่ในหน้าเดิม', export: 'Export อยู่ในหน้าเดิม', car: 'จัดการรถอยู่ในหน้าเดิม', set: 'ตั้งค่าตารางงานอยู่ในหน้าเดิม' };
+  var ad = $('#sn-add'); if (ad) ad.onclick = function () { snfOpen(null, SN.dept !== 'all' ? { dept: SN.dept } : {}); };
+  $$('[data-sna]').forEach(function (b) { b.onclick = function (e) { e.stopPropagation(); snfOpen(null, { dept: b.dataset.sna, team: b.dataset.snat, date: b.dataset.snad }); }; });
+  var W = { view: 'มุมมองนี้ยังอยู่ในหน้าเดิม', export: 'Export อยู่ในหน้าเดิม', car: 'จัดการรถอยู่ในหน้าเดิม', set: 'ตั้งค่าตารางงานอยู่ในหน้าเดิม' };
   $$('[data-sno]').forEach(function (b) { b.onclick = function (e) { e.stopPropagation(); snOld(W[b.dataset.sno]); }; });
   $$('tr[data-snt]').forEach(function (tr) { tr.onclick = function () { snDetail(+tr.dataset.snt, tr.dataset.snds); }; });
 }
@@ -152,10 +154,10 @@ function snDetail(id, ds) {
   var mem = snMembersOn(t, ds).map(snEmp).filter(Boolean), vids = t.vehicleIds && t.vehicleIds.length ? t.vehicleIds : t.vehicleId ? [String(t.vehicleId)] : [];
   var cars = vids.map(function (v) { return SN.d.vehicles.filter(function (x) { return String(x.id) === String(v); })[0]; }).filter(Boolean);
   var row = function (l, v) { return v ? '<div class="sn-dr"><span>' + l + '</span><div>' + v + '</div></div>' : ''; }, dd = function (s) { return s ? dTxt(snNorm(s)) : ''; };
-  drawer(esc(t.title), '<div class="sn-det">' + row('หน้างาน', esc(t.site || '')) + row('ลูกค้า', esc(t.customer || '')) + row('แผนก / ทีม', esc((t.deptName || '') + ' · ' + (t.teamName || ''))) +
+  drawer(t.title, '<div class="sn-det">' + row('หน้างาน', esc(t.site || '')) + row('ลูกค้า', esc(t.customer || '')) + row('แผนก / ทีม', esc((t.deptName || '') + ' · ' + (t.teamName || ''))) +
     row('วันที่', esc(dd(t.start) + (snNorm(t.end) && snNorm(t.end) !== snNorm(t.start) ? ' – ' + dd(t.end) : ''))) + row('กะ', t.shift === 'night' ? 'กะดึก' : 'กะกลางวัน') + row('เลข PM', esc(t.pmCode || '') || '<span class="muted">ยังไม่ผูก PM</span>') +
     row('รถ', cars.map(function (c) { return esc((c.plate || '') + (c.model ? ' · ' + c.model : '')); }).join('<br>')) +
     row('คนในงาน (' + esc(dTxt(ds)) + ')', mem.map(function (e) { return esc((e.nickname || e.name) + (e.position ? ' · ' + e.position : '')); }).join('<br>') + (t.dailyWorkers || []).map(function (w) { return '<br>จ้างรายวัน · ' + esc(w.name || ''); }).join('')) +
-    row('หมายเหตุ', esc(t.notes || '').replace(/\n/g, '<br>')) + '<div style="margin-top:16px"><button class="btn pri" id="sn-edit">แก้ไขในหน้าเดิม</button></div></div>');
-  var eb = $('#sn-edit'); if (eb) eb.onclick = function () { closeD(); snOld('แก้ไขงานในหน้าเดิม'); };   /* CSP ห้าม onclick ในข้อความ HTML */
+    row('หมายเหตุ', esc(t.notes || '').replace(/\n/g, '<br>')) + (snCanAdd(t.deptName, t.teamName) ? '<div style="margin-top:16px"><button class="btn pri" id="sn-edit">แก้ไขงาน</button></div>' : '') + '</div>');
+  var eb = $('#sn-edit'); if (eb) eb.onclick = function () { snfOpen(t); };   /* CSP ห้าม onclick ในข้อความ HTML · ช่วง 2: แก้ในหน้าใหม่ */
 }
