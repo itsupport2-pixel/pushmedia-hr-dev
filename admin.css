@@ -1902,3 +1902,8 @@ button.has-tbi{display:inline-flex;align-items:center;gap:8px}
 .sn-costb{background:#F6F7F9;border-radius:10px;padding:10px 12px;font-size:13px}.sn-costb b{color:#C0392B}
 .sn-shift input,.sn-ck input,.sn-mrow input{width:16px!important;height:16px;flex:0 0 auto;margin:0}.sn-shift label>div{flex:1;text-align:left}
 .sn-f [hidden],.sn-dd[hidden]{display:none!important}
+
+/* 20 พ.ย. 2569 ผู้ใช้: ไอคอน + ลดสีดำ (ตามหน้าเดิม) */
+.sn-ib2{display:inline-flex;align-items:center;gap:7px}.sn-views button{display:inline-flex;align-items:center;gap:6px}
+.sn-t tr.sn-d0>td{border-top:2px solid #E4E4E7}.sn-t thead th:nth-child(n+5){text-align:center}.sn-t thead th:last-child{text-align:right}
+.sn-chip.on{background:#141414}.sn-sum.on{border-color:#141414;box-shadow:none}.sn-t thead th{background:#FAFAFA;color:#6B7280}
