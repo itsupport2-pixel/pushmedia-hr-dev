@@ -19,10 +19,13 @@ function plkMake() {
   if (PLK.fr) { PLK.fr.remove(); PLK.fr = null; }
   var f = document.createElement('iframe'); f.className = 'plf plk'; f.setAttribute('aria-label', 'ตารางงาน'); f.setAttribute('allow', 'geolocation');
   f.src = 'planner.html?desktop=1&v=' + PLANNER_V; plkHost().appendChild(f); PLK.fr = f; PLK.key = k; PLK.loaded = false;
-  f.addEventListener('load', function () { PLK.loaded = true; if (!PLK.shown) { plkPoll(false); setTimeout(function () { if (!PLK.shown) plkPoll(false); }, 8000); } else plkFx(); });   /* หน้าเดิมเริ่มเช็กข้อมูลหลังเข้าระบบในกรอบ → หยุดซ้ำอีกรอบ */
+  f.addEventListener('load', function () { PLK.loaded = true; plkVer(function (v) { if (v) PLK.ver = v; }); if (!PLK.shown) { plkPoll(false); setTimeout(function () { if (!PLK.shown) plkPoll(false); }, 8000); } else plkFx(); });   /* หน้าเดิมเริ่มเช็กข้อมูลหลังเข้าระบบในกรอบ → หยุดซ้ำอีกรอบ */
   return f;
 }
-function plkPoll(on) { try { var w = PLK.fr && PLK.fr.contentWindow; if (!w) return; if (on) { if (typeof w._pollForChanges === 'function') w._pollForChanges(); if (typeof w._startRealtimePoll === 'function') w._startRealtimePoll(); } else if (w._pollTimer) { w.clearInterval(w._pollTimer); w._pollTimer = null; } } catch (e) {} }
+function plkPoll(on) { try { var w = PLK.fr && PLK.fr.contentWindow; if (!w) return; if (on) { plkFresh(); if (typeof w._startRealtimePoll === 'function') w._startRealtimePoll(); } else if (w._pollTimer) { w.clearInterval(w._pollTimer); w._pollTimer = null; } } catch (e) {} }
+/* เลขรุ่นข้อมูลตารางงาน (wtm version) ตอนโหลด/แสดงล่าสุด · แสดงอีกครั้งแล้วเลขเปลี่ยน (มีคนเพิ่ม/แก้งานระหว่างซ่อน) = ให้หน้าเดิมโหลดข้อมูลใหม่ (_applyRemote) */
+function plkVer(cb) { aCall('wtm', 'version', {}).then(function (v) { cb(v && v.version); }).catch(function () {}); }
+function plkFresh() { var w = PLK.fr && PLK.fr.contentWindow; plkVer(function (nv) { try { if (!nv) return; if (PLK.ver && nv !== PLK.ver && w && typeof w._applyRemoteIfIdle === 'function') { w._remotePending = true; w._applyRemoteIfIdle(); } PLK.ver = nv; if (w) w._pollVersion = nv; } catch (e) {} }); }
 function plkFx() { if (PLK.fr && PLK.loaded && window.fxFrame) fxFrame(PLK.fr); }
 function plkPlace() {
   var s = document.getElementById('plf-slot'), h = document.getElementById('plf-host'); if (!s || !h) return;
