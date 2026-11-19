@@ -111,7 +111,7 @@ function snDraw() {
 }
 /* Phase 1.2: เลื่อนตารางไปแถวของวันนี้ (ตอนเข้าเมนู / กดสัปดาห์นี้) · สัปดาห์ที่ไม่มีวันนี้ = ไม่เลื่อน */
 function snToToday() { var tw = $('#sn-root .sn-tw'), tr = $('#sn-root tr[data-snday="' + snDs(new Date()) + '"]'); if (!tw || !tr) return; var hd = tw.querySelector('thead'), top = tr.offsetTop - (hd ? hd.offsetHeight : 0);
-  tw.scrollTop = Math.max(0, top); var cr = tw.getBoundingClientRect(); if (cr.top < 0 || cr.top > innerHeight * .6) { var sc = tw.closest('.content') || document.scrollingElement; try { tw.scrollIntoView({ block: 'start' }); } catch (e) {} } }
+  tw.scrollTop = Math.max(0, top); var cr = tw.getBoundingClientRect(); if (cr.top < 0 || cr.top > innerHeight * .6) { try { tw.scrollIntoView({ block: 'start' }); } catch (e) {} } }   /* ตารางอยู่นอกจอ = เลื่อนหน้าให้ตารางขึ้นมาด้วย */
 function snDay(dt, ds, show, AT, g, td) {
   var dow = dt.getDay(), hol = SN.d.holidays.filter(function (h) { return h.date === ds; })[0], today = ds === td, dc = today ? '#15803D' : dow === 0 || hol ? '#A3A3A3' : '#141414';   /* Phase 1.1: วันนี้ = สีเขียว #15803D (เหมือนคอลัมน์วันนี้ในมุมมองตามช่างหน้าเดิม) */
   var R = [], T = [];
