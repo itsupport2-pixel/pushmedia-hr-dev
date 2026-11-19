@@ -5,8 +5,8 @@
 var SN = { d: null, off: 0, dept: 'all', pm: 'all', att: true, ver: '', att2: {}, busy: 0, old: false, oldTasks: false };
 function snOn() { try { return localStorage.getItem('sn_on') === '1'; } catch (e) { return false; } }
 function snSet(on) { try { localStorage.setItem('sn_on', on ? '1' : '0'); } catch (e) {} SN.old = false; render(); }
-function vSched() { return snOn() && !SN.old ? '<div id="sn-root">' + (SN.d ? '' : snSkel()) + '</div>' : (A.d && A.d.me && (isHR() || A.d.me.role === 'admin') ? snTry() : '') + vPlanner(); }
-function bSched() { var tb = $('#sn-tryb'); if (tb) tb.onclick = function () { if (snOn()) { SN.old = false; render(); } else snSet(1); }; if (!snOn() || SN.old) return; if (SN.d) { snDraw(); snCheck(); } else snLoad(); }
+function vSched() { if (snOn() && !SN.old && !SN.d && !(window.ss && ss('hr_va'))) snRestore(); return snOn() && !SN.old ? '<div id="sn-root">' + (SN.d ? '' : snSkel()) + '</div>' : (A.d && A.d.me && (isHR() || A.d.me.role === 'admin') ? snTry() : '') + vPlanner(); }
+function bSched() { if (snOn() && !SN.old && !SN.d && !(window.ss && ss('hr_va'))) snRestore(); var tb = $('#sn-tryb'); if (tb) tb.onclick = function () { if (snOn()) { SN.old = false; render(); } else snSet(1); }; if (!snOn() || SN.old) return; if (SN.d) { snDraw(); snCheck(); } else snLoad(); }
 function snTry() { return '<div class="sn-try"><span>ตารางงานหน้าใหม่ (ทดลอง · เร็วกว่า · ช่วงแรกดูอย่างเดียว)</span><button class="btn sm" id="sn-tryb">' + (snOn() ? 'กลับหน้าใหม่' : 'ลองหน้าใหม่') + '</button></div>'; }
 /* เปิดหน้าเดิมเพื่อทำรายการที่หน้าใหม่ยังไม่มี (ช่วง 1) */
 function snOld(why) { SN.old = true; render(); if (why) toast(why); }
@@ -16,9 +16,17 @@ function snLoad() {
   aCall('wtm', 'bootstrap', {}).then(function (d) { SN.busy = 0; SN.d = d; SN.att2 = {}; SN.oldTasks = false; snVer(); snDraw(); })
     .catch(function (e) { SN.busy = 0; var r = $('#sn-root'); if (r) r.innerHTML = '<div class="alert">' + esc(e.message) + ' <button class="btn sm" id="sn-retry">ลองใหม่</button></div>'; var rb = $('#sn-retry'); if (rb) rb.onclick = snLoad; });
 }
-function snVer() { aCall('wtm', 'version', {}).then(function (v) { SN.ver = v && v.version || ''; }).catch(function () {}); }
+function snVer() { aCall('wtm', 'version', {}).then(function (v) { SN.ver = v && v.version || ''; snSave(); }).catch(function () {}); }
+/* 19 พ.ย. 2569 ผู้ใช้: "ยังขึ้นโหลด ไม่ลื่นเหมือนระบบเดียวกัน" → ① จำข้อมูลล่าสุดในเครื่อง (ต่อผู้ใช้) เปิดหลังรีเฟรชขึ้นทันที แล้วเช็กเลขรุ่นเบื้องหลัง
+ * ② โหลดเบื้องหลังหลังเข้าระบบ (ก่อนกดเมนู) · ข้อมูลในเครื่องเก็บ 3 วัน · ออกจากระบบ = ลบ (snForget) */
+function snKey() { return 'sn_cache_' + (A.d && A.d.me && A.d.me.id || ''); }
+function snSave() { if (!SN.d || !SN.ver) return; try { localStorage.setItem(snKey(), JSON.stringify({ v: SN.ver, at: Date.now(), d: SN.d })); } catch (e) { try { localStorage.removeItem(snKey()); } catch (x) {} } }
+function snRestore() { if (SN.d) return true; try { var c = JSON.parse(localStorage.getItem(snKey()) || 'null'); if (c && c.d && c.v && Date.now() - c.at < 3 * 864e5) { SN.d = c.d; SN.ver = c.v; SN.att2 = {}; SN.oldTasks = false; return true; } } catch (e) {} return false; }
+function snForget() { try { Object.keys(localStorage).forEach(function (k) { if (k.indexOf('sn_cache_') === 0) localStorage.removeItem(k); }); } catch (e) {} }
+(function snPre() { if (!window.A || !A.d || !A.d.me || !A.tok) return setTimeout(snPre, 1500); if (!snOn() || (window.ss && ss('hr_va'))) return;   // ดูในมุมมอง = ไม่จำ
+  if (!snRestore()) setTimeout(function () { if (!SN.d) snLoad(); }, 1200); else setTimeout(snCheck, 1500); })();
 /* กลับเข้าเมนู: แสดงของเดิมทันที แล้วเช็กว่ามีคนแก้งานไหม → โหลดใหม่เงียบ ๆ */
-function snCheck() { aCall('wtm', 'version', {}).then(function (v) { var nv = v && v.version || ''; if (SN.ver && nv && nv !== SN.ver && !SN.busy) { SN.busy = 1; aCall('wtm', 'bootstrap', {}).then(function (d) { SN.busy = 0; SN.d = d; SN.att2 = {}; SN.oldTasks = false; SN.ver = nv; if ($('#sn-root')) snDraw(); }).catch(function () { SN.busy = 0; }); } else if (nv) SN.ver = nv; }).catch(function () {}); }
+function snCheck() { aCall('wtm', 'version', {}).then(function (v) { var nv = v && v.version || ''; if (SN.ver && nv && nv !== SN.ver && !SN.busy) { SN.busy = 1; aCall('wtm', 'bootstrap', {}).then(function (d) { SN.busy = 0; SN.d = d; SN.att2 = {}; SN.oldTasks = false; SN.ver = nv; snSave(); if ($('#sn-root')) snDraw(); }).catch(function () { SN.busy = 0; }); } else if (nv) SN.ver = nv; }).catch(function () {}); }
 
 /* ── ตัวช่วย (ตรรกะเดียวกับหน้าเดิม) ── */
 function snDs(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
