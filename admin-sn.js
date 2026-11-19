@@ -4,7 +4,9 @@
  * ข้อมูลเก็บในหน่วยความจำ → กดเมนูซ้ำขึ้นทันที แล้วเช็กเลขรุ่นข้อมูล (wtm version) เบื้องหลัง · คลาส CSS ใช้ prefix sn- เท่านั้น */
 var SN = { d: null, off: 0, dept: 'all', pm: 'all', att: true, hide: snHideGet(), scrollT: true, ver: '', att2: {}, busy: 0, old: false, oldTasks: false };
 function snHideGet() { try { return localStorage.getItem('sn_hide') !== '0'; } catch (e) { return true; } }   /* Phase 1.3 (20 พ.ย. 2569): ซ่อนทีมที่ไม่มีงาน · ค่าเริ่มต้นเปิด */
-function snOn() { try { return localStorage.getItem('sn_on') !== '0'; } catch (e) { return true; } }   /* 19 พ.ย. 2569: หน้าใหม่เป็นค่าเริ่มต้น · กลับหน้าเดิมได้ด้วยปุ่ม (sn_on = 0) */
+/* ค่าเริ่มต้น (20 พ.ย. 2569 ผู้ใช้): ระบบจริง = หน้าเดิม · dev / เครื่องทดสอบ = หน้าใหม่ · เลือกเองได้ด้วยปุ่ม ลองหน้าใหม่ / หน้าเดิม (sn_on = 1 / 0) */
+function snDef() { var a = String(typeof API === 'string' ? API : ''); return /-dev[.\/]|^\/api$/.test(a); }
+function snOn() { try { var v = localStorage.getItem('sn_on'); return v === '1' ? true : v === '0' ? false : snDef(); } catch (e) { return snDef(); } }
 function snSet(on) { try { localStorage.setItem('sn_on', on ? '1' : '0'); } catch (e) {} SN.old = false; render(); }
 function vSched() { if (snOn() && !SN.old && !SN.d && !(window.ss && ss('hr_va'))) snRestore(); return snOn() && !SN.old ? '<div id="sn-root">' + (SN.d ? '' : snSkel()) + '</div>' : (A.d && A.d.me && (isHR() || A.d.me.role === 'admin') ? snTry() : '') + vPlanner(); }
 function bSched() { if (snOn() && !SN.old && !SN.d && !(window.ss && ss('hr_va'))) snRestore(); var tb = $('#sn-tryb'); if (tb) tb.onclick = function () { if (snOn()) { SN.old = false; render(); } else snSet(1); }; if (!snOn() || SN.old) return; SN.scrollT = true; if (SN.d) { snDraw(); snCheck(); } else snLoad(); }
