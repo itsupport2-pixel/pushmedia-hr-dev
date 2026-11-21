@@ -518,6 +518,7 @@ tr:last-child td { border-bottom: none; }
 .rp-view-btn { padding:5px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--surface);font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--ink-2);transition:all .12s;display:flex;align-items:center;gap:5px; }
 .rp-view-btn.active { background:var(--teal);color:#fff;border-color:var(--teal); }
 .rp-view-btn:hover:not(.active) { border-color:var(--teal);color:var(--teal); }
+.rp-view-btn { transition-property:background-color,color,border-color,box-shadow; }   /* 21 พ.ย. 2569: เดิม transition:all รวม visibility → ตอนหน้าเพิ่งเผย (hr-wait) ปุ่มยังซ่อนช่วงสั้น ๆ คลิกทะลุไปกรอบ (เทสต์ sched-keep-ui สะดุด) */
 
  
 .wpick-overlay { position:fixed;inset:0;z-index:2000; }
