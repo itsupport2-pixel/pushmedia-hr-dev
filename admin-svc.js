@@ -253,10 +253,15 @@ function svcMediaLoad(x){var box=$('#svm-box');if(!box)return;svcMediaBind(x.med
   var age=x.mediaAt?(Date.now()-new Date(x.mediaAt).getTime()):1e12;if(x.mediaAt&&age<10*60e3)return;   /* จำไว้ไม่ถึง 10 นาที = ไม่ถาม Codex ซ้ำ */
   aCall('svMedia',x.case_id).then(function(r){var b=$('#svm-box');if(!b||!$('#ov .drw'))return;b.innerHTML=svcMediaHtml(r.media,'',r.err);svcMediaBind(r.media)})
     .catch(function(e){var b=$('#svm-box');if(b){b.innerHTML=svcMediaHtml(x.media,'',e.message);svcMediaBind(x.media)}})}
+var SVM_I=(function(){var g=function(d,w){return '<svg width="'+(w||20)+'" height="'+(w||20)+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>'};
+  return {l:g('<path d="M15 18l-6-6 6-6"/>',24),r:g('<path d="M9 18l6-6-6-6"/>',24),x:g('<path d="M18 6L6 18M6 6l12 12"/>'),o:g('<path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',18)}})();
 function svcMediaView(L,i){var old=$('#svm-lb');if(old)old.remove();var m=L[i];if(!m)return;
   var el=document.createElement('div');el.id='svm-lb';el.className='svm-lb';el.setAttribute('role','dialog');el.setAttribute('aria-label','ดูรูปจากแชต');
   el.innerHTML='<div class="svm-in">'+(m.type==='video'?'<video src="'+esc(m.url)+'" controls autoplay playsinline'+(m.thumb?' poster="'+esc(m.thumb)+'"':'')+'></video>':'<img src="'+esc(m.url)+'" alt="">')+'</div>'+
-    '<div class="svm-bar"><span>'+(i+1)+' / '+L.length+'</span><span class="sp"></span><a class="btn sm" href="'+esc(m.url)+'" target="_blank" rel="noopener">เปิดแท็บใหม่</a>'+(L.length>1?'<button class="btn sm" data-svmn="-1" aria-label="ก่อนหน้า">‹</button><button class="btn sm" data-svmn="1" aria-label="ถัดไป">›</button>':'')+'<button class="btn sm" id="svm-x">ปิด</button></div>';
+    /* 23 พ.ย. 2569 ผู้ใช้: ออกแบบปุ่มใหม่ · ลูกศรกลมซ้าย-ขวาข้างรูป · มุมขวาบน = เปิดแท็บใหม่ + ปิด · ตัวนับเป็นป้ายด้านล่าง */
+    (L.length>1?'<button type="button" class="svm-nav svm-prev" data-svmn="-1" aria-label="รูปก่อนหน้า" title="ก่อนหน้า (←)">'+SVM_I.l+'</button><button type="button" class="svm-nav svm-next" data-svmn="1" aria-label="รูปถัดไป" title="ถัดไป (→)">'+SVM_I.r+'</button>':'')+
+    '<div class="svm-top"><a class="svm-ib" href="'+esc(m.url)+'" target="_blank" rel="noopener" aria-label="เปิดในแท็บใหม่" title="เปิดในแท็บใหม่">'+SVM_I.o+'<span>เปิดแท็บใหม่</span></a><button type="button" class="svm-ib svm-x" id="svm-x" aria-label="ปิด" title="ปิด (Esc)">'+SVM_I.x+'</button></div>'+
+    (L.length>1?'<div class="svm-cnt">'+(i+1)+' / '+L.length+'</div>':'');
   document.body.appendChild(el);var close=function(){el.remove();window.removeEventListener('keydown',kd,true)},kd=function(e){if(['Escape','ArrowRight','ArrowLeft'].indexOf(e.key)>=0){e.stopImmediatePropagation();e.preventDefault()}if(e.key==='Escape')close();if(e.key==='ArrowRight'&&L.length>1){close();svcMediaView(L,(i+1)%L.length)}if(e.key==='ArrowLeft'&&L.length>1){close();svcMediaView(L,(i-1+L.length)%L.length)}};
   window.addEventListener('keydown',kd,true);el.onclick=function(e){if(e.target===el)close()};$('#svm-x').onclick=close;
   $$('#svm-lb [data-svmn]').forEach(function(b){b.onclick=function(){close();svcMediaView(L,(i+ +b.dataset.svmn+L.length)%L.length)}})}
