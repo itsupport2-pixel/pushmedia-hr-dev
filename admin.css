@@ -2174,7 +2174,7 @@ button.svx-more{border:0;background:none;padding:0;font:inherit;font-size:13px;f
  .shell.hov .side .subi a{flex-direction:row;height:38px;font-size:14px;color:inherit;opacity:.82}.shell.hov .side .subi a:hover,.shell.hov .side .subi a.on{opacity:1}
  .shell.hov .side .subi a>span{opacity:1}
  .shell.hov .rl-sc{margin:0 -8px;padding:0 8px;scrollbar-width:thin}.shell.hov .rl-sc::-webkit-scrollbar{width:4px}
- .shell.hov:not(:has(.side.xp)) .rl-sc{scrollbar-color:transparent transparent}.shell.hov .side:not(.xp) .rl-sc::-webkit-scrollbar-thumb{background:transparent}
+ .shell.hov .side:not(.xp) .rl-sc{scrollbar-width:none}.shell.hov .side:not(.xp) .rl-sc::-webkit-scrollbar{display:none}   /* 23 พ.ย. 2569: ตอนยุบซ่อนแถบเลื่อน (เครื่องที่แสดงแถบเลื่อนตลอด แถบกิน 11px → ไฮไลต์เมนูเหลือครึ่ง) · ยังเลื่อนด้วยล้อเมาส์ได้ */
  .shell.hov .side .cosw{flex-direction:row;justify-content:flex-start;gap:12px;width:auto;padding:6px 6px;margin:6px 0 2px;border:0;background:none;white-space:nowrap;overflow:hidden}
  .shell.hov .side .cosw .co-av{flex:none}.shell.hov .side .cosw .co-tx{min-width:0;opacity:0;transition:opacity .12s}.shell.hov .side.xp .cosw .co-tx{opacity:1}
  .shell.hov .side .cosw .co-tx b{font-size:13px;text-align:left}.shell.hov .side .cosw .co-tx small{display:block;font-size:11px;overflow:hidden;text-overflow:ellipsis}
