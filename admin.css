@@ -2157,7 +2157,9 @@ button.svx-more{border:0;background:none;padding:0;font:inherit;font-size:13px;f
  body.fo .shell.hov>.side{top:36px}
  .shell.hov>.side.xp{width:240px;box-shadow:10px 0 32px rgba(0,0,0,.24)}
  .shell.hov .side .rl-tg{display:none}
- .shell.hov .side .rl-logo{justify-content:flex-start;padding:2px 0 12px 4px}.shell.hov .side .rl-logo .mk{display:block;flex:none}.shell.hov .side .rl-full{display:none}
+ .shell.hov .side .rl-logo{position:relative;justify-content:flex-start;padding:2px 0 12px 4px;min-height:54px;box-sizing:border-box}.shell.hov .side .rl-logo .mk{display:block;flex:none;transition:opacity .15s}
+ .shell.hov .side .rl-full{display:block;position:absolute;left:4px;top:0;height:44px;width:auto;max-width:200px;opacity:0;pointer-events:none;transition:opacity .15s}.shell.hov .side .rl-full.rl-co{display:flex;align-items:center;height:40px;white-space:nowrap}
+ .shell.hov .side.xp .rl-full{opacity:1;transition:opacity .2s .06s}.shell.hov .side.xp .rl-logo .mk{opacity:0}   /* 23 พ.ย. 2569 ผู้ใช้: ชี้แล้วกาง = โลโก้เต็ม (ซ้อนตำแหน่งเดียวกับไอคอน ไม่กระโดด) */
  .shell.hov .side .rl-logo .mk:has(.mk-w){width:40px}.shell.hov .side .rl-logo .mk img.mk-w{width:40px}
  .shell.hov .side a{flex-direction:row;justify-content:flex-start;align-items:center;width:auto;flex:none;gap:12px;height:40px;padding:0 12px;font-size:14px;line-height:1.2;text-align:left;border-radius:10px;white-space:nowrap}
  .shell.hov .side a svg{width:20px;height:20px;flex:none}
