@@ -25,6 +25,9 @@ function simBmMain(API,K,HR,AUTO){(async function(){
       /* 24 พ.ย. 2569 ผู้ใช้: "ทำไมไม่ดึงภายในเดือน หรือ 30 วัน" → ปกติดึงเฉพาะช่วงที่แตะ 30 วันล่าสุด · ย้อนหลังทั้งหมด (~6 เดือน) เป็นปุ่มรอง (กดเอง) · ส่วนขยายอัตโนมัติ = 30 วันเท่านั้น */
       var needAll=U.filter(function(u){var o=H[u.m];if(o&&+o.full===1&&!(P.hist2||[]).some(function(z){return z.month===u.m}))return false;var h=H2[u.m+'-'+u.h];return !(h&&(+h.full===1||h.last>=td))});
       var since=addD(td,-29),needR=needAll.filter(function(u){return u.d1>=since});
+      /* ดึงครึ่งเดือนแล้วสรุปเดือนคำนวณใหม่จากครึ่งที่มี → ถ้าอีกครึ่งของเดือนเดียวกันยังไม่มีในระบบ ดึงมาด้วย (สรุปรายเดือนไม่ขาดครึ่ง) */
+      needR.slice().forEach(function(u){var o=needAll.filter(function(x){return x.m===u.m&&x.h!==u.h})[0];if(o&&needR.indexOf(o)<0)needR.push(o)});
+      needR.sort(function(a,b){return a.d0<b.d0?-1:1});
       var lab=function(u){return (+u.d0.slice(8))+'–'+(+u.d1.slice(8))+' '+mn(u.m)},cnt=function(L){return L.reduce(function(t,u){return t+(+u.d1.slice(8))-(+u.d0.slice(8))+1},0)},need=needR,nd=cnt(needR);
       var openHR=function(){var o=document.getElementById('pmhr-o');if(o)o.onclick=function(){window.open(HR+'#sim','_blank','noopener')}};
       if(!needAll.length||(AUTO&&!needR.length)){R0('done',needAll.length?'30 วันล่าสุดครบแล้ว':'ประวัติครบแล้ว');show('<div style="color:#2E7D32;font-weight:600">'+(needAll.length?'30 วันล่าสุดครบแล้ว':'ประวัติครบแล้วถึงวันนี้')+'</div>'+btn('pmhr-o','เปิดใน HR',true));openHR();return}
