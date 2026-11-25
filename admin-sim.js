@@ -30,9 +30,10 @@ function bSim(){$$('[data-simt]').forEach(function(b){b.onclick=function(){var k
   $('#sim-go-sync').onclick=function(){simGo('sy')};svxInd($('#sim-tabs'));simLoad()}
 function simGo(tab,o){var f=simF();f.tab=tab;if(o){f.h=o.h||'';f.prov=o.prov||'';f.tag=o.tag||'';f.q='';f.page=1}
   $$('[data-simt]').forEach(function(b){var on={simov:'ov',simls:'ls',simcs:'cs',simmp:'mp',simsy:'sy'}[b.dataset.simt]===tab;b.classList.toggle('on',on);b.setAttribute('aria-selected',String(on))});svxInd($('#sim-tabs'),1);simLoad()}
-function simLoad(){var f=simF(),b=$('#sim-body'),n=A.simN=(A.simN||0)+1;if(!b)return;b.innerHTML=SK(f.tab==='ls'?'rows':'kpi','กำลังโหลด…');
+/* soft (25 พ.ย. 2569 ผู้ใช้: "พิมพ์ค้นหา 1 ตัวระบบรีเฟรชหน้า"): แท็บรายการ = ไม่ล้างหน้า · คงแถบค้นหา/ตัวกรอง · เปลี่ยนเฉพาะตาราง + จำนวน */
+function simLoad(soft){var f=simF(),b=$('#sim-body'),n=A.simN=(A.simN||0)+1;if(!b)return;soft=soft&&f.tab==='ls'&&$('#sim-lsr');if(soft)$('#sim-lsr').classList.add('sim-ldg');else b.innerHTML=SK(f.tab==='ls'?'rows':'kpi','กำลังโหลด…');
   var p=f.tab==='ov'?aCall('simOverview'):f.tab==='ls'?aCall('simList',{q:f.q,h:f.h,prov:f.prov,tag:f.tag,page:f.page,from:f.from||'',to:f.to||''}):f.tab==='cs'?aCall('simCost',{from:f.cfrom||'',to:f.cto||''}):f.tab==='mp'?aCall('simMap',{from:f.from||'',to:f.to||''}):aCall('simSync');
-  p.then(function(d){if(n!==A.simN||A.view!=='sim')return;var x=$('#sim-body');if(!x)return;if(f.tab==='ov')simOv(x,d);else if(f.tab==='ls')simLs(x,d);else if(f.tab==='cs')simCs(x,d);else if(f.tab==='mp')simMp(x,d);else simSy(x,d)}).catch(function(e){if(n!==A.simN)return;var x=$('#sim-body');if(x)x.innerHTML='<div class="alert">'+esc(e.message)+'</div>'})}
+  p.then(function(d){if(n!==A.simN||A.view!=='sim')return;var x=$('#sim-body');if(!x)return;if(f.tab==='ov')simOv(x,d);else if(f.tab==='ls')simLs(x,d,soft);else if(f.tab==='cs')simCs(x,d);else if(f.tab==='mp')simMp(x,d);else simSy(x,d)}).catch(function(e){if(n!==A.simN)return;var x=$('#sim-body');if(x)x.innerHTML='<div class="alert">'+esc(e.message)+'</div>'})}
 
 /* ── ภาพรวม (E1) ── */
 function simOv(b,D){if(!D.total){b.innerHTML='<section class="card state"><b>ยังไม่มีข้อมูลเบอร์</b><span>ติดตั้งปุ่มบุ๊กมาร์กแล้วกดในหน้า CMP · หรือผู้ดูแลระบบนำเข้าชีต Dtac เดิม</span><button class="btn pri" id="sim-e-sy" style="margin-top:12px">ไปหน้าซิงก์ข้อมูล</button></section>';$('#sim-e-sy').onclick=function(){simGo('sy')};return}
@@ -77,21 +78,24 @@ function simOv(b,D){if(!D.total){b.innerHTML='<section class="card state"><b>ย
   if(typeof svxCount==='function')svxCount(b)}
 
 /* ── รายการ SIM (E2) ── */
-function simLs(b,D){var f=simF(),opt=function(v,t,cur){return '<option value="'+esc(v)+'"'+(String(cur)===String(v)?' selected':'')+'>'+esc(t)+'</option>'};
+function simLs(b,D,soft){var f=simF(),opt=function(v,t,cur){return '<option value="'+esc(v)+'"'+(String(cur)===String(v)?' selected':'')+'>'+esc(t)+'</option>'};
   var hs=opt('','สถานะ: ทั้งหมด',f.h)+opt('review','รอตรวจ',f.h)+SIM_HO.map(function(h){return opt(h,'สถานะ: '+SIM_H[h][0],f.h)}).join('');
   var ps=opt('','จังหวัด: ทั้งหมด',f.prov)+D.provs.map(function(p){return opt(p[0],p[0]+' ('+p[1]+')',f.prov)}).join('');
   var ts=opt('','ป้าย: ทั้งหมด',f.tag)+Object.keys(SIM_TAG).filter(function(k){return k!=='review'}).map(function(k){return opt(k,'ป้าย: '+SIM_TAG[k],f.tag)}).join('');
   var dot=function(v,m){return '<i class="sim-d'+(v===1?' on':v===0?' off':'')+'" title="'+esc(simMon(m))+' · '+(v===1?'มีความเคลื่อนไหว':v===0?'ไม่เคลื่อนไหวทั้งเดือน':'ยังไม่มีข้อมูล')+'"></i>'};
-  b.innerHTML='<section class="card"><div class="svc-tools"><label class="svc-q">'+(typeof svcI==='function'?svcI('search',16):'')+'<input id="sim-q" type="search" placeholder="ค้นหาเบอร์ ICCID IMEI ไซต์ เจ้าของ…" value="'+esc(f.q)+'" aria-label="ค้นหาเบอร์"></label>'+
+  var html='<section class="card"><div class="svc-tools"><label class="svc-q">'+(typeof svcI==='function'?svcI('search',16):'')+'<input id="sim-q" type="search" placeholder="ค้นหาเบอร์ ICCID IMEI ไซต์ เจ้าของ…" value="'+esc(f.q)+'" aria-label="ค้นหาเบอร์"></label>'+
     '<select id="sim-fh" class="svc-f'+(f.h?' on':'')+'" aria-label="สถานะ">'+hs+'</select><select id="sim-fp" class="svc-f'+(f.prov?' on':'')+'" aria-label="จังหวัด">'+ps+'</select><select id="sim-ft" class="svc-f'+(f.tag?' on':'')+'" aria-label="ป้าย">'+ts+'</select>'+
-    simDateBox()+'<span class="sp"></span><span class="faint">'+D.count.toLocaleString('th-TH')+' เบอร์</span></div>'+
+    simDateBox()+'<span class="sp"></span><span class="faint" id="sim-lsn">'+D.count.toLocaleString('th-TH')+' เบอร์</span></div><div id="sim-lsr">'+
     (D.rows.length?'<div class="tw"><table class="tbl sim-tbl"><thead><tr><th>เบอร์</th><th>แพ็กเกจ</th><th class="r">ค่าบริการ</th><th>สถานะ</th><th class="r">เงียบ</th><th class="r">usage</th><th>จังหวัด</th><th>ไซต์ / เจ้าของ</th><th>6 เดือน</th><th>ป้าย</th></tr></thead><tbody>'+
     D.rows.map(function(r){return '<tr data-simm="'+esc(r.msisdn)+'" tabindex="0"><td><b class="sim-num">'+esc(simPh(r.msisdn))+'</b><small class="faint">'+esc(r.iccid?'ICCID …'+r.iccid.slice(-6):'')+'</small></td><td class="sim-pk">'+(r.pkg?esc(simPkg(r.pkg)):'<span class="faint">—</span>')+'</td><td class="r sim-pr">'+(r.cost==null?'<span class="faint">—</span>':simBaht(r.cost)+(r.costSrc==='manual'?' <small class="faint">กรอกเอง</small>':''))+'</td><td>'+simHb(r.h)+'</td><td class="r">'+(r.days==null?'—':r.days+' วัน')+'</td><td class="r">'+esc(r.usage||'—')+'</td><td>'+esc(r.province||'—')+'</td><td>'+(r.site?esc(r.site)+(r.owner?'<small class="faint">'+esc(r.owner)+'</small>':''):'<span class="faint">—</span>')+'</td><td><span class="sim-m6">'+r.m6.map(function(v,i){return dot(v,D.months[i])}).join('')+'</span></td><td>'+r.tags.map(function(t){return '<span class="sim-tag t-'+t+'">'+esc(SIM_TAG[t]||t)+'</span>'}).join('')+'</td></tr>'}).join('')+'</tbody></table></div>':'<div class="state" style="padding:28px"><b>ไม่พบเบอร์</b><span>ลองเปลี่ยนตัวกรอง</span></div>')+
-    (D.pages>1?'<div class="sim-pg"><button class="btn sm" data-simpg="-1"'+(D.page<=1?' disabled':'')+'>ก่อนหน้า</button><span class="faint">หน้า '+D.page+' / '+D.pages+'</span><button class="btn sm" data-simpg="1"'+(D.page>=D.pages?' disabled':'')+'>ถัดไป</button></div>':'')+'</section>';
-  var qt;$('#sim-q').oninput=function(){var v=this.value;clearTimeout(qt);qt=setTimeout(function(){f.q=v;f.page=1;simLoad();setTimeout(function(){var q=$('#sim-q');if(q){q.focus();q.setSelectionRange(v.length,v.length)}},350)},350)};
-  $('#sim-fh').onchange=function(){f.h=this.value;f.page=1;simLoad()};simDateBind(function(){f.page=1;simLoad()});$('#sim-fp').onchange=function(){f.prov=this.value;f.page=1;simLoad()};$('#sim-ft').onchange=function(){f.tag=this.value;f.page=1;simLoad()};
-  $$('[data-simpg]').forEach(function(x){x.onclick=function(){f.page=D.page+ +x.dataset.simpg;simLoad()}});
+    (D.pages>1?'<div class="sim-pg"><button class="btn sm" data-simpg="-1"'+(D.page<=1?' disabled':'')+'>ก่อนหน้า</button><span class="faint">หน้า '+D.page+' / '+D.pages+'</span><button class="btn sm" data-simpg="1"'+(D.page>=D.pages?' disabled':'')+'>ถัดไป</button></div>':'')+'</div></section>';
+  if(soft){var t=document.createElement('div');t.innerHTML=html;$('#sim-lsr').replaceWith(t.querySelector('#sim-lsr'));$('#sim-lsn').textContent=D.count.toLocaleString('th-TH')+' เบอร์'}else{b.innerHTML=html;simLsTools(f)}
+  $$('[data-simpg]').forEach(function(x){x.onclick=function(){f.page=D.page+ +x.dataset.simpg;simLoad(1)}});
   $$('[data-simm]').forEach(function(tr){tr.onclick=function(){simOpen(tr.dataset.simm)};tr.onkeydown=function(e){if(e.key==='Enter')simOpen(tr.dataset.simm)}})}
+function simLsTools(f){
+  var qt;$('#sim-q').oninput=function(){var v=this.value;clearTimeout(qt);qt=setTimeout(function(){f.q=v.trim();f.page=1;simLoad(1)},300)};
+  var tg=function(el,v){el.classList.toggle('on',!!v)};
+  $('#sim-fh').onchange=function(){f.h=this.value;tg(this,f.h);f.page=1;simLoad(1)};simDateBind(function(){f.page=1;simLoad()});$('#sim-fp').onchange=function(){f.prov=this.value;tg(this,f.prov);f.page=1;simLoad(1)};$('#sim-ft').onchange=function(){f.tag=this.value;tg(this,f.tag);f.page=1;simLoad(1)}}
 
 function simPct(a,b){if(!b)return '';var p=Math.round((a-b)/b*1000)/10;return (p>0?'+':'')+p+'%'}
 /* ตัวกรองวันที่ (24 พ.ย. 2569 ผู้ใช้ขอ) · อัปเดตสถานะล่าสุดในช่วง · input type=date = ตัวเลือก พ.ศ. ของระบบ (datepick.js) · ใช้ร่วม รายการ SIM + แผนที่ */
