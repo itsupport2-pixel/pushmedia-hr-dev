@@ -135,6 +135,17 @@ function simRgBind(id,get,set,presets){var b=$('#'+id);if(!b)return;b.onclick=fu
 /* ── ค่าใช้จ่าย แบบผู้บริหาร (24 พ.ย. 2569 ผู้ใช้: "ผู้บริหารดู ตอนนี้ดูไม่รู้เรื่อง") ──
  * 1) ยอดเดือนล่าสุด + เปลี่ยนจากเดือนก่อน + เฉลี่ย  2) โอกาสประหยัดต่อเดือน (รอตรวจ + ไม่อยู่ใน CMP)  3) กราฟรายเดือน  4) แยกสถานะ / แพ็กเกจ / จังหวัด  5) เปลี่ยนแปลง 3 ช่อง (กดดูรายการ)  6) สูงสุด 10 เบอร์ */
 function simMy(m){return simMon(m)+' '+String(+m.slice(0,4)+543).slice(2)}
+/* 25 พ.ย. 2569 ผู้ใช้: "เดือนไหนนำเข้าแล้วให้แสดงด้วย" · 12 เดือนล่าสุด (ถึงเดือนก่อน หรือเดือนล่าสุดที่นำเข้า) · นำเข้าแล้ว = เขียว + จำนวนเบอร์ · ยังไม่มี = เทาเส้นประ */
+function simBillMonths(bills){
+  var have={},last='',d=new Date(),cur=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2);
+  (bills||[]).forEach(function(x){have[x.month]=x.n});
+  var y=d.getFullYear(),m=d.getMonth();if(m===0){y--;m=12}last=y+'-'+('0'+m).slice(-2);
+  (bills||[]).forEach(function(x){if(x.month>last&&x.month<=cur)last=x.month});
+  var ms=[],yy=+last.slice(0,4),mm=+last.slice(5,7);
+  for(var i=0;i<12;i++){ms.push(yy+'-'+('0'+mm).slice(-2));if(--mm===0){mm=12;yy--}}
+  var n=ms.filter(function(k){return have[k]!=null}).length;
+  return '<span class="sim-bmh">นำเข้าแล้ว <b>'+n+'</b> จาก 12 เดือนล่าสุด</span><span class="sim-chips3">'+ms.map(function(k){return have[k]!=null?'<i title="นำเข้าแล้ว '+have[k]+' เบอร์"><svg viewBox="0 0 12 12" width="10" height="10"><path d="M2.5 6.2l2.3 2.3 4.7-4.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>'+simMy(k)+' · '+have[k]+'</i>':'<i class="no" title="ยังไม่ได้นำเข้า">'+simMy(k)+' · ยังไม่มี</i>'}).join('')+'</span>';
+}
 function simMyL(m){return SIM_TMF[+m.slice(5,7)-1]+' '+(+m.slice(0,4)+543)}
 function simCsPresets(D){var A=D.allMonths||[],L=A[A.length-1];if(!L)return simRgDate();var f=function(n){return A[Math.max(0,A.length-n)]+'-01'},y=L.slice(0,4);
   return [['เดือนล่าสุด',L+'-01',simEom(L)],['3 เดือนล่าสุด',f(3),simEom(L)],['6 เดือนล่าสุด',f(6),simEom(L)],['ปีนี้ ('+(+y+543)+')',y+'-01-01',simEom(L)],['ทั้งหมด','','']]}
@@ -250,7 +261,7 @@ function simSy(b,D){
   var logs='<section class="card"><div class="sim-ch3"><b>ประวัติการซิงก์</b><span class="faint">'+D.logs.length+' รอบล่าสุด</span></div>'+(D.logs.length?'<div class="sim-lg2">'+D.logs.map(function(l){var k=KD[l.kind]||[l.kind,'q'],ok=l.status==='done';
     return '<div class="sim-lr"><span class="sim-lst '+(ok?'ok':'run')+'">'+(ok?SIM_OK:SIM_CLK)+'</span><div class="sim-lrt"><b>'+simT(l.finished||l.started)+'</b><small>'+esc(l.by_name)+'</small></div><span class="sim-kd '+k[1]+'">'+k[0]+'</span><div class="sim-lrn"><b>'+(l.kind==='hist'?(l.got||0).toLocaleString('th-TH')+' เบอร์':(l.got||0)+' / '+(l.total||0))+'</b><small>'+(l.kind==='hist'?esc(String(l.note||'').replace(/^ประวัติ\s*/,'')):'ใหม่ '+(l.n_new||0)+' · เปลี่ยน '+(l.n_chg||0)+(l.note?' · '+esc(l.note):''))+'</small></div>'+(ok?'':'<span class="sim-pill0 warn">ไม่ครบ</span>')+'</div>'}).join('')+'</div>':'<div class="faint" style="padding:8px 0">ยังไม่มี</div>')+'</section>';
   var imp=D.admin&&!D.ro?'<section class="card"><div class="sim-ch3"><b>นำเข้าข้อมูล</b><span class="faint">ผู้ดูแลระบบ</span></div><div class="sim-imps">'+
-    '<label class="sim-imt sim-imh">'+SIM_XLS+'<div><b>ใบแจ้งหนี้ dtac (.xlsx)</b><small>ทุกเดือน · ใช้ Total Charge + VAT 7% เป็นค่าบริการ · นำเข้ารอบเดิมซ้ำ = แทนทั้งรอบ</small><span class="sim-chips3">'+(D.bills||[]).map(function(x){return '<i>'+simMy(x.month)+' · '+x.n+'</i>'}).join('')+'</span></div><span class="btn sim-bp">เลือกไฟล์</span><input type="file" accept=".xlsx,.xls" id="sim-ib" hidden></label>'+
+    '<label class="sim-imt sim-imh">'+SIM_XLS+'<div><b>ใบแจ้งหนี้ dtac (.xlsx)</b><small>ทุกเดือน · ใช้ Total Charge + VAT 7% เป็นค่าบริการ · นำเข้ารอบเดิมซ้ำ = แทนทั้งรอบ</small>'+simBillMonths(D.bills)+'</div><span class="btn sim-bp">เลือกไฟล์</span><input type="file" accept=".xlsx,.xls" id="sim-ib" hidden></label>'+
     '<label class="sim-imt">'+SIM_SHEET+'<div><b>ชีต Dtac เดิม · SIM_Master (.csv)</b><small>ครั้งเดียว · ไซต์/เจ้าของ/ค่าบริการ เติมเฉพาะช่องที่ว่าง · เบอร์เดิมไม่ถูกทับ</small></div><span class="btn">เลือกไฟล์</span><input type="file" accept=".csv,text/csv" id="sim-im" hidden></label>'+
     '<label class="sim-imt">'+SIM_SHEET+'<div><b>ชีต Dtac เดิม · SIM_Monthly (.csv)</b><small>ครั้งเดียว · สรุปรายเดือนเดิม (หน้ารายงานดึงใหม่ได้)</small></div><span class="btn">เลือกไฟล์</span><input type="file" accept=".csv,text/csv" id="sim-io" hidden></label>'+
     '</div><div id="sim-ir" class="sim-ir"></div></section>':'';
