@@ -32,7 +32,7 @@ function simGo(tab,o){var f=simF();f.tab=tab;if(o){f.h=o.h||'';f.prov=o.prov||''
   $$('[data-simt]').forEach(function(b){var on={simov:'ov',simls:'ls',simcs:'cs',simmp:'mp',simsy:'sy'}[b.dataset.simt]===tab;b.classList.toggle('on',on);b.setAttribute('aria-selected',String(on))});svxInd($('#sim-tabs'),1);simLoad()}
 /* soft (25 พ.ย. 2569 ผู้ใช้: "พิมพ์ค้นหา 1 ตัวระบบรีเฟรชหน้า"): แท็บรายการ = ไม่ล้างหน้า · คงแถบค้นหา/ตัวกรอง · เปลี่ยนเฉพาะตาราง + จำนวน */
 function simLoad(soft){var f=simF(),b=$('#sim-body'),n=A.simN=(A.simN||0)+1;if(!b)return;var sr=f.tab==='ls'?'#sim-lsr':f.tab==='cs'&&f.cv==='bill'?'#sim-blr':'';soft=soft&&sr&&$(sr);if(soft)$(sr).classList.add('sim-ldg');else b.innerHTML=SK(f.tab==='ls'?'rows':'kpi','กำลังโหลด…');
-  var p=f.tab==='ov'?aCall('simOverview'):f.tab==='ls'?aCall('simList',{q:f.q,h:f.h,prov:f.prov,tag:f.tag,team:f.team||'',con:f.con||'',page:f.page,from:f.from||'',to:f.to||''}):f.tab==='cs'&&f.cv==='bill'?aCall('simBills',{from:f.bfrom||'',to:f.bto||'',q:f.bq||'',page:f.bpage||1}):f.tab==='cs'?aCall('simCost',{from:f.cfrom||'',to:f.cto||''}):f.tab==='mp'?aCall('simMap',{from:f.from||'',to:f.to||''}):aCall('simSync');
+  var p=f.tab==='ov'?aCall('simOverview'):f.tab==='ls'?aCall('simList',{q:f.q,h:f.h,prov:f.prov,tag:f.tag,team:f.team||'',con:f.con||'',page:f.page,from:f.from||'',to:f.to||''}):f.tab==='cs'&&f.cv==='bill'?aCall('simBills',{from:f.bfrom||'',to:f.bto||'',q:f.bq||'',pkg:f.bpk||'',h:f.bh||'',net:f.bnt||'',holder:f.bho||'',page:f.bpage||1}):f.tab==='cs'?aCall('simCost',{from:f.cfrom||'',to:f.cto||''}):f.tab==='mp'?aCall('simMap',{from:f.from||'',to:f.to||''}):aCall('simSync');
   p.then(function(d){if(n!==A.simN||A.view!=='sim')return;var x=$('#sim-body');if(!x)return;if(f.tab==='ov')simOv(x,d);else if(f.tab==='ls')simLs(x,d,soft);else if(f.tab==='cs'&&f.cv==='bill')simBl(x,d,soft);else if(f.tab==='cs')simCs(x,d);else if(f.tab==='mp')simMp(x,d);else simSy(x,d)}).catch(function(e){if(n!==A.simN)return;var x=$('#sim-body');if(x)x.innerHTML='<div class="alert">'+esc(e.message)+'</div>'})}
 
 /* ── ภาพรวม (E1) ── */
@@ -142,10 +142,17 @@ function simRgBind(id,get,set,presets){var b=$('#'+id);if(!b)return;b.onclick=fu
 /* ── ค่าใช้จ่าย แบบผู้บริหาร (24 พ.ย. 2569 ผู้ใช้: "ผู้บริหารดู ตอนนี้ดูไม่รู้เรื่อง") ──
  * 1) ยอดเดือนล่าสุด + เปลี่ยนจากเดือนก่อน + เฉลี่ย  2) โอกาสประหยัดต่อเดือน (รอตรวจ + ไม่อยู่ใน CMP)  3) กราฟรายเดือน  4) แยกสถานะ / แพ็กเกจ / จังหวัด  5) เปลี่ยนแปลง 3 ช่อง (กดดูรายการ)  6) สูงสุด 10 เบอร์ */
 /* 25 พ.ย. 2569 ผู้ใช้: "แสดงสถานะเครือข่ายด้วย หัวคอลัมน์ เครือข่าย" · ค่าจาก CMP networkStatus */
-function simNet(n){n=String(n||'');if(!n)return '<span class="faint">—</span>';var c=/เชื่อมต่อ|online|connect/i.test(n)&&!/ไม่/.test(n)?'on':/ปิดเครื่อง|offline|ไม่ทราบ/i.test(n)?'off':'';return '<span class="sim-net '+c+'"><i></i>'+esc(n)+'</span>'}
+function simNet(n){n=String(n||'');if(!n)return '<span class="faint">—</span>';var c=/^ใช้งาน$|เชื่อมต่อ|online|connect/i.test(n)&&!/ไม่/.test(n)?'on':/ปิดเครื่อง|offline|ไม่ทราบ/i.test(n)?'off':'';return '<span class="sim-net '+c+'"><i></i>'+esc(n)+'</span>'}
 /* 25 พ.ย. 2569 ผู้ใช้: "ค่าใช้จ่าย ให้มีรูปแบบตารางตามบิล · แต่ละบิลมีรายการไหน · ค้นหาเบอร์ได้ เลือกวันที่ได้" · สลับ สรุป / ตามบิล (f.cv) */
 function simCvT(){var f=simF();return '<span class="segt sim-cvt" role="group" aria-label="มุมมองค่าใช้จ่าย"><button type="button" data-simcv="" aria-pressed="'+(f.cv!=='bill')+'">สรุป</button><button type="button" data-simcv="bill" aria-pressed="'+(f.cv==='bill')+'">ตารางตามบิล</button></span>'}
 function simCvBind(){$$('[data-simcv]').forEach(function(x){x.onclick=function(){var f=simF();if((f.cv||'')===x.dataset.simcv)return;f.cv=x.dataset.simcv;simLoad()}})}
+/* ตัวกรองตารางตามบิล (25 พ.ย. 2569) · ตัวเลือกจากรายการในช่วงที่เลือก (ตัวเลข = จำนวนรายการ) */
+var SIM_HL={notcmp:'ไม่อยู่ใน CMP'};
+function simBlFilters(D){var f=simF(),o=function(v,t,cur){return '<option value="'+esc(v)+'"'+(String(cur||'')===String(v)?' selected':'')+'>'+esc(t)+'</option>'},sel=function(id,cur,lab,html){return '<select id="'+id+'" class="svc-f'+(cur?' on':'')+'" aria-label="'+lab+'">'+html+'</select>'};
+  return sel('sim-bfp',f.bpk,'แพ็กเกจ',o('','แพ็กเกจ: ทั้งหมด',f.bpk)+(D.pkgs||[]).map(function(p){return o(p[0],simPkg(p[0])+' ('+p[1]+')',f.bpk)}).join(''))+
+    sel('sim-bfh',f.bh,'สถานะ',o('','สถานะ: ทั้งหมด',f.bh)+o('review','รอตรวจ',f.bh)+(D.hs||[]).map(function(h){return o(h[0],'สถานะ: '+(SIM_HL[h[0]]||(SIM_H[h[0]]||[h[0]])[0])+' ('+h[1]+')',f.bh)}).join(''))+
+    sel('sim-bfn',f.bnt,'เครือข่าย',o('','เครือข่าย: ทั้งหมด',f.bnt)+(D.nets||[]).map(function(n){return o(n[0],'เครือข่าย: '+(n[0]==='—'?'ไม่มีข้อมูล':n[0])+' ('+n[1]+')',f.bnt)}).join(''))+
+    sel('sim-bfo',f.bho,'ผู้ถือครอง',o('','ผู้ถือครอง: ทั้งหมด',f.bho)+o('yes','มีผู้ถือครอง',f.bho)+o('no','ยังไม่ระบุผู้ถือครอง',f.bho))}
 function simBl(b,D,soft){var f=simF(),Mo=D.months||[];
   var lab=!Mo.length?'':Mo.length===1?'บิล '+simMyL(Mo[0]):'บิล '+simMy(Mo[Mo.length-1])+' – '+simMy(Mo[0])+' ('+Mo.length+' เดือน)';
   var sum='<span class="faint" id="sim-bln">'+(Mo.length?esc(lab)+' · <b>'+D.count.toLocaleString('th-TH')+'</b> รายการ · รวม VAT <b>'+simBaht(D.total)+'</b>':'')+'</span>';
@@ -156,9 +163,10 @@ function simBl(b,D,soft){var f=simF(),Mo=D.months||[];
     '<div class="state" style="padding:34px 0"><b>'+(Mo.length?'ไม่พบรายการ':'ไม่มีใบแจ้งหนี้ในช่วงนี้')+'</b><span>'+(Mo.length?'ลองเปลี่ยนคำค้นหรือช่วงวันที่':'เลือกช่วงอื่น หรือผู้ดูแลระบบนำเข้าไฟล์ใบแจ้งหนี้ที่แท็บ ซิงก์ข้อมูล')+'</span></div>')+
     (D.pages>1?'<div class="sim-pg"><button class="btn sm" data-simbp="-1"'+(D.page<=1?' disabled':'')+'>ก่อนหน้า</button><span class="faint">หน้า '+D.page+' / '+D.pages+'</span><button class="btn sm" data-simbp="1"'+(D.page>=D.pages?' disabled':'')+'>ถัดไป</button></div>':'')+'</div>';
   if(soft&&$('#sim-blr')){var t=document.createElement('div');t.innerHTML=res;$('#sim-blr').replaceWith(t.firstChild);$('#sim-bln').outerHTML=sum}
-  else{b.innerHTML='<div class="sim-csbar">'+simCvT()+simRgBtn('sim-blrg',f.bfrom,f.bto,'บิลล่าสุด')+'</div><section class="card sim-blc"><div class="svc-tools"><label class="svc-q">'+(typeof svcI==='function'?svcI('search',16):'')+'<input id="sim-bq" type="search" placeholder="ค้นหาเบอร์ แพ็กเกจ ไซต์…" value="'+esc(f.bq||'')+'" aria-label="ค้นหาเบอร์ในบิล"></label><span class="sp"></span>'+sum+'</div>'+res+'</section>';
+  else{b.innerHTML='<div class="sim-csbar">'+simCvT()+simRgBtn('sim-blrg',f.bfrom,f.bto,'บิลล่าสุด')+'</div><section class="card sim-blc"><div class="svc-tools"><label class="svc-q">'+(typeof svcI==='function'?svcI('search',16):'')+'<input id="sim-bq" type="search" placeholder="ค้นหาเบอร์ แพ็กเกจ ไซต์ ผู้ถือครอง…" value="'+esc(f.bq||'')+'" aria-label="ค้นหาเบอร์ในบิล"></label>'+simBlFilters(D)+'<span class="sp"></span>'+sum+'</div>'+res+'</section>';
     simCvBind();simRgBind('sim-blrg',function(){return [f.bfrom,f.bto]},function(a,c){f.bfrom=a;f.bto=c;f.bpage=1;simLoad()},simCsPresets({allMonths:D.allMonths}).map(function(p){var A=D.allMonths||[];return p[0]==='ทั้งหมด'&&A.length?['ทั้งหมด',A[0]+'-01',simEom(A[A.length-1])]:p}));
-    var qt;$('#sim-bq').oninput=function(){var v=this.value;clearTimeout(qt);qt=setTimeout(function(){f.bq=v.trim();f.bpage=1;simLoad(1)},300)}}
+    var qt;$('#sim-bq').oninput=function(){var v=this.value;clearTimeout(qt);qt=setTimeout(function(){f.bq=v.trim();f.bpage=1;simLoad(1)},300)};
+    [['sim-bfp','bpk'],['sim-bfh','bh'],['sim-bfn','bnt'],['sim-bfo','bho']].forEach(function(x){var el=$('#'+x[0]);if(el)el.onchange=function(){f[x[1]]=this.value;this.classList.toggle('on',!!this.value);f.bpage=1;simLoad(1)}})}
   $$('[data-simbp]').forEach(function(x){x.onclick=function(){f.bpage=D.page+ +x.dataset.simbp;simLoad(1)}});
   $$('[data-simm3]').forEach(function(tr){tr.onclick=function(){simOpen(tr.dataset.simm3)};tr.onkeydown=function(e){if(e.key==='Enter')simOpen(tr.dataset.simm3)}})}
 function simMy(m){return simMon(m)+' '+String(+m.slice(0,4)+543).slice(2)}
