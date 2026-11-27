@@ -55,11 +55,12 @@ function prmDef(a,r){var o=PRM_OPT[a],d=PRM_DEF[r];if(o.indexOf(d)>=0)return d;r
 function prmCell(spec,ri){var r=PRM_R[ri][0];if(spec.indexOf('m:')===0&&r==='exec')return {t:'L'};   /* ผู้บริหาร = ระดับผู้ดูแลระบบ (Auth.js ROLE_RANK · isHR_) · ช่องในตารางบทบาทไม่มีผล */
   if(spec.indexOf('m:')===0){var a=spec.slice(2),v=A.prmM[a][r],o=A.prmX.matrix[a][r];return {t:'m',a:a,r:r,on:v!=='none',sc:v,chg:v!==o,def:prmDef(a,r)}}
   if(spec.indexOf('l:')===0){var k=spec.slice(2);return {t:'l',k:k,n:prmList(k).people.length,unset:!!prmList(k).unset}}return {t:spec}}
-function prmBox(c,kind){var col=kind==='v'?'prm-v':'prm-e';
+function prmBox(c,kind){return '<span class="prm-slot">'+prmBox0(c,kind)+'</span>'}   /* ทุกช่องกว้างเท่ากัน ตรงแนวเดียวกัน (27 พ.ย. 2569 ผู้ใช้: ทับซ้อน ไม่เป็นระเบียบ) */
+function prmBox0(c,kind){var col=kind==='v'?'prm-v':'prm-e';
   if(c.t==='-')return '<span class="prm-na" aria-label="ไม่มีสิทธิ์นี้"></span>';
   if(c.t==='L')return '<span class="prm-ck prm-lk" title="ได้เสมอ ปรับไม่ได้">'+PRM_CK+'</span>';
   if(c.t==='0')return '<span class="prm-ck prm-off" title="ไม่ได้ · กติกาในระบบ ปรับไม่ได้"></span>';
-  if(c.t==='l')return '<button class="prm-lp" data-prml="'+c.k+'" title="ได้เฉพาะคนในรายชื่อ · กดเพื่อแก้รายชื่อ"><i></i>'+(c.unset?'กติกาเดิม':c.n+' คน')+'</button>';
+  if(c.t==='l')return '<button class="prm-lp" data-prml="'+c.k+'" title="ได้เฉพาะคนในรายชื่อ '+(c.unset?'· ยังใช้กติกาเดิม':c.n+' คน')+' · กดเพื่อแก้รายชื่อ">'+(c.unset?'เดิม':c.n+' คน')+'</button>';
   var tag=c.on&&c.sc!==c.def?'<select class="prm-sc'+(c.chg?' chg':'')+'" data-prmsc="'+c.a+'|'+c.r+'" aria-label="ขอบเขต">'+PRM_OPT[c.a].filter(function(x){return x!=='none'}).map(function(x){return '<option value="'+x+'"'+(x===c.sc?' selected':'')+'>'+PRM_SC[x]+'</option>'}).join('')+'</select>':'';
   return '<span class="prm-cw"><button class="prm-ck '+col+(c.on?' on':'')+(c.chg?' chg':'')+'" data-prmm="'+c.a+'|'+c.r+'" role="checkbox" aria-checked="'+c.on+'" aria-label="'+(kind==='v'?'ดู':'แก้')+'">'+(c.on?PRM_CK:'')+'</button>'+tag+'</span>'}
 var PRM_CK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
