@@ -281,7 +281,7 @@ function done(tok){A.tok=tok;store('hr_tok',tok);boot()}
 /* ไอคอน View as = คน + ลูกศรสลับ (29 ต.ค. 2569 ผู้ใช้เลือกแบบ 1) */
 var VA_IC='<svg class="va-i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="7" r="3.2"/><path d="M3.5 19.5c0-3.1 2.5-5.5 5.5-5.5 1.2 0 2.3.4 3.2 1"/><path d="M15.5 13.5h5.5l-2-2"/><path d="M21 17.5h-5.5l2 2"/></svg>';
 /* ── บริษัทในเครือ + ปุ่มสลับบริษัท (29 ต.ค. 2569 ผู้ใช้ขอ) · ผู้ดูแล/HR/ผู้บริหาร เท่านั้น · เลือกแล้วทุกคำสั่งอ่านกรองตามบริษัท (_c.co · เซิร์ฟเวอร์ตัดใน inScope_) · ว่าง = ทุกบริษัท */
-function coCur(){var v=store('hr_co')||'';if(!v)return '';if(A.d&&(!A.d.coSwitch||!(A.d.companies||[]).some(function(c){return c.id===v})))return '';return v}   // ก่อนโหลด A.d ส่งค่าที่จำไว้ (เซิร์ฟเวอร์ตรวจบทบาทเอง)
+function coCur(){if(ss('hr_va'))return '';var v=store('hr_co')||'';if(!v)return '';if(A.d&&(!A.d.coSwitch||!(A.d.companies||[]).some(function(c){return c.id===v})))return '';return v}   // ก่อนโหลด A.d ส่งค่าที่จำไว้ (เซิร์ฟเวอร์ตรวจบทบาทเอง)
 function coAv(c,cls){if(c&&cls!=='xl'&&(c.id==='pm'||c.id==='pl'||c.id==='pc'))return '<span class="co-av ci '+c.id+(cls?' '+cls:'')+'">'+(c.id==='pc'?'<img src="push-codex-icon.png" alt="">':c.id==='pm'?MARK:CO_MARK.pl)+'</span>';   /* 15 พ.ย. 2569 ผู้ใช้: รูป Push Media ไม่เต็ม/ไม่เท่าโลโก้อื่น → ตัว U ขาวบนวงกลมดำ ขนาดเท่ากัน */   /* 15 พ.ย. 2569 ผู้ใช้: พับเมนูแล้วต้องเป็นไอคอน · Logix/Codex ใช้สัญลักษณ์แทนโลโก้เต็มย่อ (ตั้งค่า › โลโก้บริษัท 'xl' ยังโชว์ไฟล์ที่อัปโหลด) */
   return c&&c.logo?'<span class="co-av lg'+(cls?' '+cls:'')+'"><img data-trim src="'+esc(LOGO_TRIM[c.logo]||c.logo)+'" alt=""></span>':'<span class="co-av'+(c?'':' all')+(cls?' '+cls:'')+'">'+esc(coIni(c))+'</span>'}   // โลโก้บริษัท (ถ้ามี) หรือตัวย่อ
 function coLogo(){var c=coBr();return c&&c.logo||''}
@@ -726,7 +726,7 @@ var TBI_P={grid:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y
  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
  chat:'<path d="M4 5h16v11H9l-5 4z"/>',
  recent:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'};
-var TBI={'lvt:req':['leave','#2F6FED'],'lvt:adv':['cal','#C77700'],
+var TBI={'lvt:req':['leave','#2F6FED'],'lvt:adv':['cal','#C77700'],'lvt:quota':['chart','#1A7A42'],
  'attt:day':['clock','#12703A'],'attt:mx':['grid','#7A4FD6'],'attt:ta':['clockx','#D97309'],
  'rpt:xd':['dash','#2F6FED'],'rpt:top':['trophy','#C77700'],'rpt:bh':['chart','#7A4FD6'],'rpt:map':['pin','#C0392B'],'rpt:ms':['cal','#0E8A7E'],'rptsoon:pay':['wallet','#12703A'],'rptsoon:ot':['ot','#D97309'],
  'srt:team':['org','#7A4FD6'],'srt:emp':['user','#2F6FED'],'srt:proj':['folder','#C77700'],
